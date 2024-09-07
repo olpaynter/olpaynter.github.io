@@ -118,7 +118,7 @@ body {
   font-size: 2rem;
   letter-spacing: 0.1em;
   font-weight: 700;
-  padding: 0 1rem;
+  padding: 1rem 1rem;
 }
 
 .statement {
@@ -128,10 +128,6 @@ body {
   font-weight: 400;
   font-size: 1.1rem;
   padding: 0 1rem;
-}
-
-.statement p {
-  margin-top: 1rem;
 }
 
 .project-list {
