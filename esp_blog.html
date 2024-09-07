@@ -1,0 +1,400 @@
+<html>
+    <head>
+        <title>Oliver Paynter-Jones</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <div class="light" ></div> 
+        <div class="blog-post">
+            <header class="blog-header">
+                <h1>Experimental Systems Project</h1>
+                <a href="index.html" class="back-button">Back</a>
+            </header>
+            <div class="main-content" >
+                <div class="sidebar">
+                    <ul class="bookmark-list">
+                        <li class="bookmark" id="section1bookmark">
+                            <a href="#section1">Introduction to the Module </a>
+                        </li>
+                        <li class="bookmark" id="section2bookmark">
+                            <a href="#section2">Guiding the group</a>
+                        </li>
+                        <li class="bookmark" id="section3bookmark">
+                            <a href="#section3">Development</a>
+                        </li>
+                        <li class="bookmark" id="section4bookmark">
+                            <a href="#section4">Evaluation</a>
+                        </li>
+                        <li class="bookmark" id="section5bookmark">
+                            <a href="#section5">TL;DR: Summary and
+                                concluding notes</a>
+                        </li>
+
+                    </ul>
+                </div>
+                <div class="blog-text" id="scroll-container">
+                    <div class="section" id="section1">
+                        <p>
+                            A year-long Computer Science module in which
+                            students, in
+                            groups of 8, were tasked with identifying a problem,
+                            interacting with stakeholders, and coming up with a
+                            solution
+                            across 4 deliverables. The "problem" could be
+                            anything, as
+                            long as it could be nestled into one of a few (very
+                            broad)
+                            genres, mind. The module was intended to mimic the
+                            development lifecycle of a product in industry,
+                            albeit on a
+                            significantly smaller scale, but groups were
+                            nonetheless
+                            encouraged to take the same steps that professional
+                            teams
+                            would when developing a system - roles,
+                            responsibilities,
+                            scrum meetings and sprints, the whole package.
+                        </p>
+
+                        <p>
+                            Our group of 8 identified several problems but
+                            settled on
+                            student-society engagement, which here refers to the
+                            plethora of ways students interact with their
+                            societies, and
+                            vice versa, at university. We're talking freshers'
+                            events at
+                            the very start of the year, sports fairs, special
+                            society
+                            events, taster sessions, etc.
+                        </p>
+
+                        <p>
+                            A very significant amount of time was spent
+                            surveying,
+                            planning, interviewing, and surveying again to build
+                            the
+                            base of the project and to guide our trajectory as a
+                            group.
+                            We used the planning to narrow the scope of the
+                            system and
+                            drew up a set of objectives approximately halfway
+                            through
+                            the module's timeline:
+                        </p>
+
+                        <div align="center">
+                            <img src="./assets/objectives.png"
+                                alt="Project Objectives"
+                                style="width: 450px;">
+                        </div>
+
+                        <p>
+                            We had many more, all organized according to
+                            priority in the
+                            final system as it was emphasized by our tutors that
+                            the
+                            development portion of the project would be a bit of
+                            a time
+                            crunch, made worse by the fact of the year
+                            surrounding by
+                            other exams. It was probably that we wouldn't get
+                            around to
+                            it all, but ultimately that wasn't entirely the
+                            point of the
+                            module, so that's absolutely fine - it's about
+                            developing a
+                            plan, and sticking to that plan whilst you battle
+                            the little
+                            hurdles that pop up along the way.
+                        </p>
+                    </div>
+                    <div class="section" id="section2">
+                        <p>
+                            We had outlined the purpose and various functions of
+                            the
+                            system, and I took responsibility for investigating,
+                            testing, and teaching about the technologies we
+                            would use
+                            for development. While the rest of the team had
+                            primarily
+                            worked with Python, I had spent time outside of uni
+                            exploring other technologies courtesy of curiosity
+                            inspired
+                            by Stack Overflow's annual surveys. I was already
+                            roughly
+                            aware of what technologies I thought we'd need
+                            during
+                            development, so I conducted some preliminary tests
+                            and
+                            created tutorials to give to the rest of the group.
+                        </p>
+
+                        <p>
+                            I focused on the notoriously troublesome topics,
+                            giving
+                            walkthroughs and talks after our weekly scrum
+                            meetings on
+                            topics like GIT (conventions of branching, merging,
+                            frequent
+                            commits, and the most common commands), remote
+                            version
+                            control, as well as our plan for testing and
+                            deployment. I
+                            provided the group with an overview of our system
+                            design,
+                            React (and why we should use it), Flask, and Docker.
+                        </p>
+
+                        <p>
+                            I spent a great deal of time setting up the initial
+                            images
+                            and repositories before walking the group through
+                            how we
+                            would use Docker containers to emulate a more
+                            massive system
+                            distributed across multiple servers, to insulate the
+                            system
+                            from our personal machines for standardized testing,
+                            as well
+                            as to establish remote deployments for testing. We
+                            could
+                            unify our working environments, distribute tests,
+                            and
+                            finally deploy the system to Digital Ocean droplets
+                            funded
+                            by their free credits... The meetings provided an
+                            in-person
+                            environment for me to help the other developers set
+                            everything up on their machines and answer any
+                            questions.
+                        </p>
+                    </div>
+                    <div class="section" id="section3">
+                        <p>
+                            Development was largely uneventful, thanks to the
+                            planning I
+                            suppose. Getting over the initial learning curve of
+                            React
+                            was rough at times, I'll admit, but once I'd gotten
+                            comfortable with the idea of hooks, components, file
+                            structures, etc., I started to really get into it.
+                        </p>
+
+                        <p>
+                            The prevailing group conflict was when a team member
+                            repeatedly claimed they had completed their work on
+                            the
+                            frontend throughout multiple scrum meetings, only to
+                            confess
+                            to the team — just days before a key deadline — that
+                            none of
+                            it was actually done. At that point, I was the only
+                            one with
+                            the React experience needed to get it done in time,
+                            so I had
+                            to take on the work myself on top of what I was
+                            already
+                            responsible for. It wasn’t ideal (some late, *late*
+                            nights),
+                            but given the situation, it was the only way we
+                            could meet
+                            the deadline. It was definitely frustrating, but we
+                            pushed
+                            through and got it done in the end. For the next
+                            sprint, our
+                            time-keepers made sure to have people check in their
+                            work
+                            frequently to ensure that development was coming
+                            along
+                            evenly - a practice we should have more strongly
+                            encouraged
+                            from the start.
+                        </p>
+
+                        <p>
+                            We had effectively established a small-scale CI/CD
+                            pipeline
+                            for our society-matchmaker which, granted, might
+                            have been
+                            overkill for the scope of the project but ended up
+                            being
+                            very effectively utilized towards the end of our
+                            final
+                            deliverable once development had mostly finished:
+                        </p>
+                    </div>
+                    <div class="section" id="section4">
+                        <p>
+                            We were tasked with writing up a large piece of
+                            literature
+                            to conclude the module that evaluated our system
+                            with
+                            respect to where we started. Did it solve the
+                            problem we
+                            identified, and if so, to what extent? Members of
+                            the group
+                            conducted interviews with people from the university
+                            to
+                            compare our system (being ran on the Digital Ocean
+                            Droplets)
+                            to the existing system (the Student Union website).
+                            Unsurprisingly, and much the point of the
+                            evaluations, the
+                            users sometimes discovered bugs in the system: the
+                            team
+                            member would contact me, tell me about the bug, and
+                            I'd go
+                            hunting after lectures to find the issue, test
+                            locally, push
+                            to the remote branch, wait for the tests to run,
+                            before
+                            confirming the merge into main. Our GitHub Actions
+                            script
+                            would trigger new images to be built (excluding our
+                            tests,
+                            additional dependencies, some environmental stuff)
+                            before
+                            SSH'ing into the Droplets and setting up the new
+                            system
+                            version, this time without bugs, ready for further
+                            evaluation. I'm not entirely sure how we would have
+                            done
+                            evaluations without remote deployments, and manually
+                            patching them every time we found something that
+                            needed
+                            fixing would have been pretty frustrating.
+                        </p>
+
+                        <p>
+                            To cut the story short, data was gathered throughout
+                            very
+                            successful evaluations, and as the native Maths and
+                            Computer
+                            Science student, I crunched the numbers and did some
+                            analysis, wrote up my portion of the deliverable,
+                            and got an
+                            overall module-grade I'm very happy with.
+                        </p>
+
+                        <object data="./assets/deliverable4_sample.pdf"
+                            type="application/pdf" width="100%" height="700px">
+                            <embed src="./assets/deliverable4_sample.pdf"
+                                type="application/pdf">
+                            <p>This browser does not support PDFs. Please
+                                download the
+                                PDF to view it:
+                                <a
+                                    href="https://github.com/OPaynterJones/OPaynterJones.github.io/blob/main/images/deliverable4_sample.pdf">Download
+                                    PDF</a>.
+                            </p>
+                        </embed>
+                    </object>
+                    </div>
+                    <div class="section" id="section5">
+                    <p>All that said, I'm particularly proud of a few things
+                        about this
+                        project:</p>
+                    <ul>
+                        <li>The notion that I was comfortable enough with React
+                            half-way
+                            through development to be able to take on
+                            significant
+                            additional responsibilities and a rough deadline,
+                            and
+                            <strong>still</strong> independantly produce a product that I'm
+                            very
+                            pleased with.</li>
+                        <li>The "My First CI/CD Pipeline" I established for the group during planning and prep. I'd taken a lot of
+                            interest in
+                            how that sort of stuff had worked before, but
+                            getting to
+                            grips with Docker hands-on, utilizing remote servers
+                            properly, using multiple repositories, and getting
+                            everything to work with each other was rough at the start but definitely worth it.
+                            I'm much more
+                            keen
+                            now get a closer look at the DevOps side
+                            of
+                            industry if the opportunity arrises. The satisfaction of CI/CD working properly was something
+                            else...</li>
+                        <li>My first serious experience in a role with some
+                            decent level
+                            of leadership in the context of CS. I was surprised
+                            at how
+                            much I really enjoyed facilitating discussion,
+                            guiding the
+                            development portion of the project, and bringing
+                            everyone's
+                            skills together.</li>
+                    </ul>
+
+                    <p>A clip of our system towards the end of development:</p>
+                    <video width="100%" controls loop muted autoplay>
+                        <source src="./assets/system_login.mp4"
+                            type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <p></p>
+                    <video width="100%" controls loop muted autoplay>
+                        <source src="./assets/system_chooseyourinterests.mp4"
+                            type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script>
+        const light = document.querySelector('.light');
+
+        document.addEventListener('mousemove', function(event) {
+            var x = event.clientX / window.innerWidth;
+            var y = event.clientY / window.innerHeight;
+
+            var lightX = x * window.innerWidth;
+            var lightY = y * window.innerHeight;
+
+            var gradient = 'radial-gradient(600px at ' + lightX + 'px ' + lightY + 'px, rgba(29, 78, 216, 0.15),  transparent 80%';
+
+            light.style.background = gradient;
+        });
+
+
+        const scrollContainer = document.getElementById('scroll-container');
+        const sections = document.querySelectorAll('.section');
+        const bookmark = document.querySelectorAll('.bookmark');
+
+        function removeActiveClasses() {
+            bookmark.forEach(l => l.classList.remove('active'));
+        }
+
+        function addActiveClassToLink(l) {
+            removeActiveClasses();
+            l.classList.add('active');
+        }
+
+        scrollContainer.addEventListener('scroll', () => {
+
+            let currentSection = '';
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - scrollContainer.offsetTop;
+                const sectionHeight = section.clientHeight;
+                const containerScrollTop = scrollContainer.scrollTop;
+
+                if (containerScrollTop >= sectionTop - sectionHeight / 3 && containerScrollTop < sectionTop + sectionHeight) {
+                    currentSection = section.getAttribute('id');
+                }
+            });
+
+            bookmark.forEach(l => {
+                if (l.id === currentSection + "bookmark") {
+                    addActiveClassToLink(l);
+                    console.log(currentSection)
+                }
+            });
+        });
+    </script>
+</html>

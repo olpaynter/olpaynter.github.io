@@ -1,0 +1,28 @@
+<html>
+    <head>
+        <title>Oliver Paynter-Jones</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <div class="light"> </div>
+        <div class="blog-post">
+            <header class="blog-header">
+                <h1>Rubiks cube solver</h1>
+                <a href="index.html" class="back-button">Back</a>
+            </header>
+            <div class="blog-content">
+            </div>
+        </div>
+    </body>
+    <script>
+        const light = document.querySelector('.light');
+        document.addEventListener('mousemove', function(event) {
+            var x = event.clientX / window.innerWidth;
+            var y = event.clientY / window.innerHeight;
+            var lightX = x * window.innerWidth;
+            var lightY = y * window.innerHeight;
+            var gradient = 'radial-gradient(600px at ' + lightX + 'px ' + lightY + 'px, rgba(29, 78, 216, 0.15),  transparent 80%';
+            light.style.background = gradient;
+        });
+    </script>
+</html>

@@ -1,0 +1,289 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+  user-select: none;
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #0f172a;
+  font-family: Helvetica, sans-serif;
+}
+
+.container {
+  display: flex;
+  position: relative;
+  justify-content: space-between;
+  height: 100vh;
+  max-width: 1450px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 6rem;
+  overflow: auto;
+}
+
+.light {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background: radial-gradient(
+    600px at 50% 50%,
+    rgba(29, 78, 216, 0.15),
+    transparent 80%
+  );
+  z-index: 30;
+  pointer-events: none;
+  transition: background 0.3s ease;
+}
+
+.personal-info {
+  display: flex;
+  top: 0;
+  max-height: 100%;
+  flex-direction: column;
+  text-align: left;
+  width: 40%;
+  padding: 6rem 0;
+}
+
+.name {
+  color: white;
+  font-size: 3rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+.university {
+  font-size: 1.25rem;
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  color: rgb(148, 163, 184);
+  margin-top: 0.75rem;
+}
+
+.link-list {
+  padding: 1rem 0;
+  list-style-type: none;
+}
+
+.link {
+  color: white;
+  font-weight: 700;
+  padding: 1rem 0;
+  letter-spacing: 0.1em;
+}
+
+.other {
+  padding: 6rem 0 6rem;
+  width: 60%;
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black calc(0% + 6rem),
+    black calc(100% - 6rem),
+    transparent 100%
+  );
+  overflow-y: auto;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #ebebeb;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  display: none;
+}
+
+::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  background: white;
+}
+
+::-webkit-scrollbar-button:end {
+  height: 6rem;
+}
+
+::-webkit-scrollbar-button:start {
+  height: 6rem;
+}
+
+.hi {
+  color: white;
+  font-size: 2rem;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+  padding: 0 1rem;
+}
+
+.statement {
+  color: rgb(148 163 184);
+  padding-bottom: 1rem;
+  line-height: 1.625;
+  font-weight: 400;
+  font-size: 1.1rem;
+  padding: 0 1rem;
+}
+
+.statement p {
+  margin-top: 1rem;
+}
+
+.project-list {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+}
+
+.project-item {
+  margin-top: 0.5rem;
+  width: 100%;
+  background-color: rgba(24, 36, 76, 0);
+  transition: background-color 0.3s ease;
+  border-radius: 10px;
+  padding: 1rem;
+}
+
+.project-item h1 {
+  color: rgba(255, 255, 255, 0.5);
+  transition: color 0.3s ease, 0.3s ease;
+}
+
+.project-item:hover h1 {
+  color: white;
+  letter-spacing: 0.05em;
+}
+
+.project-item:hover {
+  background-color: rgba(24, 36, 76, 0.8);
+}
+
+.project-item p {
+  opacity: 0.5;
+  color: rgb(148 163 184);
+  transition: opacity 0.3s ease-in-out;
+  padding: 0.2rem 0;
+  font-size: 1.1rem;
+}
+
+.project-item:hover p {
+  opacity: 1;
+}
+
+.project-link {
+  display: block;
+}
+/* ---------------------------------- blog ------------------------------- */
+
+.blog-post {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  height: 100vh;
+  width: 1450px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 6rem 6rem 0;
+}
+
+.blog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-width: 100%;
+  height: fit-content;
+}
+
+.blog-header h1 {
+  color: white;
+  font-size: 3rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+.back-button {
+  color: white;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  font-size: 2rem;
+  opacity: 0.8;
+  transition: letter-spacing 0.3s ease, font-size 0.3s ease;
+  padding-right: 5rem;
+}
+
+.back-button:hover {
+  letter-spacing: 0em;
+  font-size: 2.2rem;
+}
+
+.main-content {
+  display: flex;
+  flex: 1;
+  justify-content: space-between;
+  mask-image: linear-gradient(
+    to bottom,
+    black calc(100% - 10rem),
+    transparent 100%
+  );
+  min-height: 0;
+  
+}
+
+.sidebar {
+  height: 20vh;
+  width: 20%;
+  top: 0;
+  position: sticky;
+}
+
+.bookmark-list {
+  list-style-type: none;
+}
+
+.bookmark {
+  padding: 1rem 0;
+  border: none;
+}
+
+.bookmark a {
+  opacity: 0.5;
+  color: white;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  transition: opacity 0.3s ease;
+}
+
+.bookmark.active a {
+  opacity: 1;
+}
+
+.blog-text {
+  height: 100%;
+  width: 75%;
+  padding: 0 1rem 6rem;
+  overflow: auto;
+}
+
+.blog-text p {
+  color: rgb(148 163 184);
+  padding-bottom: 1rem;
+  line-height: 1.625;
+  font-weight: 400;
+  font-size: 1.1rem;
+  padding: 1rem 0;
+}
+
+.blog-text li {
+  color: rgb(148 163 184);
+  padding-bottom: 1rem;
+  line-height: 1.625;
+  font-weight: 400;
+  font-size: 1.1rem;
+  padding: 1rem 0;
+}

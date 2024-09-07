@@ -1,0 +1,138 @@
+<html>
+    <head>
+        <title>Oliver Paynter-Jones</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <div class="light"> </div>
+        <div class="container">
+            <div class="personal-info">
+                <h1 class="name"> Oliver Paynter - Jones </h1>
+                <p class="university"> Computer Science and Mathematics student
+                    at The University of Bath </p>
+                <ul class="link-list">
+                    <li class="link">
+                        <p> Resume </p>
+                    </li>
+                    <li class="link">
+                        <p> Github </p>
+                    </li>
+                    <li class="link">
+                        <p> LinkedIn </p>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="other">
+                <p class="hi"> Hi! </p>
+                <div class="statement">
+                    <p>
+                        I’m a Computer Science and Mathematics student at the
+                        University of Bath with a passion for programming,
+                        maths,
+                        and problem-solving. I believe that Mathematics and
+                        Computer Science are almost inseparable and find their
+                        intersection to be more fascinating than either field
+                        alone. I’m always eager to learn new skills,
+                        technologies, and approaches to tackle real-world
+                        problems. Currently, I’m seeking opportunities to gain
+                        hands-on experience in software development.
+                    </p>
+
+                    <p>
+                        I've taken on some projects—some personal, and some as
+                        a part of my course—to explore things that interest me
+                        and to learn valuable skills. Please take a look!
+                    </p>
+                </div>
+
+                <ul class="project-list">
+                    <li class="project-item">
+                        <a href="./esp_blog.html"
+                            class="project-link">
+                            <h1> Experimental Systems Project </h1>
+                            <p> As part of a year-long Computer Science module,
+                                our
+                                team tackled the challenge of enhancing
+                                student-society engagement at university. This
+                                ambitious project simulated a professional
+                                development lifecycle, from stakeholder
+                                interaction
+                                to final delivery.</p>
+                            <p> I played a key role in integrating and managing
+                                our
+                                tech stack, including React, Flask, and Docker,
+                                while also guiding the team through the
+                                development
+                                and deployment phases. </p>
+                        </a>
+                    </li>
+                    <li class="project-item">
+                        <a href="./genetickeyboard_blog.html"
+                            class="project-link">
+                            <h1> Genetic Keyboard </h1>
+                            <p> I harnessed the power of genetic algorithms to
+                                design the ultimate keyboard layout. Using
+                                Python, I
+                                crafted an algorithm that optimizes keyboard
+                                configurations for improved typing speed and
+                                comfort. </p>
+                        </a>
+                    </li>
+                    <li class="project-item">
+                        <a href="./sudokusolver_blog.html"
+                            class="project-link">
+                            <h1> Suduko Solver: Speed and Simplicity </h1>
+                            <p> In this personal project, I developed an
+                                efficient
+                                Sudoku solver that stands out for its speed and
+                                simplicity. Inspired by Tom Dillon's Tduko,
+                                which
+                                uses advanced techniques and bitwise operations
+                                in C
+                                for optimal performance, I aimed to create a
+                                high-speed solver in Python using more
+                                straightforward methods.
+                                On even the most difficult puzzles, the
+                                solver handles puzzles in approx. 0.05 seconds!
+                            </p>
+                        </a>
+                    </li>
+                    <li class="project-item">
+                        <a href="./rubikscubesolver_blog.html"
+                            class="project-link">
+                            <h1> Solving the Rubik's Cube with Maths </h1>
+                            <p> I approach complexity of the Rubik’s Cube by
+                                leveraging H. Kociemba's
+                                Two-Phase
+                                algorithm to navigate the vast solution space
+                                efficiently with my pure-Python implementation.
+                                Given the cube’s 43 quintillion
+                                possible states, finding the singular solution
+                                might
+                                seem daunting, but the Two-Phase algorithm
+                                uses advanced Group Theory to collapse the
+                                complexity and
+                                navigate the sea of scrambles. </p>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+    <script>
+        const light = document.querySelector('.light');
+
+        document.addEventListener('mousemove', function(event) {
+            var x = event.clientX / window.innerWidth;
+            var y = event.clientY / window.innerHeight;
+
+            var lightX = x * window.innerWidth;
+            var lightY = y * window.innerHeight;
+
+            var gradient = 'radial-gradient(600px at ' + lightX + 'px ' + lightY + 'px, rgba(29, 78, 216, 0.15),  transparent 80%';
+
+            light.style.background = gradient;
+        });
+  </script>
+</html>
