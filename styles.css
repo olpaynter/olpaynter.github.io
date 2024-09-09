@@ -260,6 +260,8 @@ body {
 }
 
 .blog-text {
+  display: flex;
+  flex-direction: column;
   height: 100%;
   width: 75%;
   padding: 0 1rem 6rem;
@@ -268,18 +270,32 @@ body {
 
 .blog-text p {
   color: rgb(148 163 184);
-  padding-bottom: 1rem;
   line-height: 1.625;
   font-weight: 400;
   font-size: 1.1rem;
-  padding: 1rem 0;
+  padding-top: 1rem;
 }
 
 .blog-text li {
   color: rgb(148 163 184);
-  padding-bottom: 1rem;
+  padding-bottom: 0.5rem;
   line-height: 1.625;
   font-weight: 400;
-  font-size: 1.1rem;
-  padding: 1rem 0;
+  font-size: 1rem;
+  padding-left: 1rem;
+}
+
+.blog-text img { 
+  max-width: 100%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.blog-text h2 { 
+  color: rgb(176, 187, 204);
+  font-size: 2rem;
+  letter-spacing: -0.025rem;
+
+
 }

@@ -4,25 +4,287 @@
         <link rel="stylesheet" href="styles.css">
     </head>
     <body>
-        <div class="light"> </div>
+        <div class="light"></div>
         <div class="blog-post">
             <header class="blog-header">
-                <h1>Rubiks cube solver</h1>
+                <h1>Genetic Keyboard</h1>
                 <a href="index.html" class="back-button">Back</a>
             </header>
-            <div class="blog-content">
+            <div class="main-content">
+                <div class="sidebar">
+                    <ul class="bookmark-list">
+                        <li class="bookmark" id="section1bookmark">
+                            <a href="#section1">A little context </a>
+                        </li>
+                        <li class="bookmark" id="section2bookmark">
+                            <a href="#section2">Leveraging evolution</a>
+                        </li>
+                        <li class="bookmark" id="section3bookmark">
+                            <a href="#section3">Crossover</a>
+                        </li>
+                        <li class="bookmark" id="section4bookmark">
+                            <a href="#section4">Mutation</a>
+                        </li>
+                        <li class="bookmark" id="section5bookmark">
+                            <a href="#section5">Evaluation</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="blog-text" id="scroll-container">
+                    <div class="section" id="section1">
+                        <h2> A little context</h2>
+                        <p>
+                            I've spent a lot of time speed typing. I'm not sure whether you could consider it a soft skill, but it's a cool party trick nonetheless.
+                            I have
+                            some pretty decent top speeds, at least compared to the human average. I've also spent some time learning Dvorak, a different keyboard layout
+                            specifically designed to be a rival to the
+                            overwhelmingly more common QWERTY. Given
+                            all this, I feel as though I'm at least a little
+                            qualified to talk about the positives and negatives
+                            of any one typing experience.
+                        </p>
+                        <img
+                            src="./assets/time_typing.png"
+                            alt="typing_speed">
+                        <img
+                            src="./assets/typing_speed.png"
+                            alt="typing_speed">
+
+                        <p> As evidenced by the people at the top of the leaderboards, the QWERTY layout is
+                            more than ample for speed, perhaps contrary to its
+                            design (if you believe the supposedly true story of it's origin) but in
+                            my opinion I think
+                            that's more a testament to the adaptability of
+                            human hands and brain. It has plenty of downfalls
+                            that people have attempted to rectify in
+                            alternative layouts.</p>
+                        <p> The main complaint is as follows:
+                            <ul>
+                                <li> The most frequentyly used keys are
+                                    scattered about the keyboard, such that your
+                                    fingers have to frequently move from the
+                                    home row, sometimes by quite a distance, to
+                                    reach them. This is meant to be make it
+                                    inefficient, and some have said even
+                                    potentially damaging to your hands.</li>
+                            </ul>
+                            <p>
+                                But I might append some more to that short list,
+                                based on my experience:
+                            </p>
+                            <ul>
+                                <li> The keys are distributed without any
+                                    thought
+                                    to which keys are used "together", in the
+                                    sense that one key commonly follows the
+                                    other. For example, it makes sense that
+                                    you'd want letters like "e" and "r", or "t"
+                                    and "h", to be "linked" in some way. </li>
+                                <li> The "experience" of typing is sometimes a
+                                    little clumsy. By this I mean that some
+                                    words "roll" off your fingers at speed,
+                                    whereas a majority might seem clunky and slow in
+                                    comparison (subject to your individual typing style). Just as an example, words that
+                                    use only one hand, or frequently
+                                    use the same finger, can severly limit speed and accuracy.
+                                </ul>
+                            </p>
+                            <p> My argument therefor, is that there must be a
+                                better alternative to QWERTY. A layout that
+                                takes all of this into account: Distance
+                                traveled by your fingers, the relationship
+                                between certian letters, and the amount of words
+                                that you can let roll of the hand. </p>
+                        </div>
+                        <div class="section" id="section2">
+                            <h2> Leveraging Evoluation</h2>
+                            <p> I did a little research and found that
+                                <a
+                                    href="https://youtu.be/EOaPb9wrgDY">someone
+                                    had beaten me to it</a>
+                                but that
+                                they'd only taken into account the
+                                "distance travelled" metric - in my opinion, the
+                                least important of the aforementioned metrics. I
+                                also thought that his crossover method to be
+                                overly destructive: by copying a whole half of
+                                one parent, and effectively randomly filling in
+                                the other half from the other parent, he was
+                                losing a lot of information from both layouts,
+                                and not effectively combining the two parents as
+                                the genetic algorithm would have you do.
+                            </p>
+                            <p> The genetic approach however was arguably an
+                                appropriate one. 28! (number of permutations of
+                                a keyboard layout) is a lot to evaluate one by
+                                one, and far less fun than the genetic approach.
+                                So, I would design my own genetic algorithm with
+                                it's own crossover and mutation methods, as well
+                                as it's own metrics that I would tune to create
+                                my own intepretation of the "perfect" keyboard
+                                layout. </p>
+
+                        </div>
+
+                        <p> To backtrack a little, a genetic algorithm
+                            mimics biological evolution. If you take two
+                            well adapted parents, and examine their
+                            offspring, you will likely find that their
+                            offspring is similarly well adapated with
+                            regards to one or more metrics under the notion
+                            that they wil have inherited favorable traits
+                            from one or both of their parents. The inverse
+                            obviuosly also applies here. Their offspring
+                            also have the chance to have mutated a
+                            little.</p>
+                        <div class="section" id="section3">
+                            <h2> Crossover</h2>
+                            <p> In my implementation, crossover between two
+                                parents goes as follows:
+                                <ul> <li>Take two parents and a "crossover rate"
+                                        (a real number between 0 and 1
+                                        exclusive)</li>
+                                    <li> Randomly take some "genes" from layout
+                                        A, in this the location of letters in
+                                        A's layout. The higher the crossover
+                                        rate the
+                                        more genes you're likely to take from A
+                                        to pass on to the offspring.
+                                    </li>
+                                    <li> Let B fill in the remaining empty keys.
+                                    </li>
+                                    <li> In the case where a letter is still
+                                        missing from the offspring, consider the
+                                        location of the letter in B and find the
+                                        closest open key.
+                                    </li>
+                                </ul>
+                            </p>
+                            <img
+                                src="./assets/crossover.png"
+                                alt="crossover algorithm">
+                            <p> I chose this implementation because it keeps
+                                deliberately aims to maintain the location of
+                                keys from parent to offspring, with a bias
+                                towards/away from one parent. </p>
+                        </div>
+                        <div class="section" id="section4">
+                            <h2> Mutation</h2>
+                            <p> Mutiation with regards to a layout is also
+                                fairly simple. Taking a layout and a mutation
+                                rate, as well as a mutation "distance":
+                                <ul> <li> According to the mutation rate, chose
+                                        a random key on the layout to
+                                        mutate</li>
+                                    <li> Find all the keys withing range of the
+                                        mutation according to the aforementioned
+                                        mutation "distance", and swap
+                                        them.</li></ul>
+                            </p>
+                        </div>
+                        <div class="section" id="section5">
+                            <h2> Evaluation</h2>
+                            <p> When evaluting whether a layout was any good, I
+                                used 2 metrics:
+                            </p>
+                            <ul>
+                                <li> A fancy metric that penalises use of
+                                    the same finger successively (as this is
+                                    horribly ineffecient compared to using
+                                    multiple fingers), not "rolling" between
+                                    fingers (using your index, middle, ring,
+                                    and pinky in that order), not using
+                                    adjacent fingers (going from left pinky
+                                    to right pinky), and swaping between
+                                    your hands in the middle of a word.
+                                    <img
+                                        src="./assets/finger_order_metric.png"
+                                        alt="finger_order_metric">
+                                </li>
+                                <li> Distance accumulated by your fingers
+                                    moving from key to key
+                                    <img
+                                        src="./assets/distance_metric.png"
+                                        alt="finger_order_metric">
+                                </li>
+                            </ul>
+                            <p>
+                                I implemented these metrics in such a way that I
+                                could change how much I wanted each metric to
+                                influence the result. For example, swapping
+                                between your hands in the middle of a world is
+                                far less detrimental than using your index
+                                finger for 3 letters in a single world, so it
+                                should infleunce the metric far less.
+                            </p>
+                            <p> For something to score all this on, word
+                                frequency is super important. A layout is
+                                utterly useless if it's lovely to type on for
+                                words you'd only type once in a blue moon - the
+                                most frequenty english words are the most
+                                important. With this in mind, the context of the
+                                langauge also influences the frequency of the
+                                words used (scientific journals will has a very
+                                different frequency distribution to childrens
+                                books). I used a nice average distribution that
+                                I feel represents english from the Google Book
+                                Corpus. Nice regular english thats fairly
+                                representitive of the primary use of a
+                                keybaord</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </body>
-    <script>
+        </body>
+        <script>
         const light = document.querySelector('.light');
+
         document.addEventListener('mousemove', function(event) {
             var x = event.clientX / window.innerWidth;
             var y = event.clientY / window.innerHeight;
+
             var lightX = x * window.innerWidth;
             var lightY = y * window.innerHeight;
+
             var gradient = 'radial-gradient(600px at ' + lightX + 'px ' + lightY + 'px, rgba(29, 78, 216, 0.15),  transparent 80%';
+
             light.style.background = gradient;
         });
+
+
+        const scrollContainer = document.getElementById('scroll-container');
+        const sections = document.querySelectorAll('.section');
+        const bookmark = document.querySelectorAll('.bookmark');
+
+        function removeActiveClasses() {
+            bookmark.forEach(l => l.classList.remove('active'));
+        }
+
+        function addActiveClassToLink(l) {
+            removeActiveClasses();
+            l.classList.add('active');
+        }
+
+        scrollContainer.addEventListener('scroll', () => {
+
+            let currentSection = '';
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - scrollContainer.offsetTop;
+                const sectionHeight = section.clientHeight;
+                const containerScrollTop = scrollContainer.scrollTop;
+
+                if (containerScrollTop >= sectionTop - sectionHeight / 3 && containerScrollTop < sectionTop + sectionHeight) {
+                    currentSection = section.getAttribute('id');
+                }
+            });
+
+            bookmark.forEach(l => {
+                if (l.id === currentSection + "bookmark") {
+                    addActiveClassToLink(l);
+                    console.log(currentSection)
+                }
+            });
+        });
     </script>
-</html>
+    </html>
