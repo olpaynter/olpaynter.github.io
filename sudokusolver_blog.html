@@ -1,28 +1,503 @@
 <html>
     <head>
-        <title>Oliver Paynter-Jones</title>
+        <title>Sudoku Solver Blog | Oliver Paynter-Jones</title>
         <link rel="stylesheet" href="styles.css">
+        <script defer src="https://cloud.umami.is/script.js"
+            data-website-id="10b362d8-4ee7-43b3-abf9-4f4f486d8cdb"></script>
     </head>
     <body>
-        <div class="light"> </div>
+        <div class="light"></div>
         <div class="blog-post">
             <header class="blog-header">
-                <h1>Experimental Systems Project</h1>
+                <h1>Sudoku Solver</h1>
                 <a href="index.html" class="back-button">Back</a>
             </header>
-            <div class="blog-content">
+            <div class="main-content">
+                <div class="sidebar">
+                    <ul class="bookmark-list">
+                        <li class="bookmark" id="section1bookmark">
+                            <a href="#section1">Background </a>
+                        </li>
+                        <li class="bookmark" id="section2bookmark">
+                            <a href="#section2">The key to speed</a>
+                        </li>
+                        <li class="bookmark" id="section3bookmark">
+                            <a href="#section3">Another approach</a>
+                        </li>
+                        <li class="bookmark" id="section4bookmark">
+                            <a href="#section4">TL;DR: My approach and
+                                implementation</a>
+                        </li>
+                        <li class="bookmark" id="section5bookmark">
+                            <a href="#section5">Code</a>
+                        </li>
+                        <li class="bookmark" id="section6bookmark">
+                            <a href="#section6">Results</a>
+                        </li>
+
+                    </ul>
+                </div>
+                <div class="blog-text" id="scroll-container">
+                    <p>
+                        The repository with the all the code and some
+                        examples can be found <a
+                            href="https://github.com/OPaynterJones/suduko_solver.git">
+                            here </a></p>
+                    <p> If you're just interested in the results, take a look <a
+                            href="#section6"> here </a>, or <a href="#section5">
+                            here </a> for the algorithm I used with a mostly
+                        line-by-line explanation as to what's going on. More
+                        thorough information as to <strong> why </strong> that's
+                        going on can be found <a href="#section4"> just before
+                        </a></p>
+                    <div class="section" id="section1">
+                        <h2> Background </h2>
+                        <p>
+                            To my knowledge, the fastest solver for sudukos, of
+                            all
+                            calibers, is <a
+                                href="https://github.com/t-dillon/tdoku">Tom
+                                Dillon's solver.</a> As
+                            outlined in <a
+                                href="https://t-dillon.github.io/tdoku/#PracticalPerformance">
+                                a post authored by him</a>, he
+                            approaches the puzzles as constraint satisfaction
+                            problems.</p>
+
+                        <p>Omitting a good deal of techniques that Tom uses to
+                            make
+                            approach the fastest, the solver uses the <a
+                                href="https://en.wikipedia.org/wiki/DPLL_algorithm">
+                                DPLL algorithm</a>
+                            to
+                            attempt to find states for all the literals (the
+                            candidates of a sudoku puzzle) that
+                            satisfy
+                            a given set of clauses.
+                            It should be noted that the
+                            "conventional" Sudoku constraints - only one
+                            candidate
+                            per row|column|box - are not represented explicitly
+                            in these clauses,
+                            but
+                            implicitly through more complex constraints and
+                            the use of what
+                            Tom calls "triads" which, to reduce their simplicity
+                            substantially,
+                            group up some literals and help to make the
+                            application
+                            of techniques like
+                            "locked-candidates" quicker and simpler.</p>
+
+                    </div>
+                    <div class="section" id="section2">
+                        <h2> The key to speed</h2>
+                        <p>
+                            All that said, a propositional approach to Sudoku
+                            like Tduko's only reduces the amount of "guessing" a
+                            solver does; the propositional
+                            approach, triads and all, is still slow compared to
+                            the other solvers out there, like JCZsolve for
+                            example. The key to the speed of Tduko,
+                            is in C's
+                            bitvectors and
+                            the SIMD operations that can process bitvectors
+                            unbelievably fast.
+                        </p>
+                        <p>
+                            Representing all of the above using bitvectors and
+                            restricting operations on these bitvectors to
+                            exclusively SIMD operations, Tduko has
+                            both the reduced search length as a result of the
+                            quick and accurate guessing, but also the speed to
+                            dominate all the other solvers.
+
+                            Unfortunately... Python does not have the finesse of
+                            a langauge like C that would make a chasing a
+                            propositional approach like Tom's massively
+                            feasable. It could be done, but it'd be messy and
+                            likely much slower than a simpler approach.
+                        </p>
+                        <p> Representing all of the above using bitvectors and
+                            restricting operations on these bitvectors to
+                            exclusively SIMD operations, Tduko has
+                            both the reduced search length as a result of the
+                            quick
+                            and accurate guessing, but also the speed to
+                            dominate
+                            all the other solvers. </p>
+
+                        <p>Unfortunately... Python does not have the finesse of
+                            a
+                            langauge like C that would make a propositional
+                            approach
+                            to Sudoko solving very practical, as compounding
+                            lots of constraints
+                        </p>
+                    </div>
+                    <div class="section" id="section3">
+                        <h2> Another approach </h2>
+                        <p>
+                            Taking a step back from this therefor, the next best
+                            thing would be something a little more simple, like
+                            backtracking search or more
+                            specifically the Dancing Links algorithm. Whilst DLX
+                            is
+                            fast, to my knowledge, when pitted against a
+                            slightly
+                            modified backtracking
+                            search, it won't perform quite as well. <a
+                                href="http://norvig.com/sudoku.html">Peter
+                                Norvig
+                                demonstrated</a> that a
+                            solver need not be complicated
+                            or use an algorithm like DLX,
+                            nor written in a "lower-level"
+                            of a language like C to perform aptly. I tested this
+                            solver, and it was able to solve most puzzles in
+                            less
+                            than a second, with some
+                            notable exceptions where it took 60x as long.
+                        </p>
+                    </div>
+                    <div class="section" id="section4">
+                        <h2> TL;DR: My approach and implementation </h2>
+                        <p>
+                            My approach therefor, is a simple algorithm - an
+                            implementation of the "solver-basic" solution as
+                            proposed by
+                            Tom
+                            <a
+                                href="https://t-dillon.github.io/tdoku/#TheReallyBasicSolver">
+                                here </a>
+                            - backtracking, combined
+                            with a
+                            simple
+                            search heuristic
+                            optimised for
+                            Python and all it's
+                            nitpicks:
+                        </p>
+
+                        <ul>
+                            <li>
+                                Storing each of the rows, columns, and blocks as
+                                a 9 bit
+                                integer, where a set bit represents that a
+                                candidate has
+                                yet to be
+                                placed in that row|column|box. For example, at
+                                the 2nd least
+                                significant bit on the far right of the integer,
+                                a set
+                                bit means that a 2 has
+                                yet to be placed in that row, column, or box.
+                                The only
+                                operations
+                                required to
+                                complete the search in a timely manner, namely
+                                picking
+                                the next cell and
+                                candidate to
+                                propagate with and eliminating the candidate
+                                from other
+                                cells, can be done using bitwise operations
+                                exclusively,
+                                which is
+                                thankfully something Python can manage fairly
+                                quickly.
+                            </li>
+                            <li>
+                                Each iteration of the search, we sort the
+                                remaining empty cells by the number of
+                                candidates
+                                that
+                                can be placed in said cells - this is the
+                                part of the
+                                search which takes place the most, and also
+                                takes
+                                the
+                                longest - thankfully, storing information about
+                                the candidates that can be placed in a cell as
+                                the aggregation of
+                                the possible candidates in their
+                                row, column, and box makes this easy. For any
+                                given cell we can AND its row, column, and box
+                                binary number together count the number of set
+                                bits left. That is, the number of candidates
+                                that can possibly be placed in that cell.
+                                Next, we take the first item in the cell-todo
+                                list (with the least amount of possible
+                                candidates) before assigning a
+                                possible candidate to that
+                                cell, "marking" it as done in the todo list, and
+                                then
+                                calling the search function recursively on this
+                                new
+                                puzzle state.
+                                Note that this means we propagate on any
+                                singles
+                                here, just as you would when you do a Sudoku
+                                puzzle yourself.
+                                Other solvers might look for these cells
+                                explicitly,
+                                whereas
+                                here it's a natural byproduct of the sorting
+                                process.
+                                If puzzle reaches a
+                                point where the first item in that sorted list
+                                of
+                                cells
+                                to fill has 0 candidates, it can be deduced that
+                                some
+                                assignment up the call
+                                stack was wrong - backup and try a different
+                                candidate.
+                                Otherwise, the search continues until the todo
+                                list
+                                is
+                                completed and a
+                                solution has been found.
+                            </li>
+                        </ul>
+                        <h2> Implementation </h2>
+                        <p>
+                            Implementing this approach in Python, I tested a
+                            good
+                            variety of tweaks, very few of which actually served
+                            to
+                            improve anything.
+                        </p>
+                        <p>
+                            For
+                            example, the
+                            arrays were never big enough to warrant using Numpy
+                            arrays with their O(1) lookup times considering the
+                            overhead associated with using
+                            them;
+                            strings were sometimes preferable to
+                            lists as
+                            their "deepcopy" is apparently <strong>infinitely
+                                more
+                                efficient </strong> in this context. This means
+                            however, that I would
+                            be
+                            restricted exclusively to string manipulation as an
+                            operation, which would inevitably
+                            result in more instances of iteration than desired;
+                            a
+                            significant time boost could be yielded through the
+                            use
+                            of C coded python extension
+                            modules like
+                            GMPY, but alas that is outside the
+                            scope of this project as such modules are not part
+                            of
+                            the standard Python library.
+                        </p>
+                        <p>
+                            I also tried various heuristic modifications: when
+                            used in
+                            conjunction with the row-column-block data
+                            structure,
+                            sure, things like searching for
+                            hidden-singles or locked-cells is possible, but
+                            those
+                            tasks are not remotely practical as the data
+                            structure
+                            just does not lend to
+                            the
+                            approach
+                            whatsoever. The only alteration that could be made
+                            to
+                            the search heuristic without compromising on its
+                            speed,
+                            would be to look for full,
+                            or
+                            almost-full,
+                            houses - when a
+                            column|row|box only has one or two cells left to
+                            place,
+                            providing an ample opportunity for speedy
+                            propagation.
+                            It would only make sense
+                            to search for these situations if every cell had ~3
+                            candidates at minimum per the preliminary sort
+                            (therefor
+                            finding a full or almost-full
+                            house would provide
+                            some actual benefit in propogation), which happens
+                            *some* of the
+                            time.
+                            Having that happen in conjunction with having a
+                            row|column|box in the
+                            aforementioned state however... Over thousands of
+                            the
+                            hardest puzzles, just it just doesn't happen.
+                            <strong> At
+                                all.</strong> This
+                            potential modification to the
+                            heuristic can be written off.
+                        </p>
+
+                        <p>
+                            Some changes did make a difference though. For
+                            example, simple things like using
+                            lookup
+                            tables in the form of a dictionary were far superior
+                            a
+                            Numpy list, regular list,
+                            or the builtin method for counting the set bits in a
+                            binary integer:
+                            <image src="./assets/sudoku_optimisation.png"
+                                alt="sudoku_optimisation" />
+                            If all else fails, try and hash it!
+                        </p>
+                        <p> <strong> To conclude, it seems to me that what makes
+                                fast-solvers fast, is not the search itself or
+                                what
+                                they use as a heuristic, but
+                                the use of
+                                datastructure(s)
+                                implemented in a
+                                langauge that makes sense given the context,
+                                which
+                                in turn gives the programmer a little leeway in
+                                regard to how they guide the search -
+                                hidden-singles or otherwise.</strong>
+                        </p>
+                    </div>
+                    <div class="section" id="section5">
+                        <h2> Code </h2>
+                        <p> Set up the presets, global variables, and lookup
+                            tables:</p>
+                        <image src="./assets/sudokucode1.png" alt="code 1" />
+                        <p> Load the puzzle into the array:</p>
+                        <image src="./assets/sudokucode2.png" alt="code 1" />
+                        <p> And the main propogate and search function:</p>
+                        <image src="./assets/sudokucode3.png" alt="code 1" />
+                        <ul> <li> Sort the cells that need to be filled by the
+                                number of candidates each cell has
+                            </li>
+                            <li>
+                                AND the rows, columns, and boxes together to get
+                                the combination of candidates that might be
+                                placed in that cell. If
+                                possible_candidates = 0 then there are no
+                                candidates remaining.
+                            </li>
+                            <li> Get the row, column, and box of the next cell
+                                to be sorted (has the least available
+                                candidates)
+                            </li>
+                            <li>If candidates exist, start looping through
+                                possible options:
+                                <ul>
+                                    <li> Get the mask of the
+                                        least significant bit - I.e the smallest
+                                        candidate.
+                                    </li>
+                                    <li> Remove that candidate from row, column
+                                        and box.
+                                    </li>
+                                    <li> Call the method recursively to continue
+                                        the search - if either this is the last
+                                        cell to fill, or the search has returned
+                                        True fill
+                                        in the cell in the solution, and backup
+                                    </li>
+                                    <li> If the search does not return True,
+                                        return the candidate as a possibility
+                                        and backup.
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="section" id="section6">
+                        <h2> Results </h2>
+                        <p> A bit of googling led me to the <a
+                                href=" http://forum.enjoysudoku.com/3-77us-solver-2-8g-cpu-testcase-17sodoku-t30470-210.html#p249309">Sudoku
+                                Enjoyers forum thread</a> where various
+                            contributors developed Tduko's main competition
+                            JCZsolve, as well as compiled thousands upon
+                            thousands of the hardest puzzles that strained
+                            Sudoku solvers the most.
+                        </p>
+                        <p>
+                            Running these puzzles past my solver allowed me to
+                            gradually tweak and test the aforementioned
+                            adjustments across thousands of
+                            test-cases. On average, my solver would solve the
+                            puzzles in ~0.04 (+-0.02) seconds, with some taking
+                            ~0.5 seconds at worst - I assume
+                            these were just puzzles that had suboptimal guessing
+                            paths, where the solver might propagate down a path
+                            to a great depth, find an issue,
+                            backtrack and do it all over again, many, many times
+                            until coming to the actual solution. This might be
+                            fixed by adjusting the heuristic
+                            somewhat, but 0.5 seconds is more than acceptable,
+                            so I left it as is. </p>
+                        <p> The solve times of the MagicTourTop1465 - an
+                            collection computationally difficult puzzles that's
+                            frequently used as a benchmark. As you can see, a vast majority of the solve times are under the 0.02-0.01 second threshold, but some drag the average up nonetheless: </p>
+                        <image src="./assets/sudoku_solve_times.png"
+                            alt="solve times" />
+                    </div>
+                </div>
             </div>
         </div>
     </body>
     <script>
         const light = document.querySelector('.light');
+
         document.addEventListener('mousemove', function(event) {
             var x = event.clientX / window.innerWidth;
             var y = event.clientY / window.innerHeight;
+
             var lightX = x * window.innerWidth;
             var lightY = y * window.innerHeight;
+
             var gradient = 'radial-gradient(600px at ' + lightX + 'px ' + lightY + 'px, rgba(29, 78, 216, 0.15),  transparent 80%';
+
             light.style.background = gradient;
+        });
+
+
+        const scrollContainer = document.getElementById('scroll-container');
+        const sections = document.querySelectorAll('.section');
+        const bookmark = document.querySelectorAll('.bookmark');
+
+        function removeActiveClasses() {
+            bookmark.forEach(l => l.classList.remove('active'));
+        }
+
+        function addActiveClassToLink(l) {
+            removeActiveClasses();
+            l.classList.add('active');
+        }
+
+        scrollContainer.addEventListener('scroll', () => {
+
+            let currentSection = '';
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - scrollContainer.offsetTop;
+                const sectionHeight = section.clientHeight;
+                const containerScrollTop = scrollContainer.scrollTop;
+
+                if (containerScrollTop >= sectionTop - sectionHeight / 3 && containerScrollTop < sectionTop + sectionHeight) {
+                    currentSection = section.getAttribute('id');
+                }
+            });
+
+            bookmark.forEach(l => {
+                if (l.id === currentSection + "bookmark") {
+                    addActiveClassToLink(l);
+                    console.log(currentSection)
+                }
+            });
         });
     </script>
 </html>
