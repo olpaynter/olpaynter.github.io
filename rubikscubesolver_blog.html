@@ -1,29 +1,236 @@
 <html>
     <head>
-        <title>Oliver Paynter-Jones</title>
-        <script defer src="https://cloud.umami.is/script.js" data-website-id="b02f5a28-f7a8-4f34-8482-1222317262ca"></script>
+        <title>Solving the Rubik's Cube with Group Theory Blog | Oliver
+            Paynter-Jones</title>
         <link rel="stylesheet" href="styles.css">
+        <script defer src="https://cloud.umami.is/script.js"
+            data-website-id="b02f5a28-f7a8-4f34-8482-1222317262ca"></script>
     </head>
     <body>
-        <div class="light"> </div>
+        <div class="light"></div>
         <div class="blog-post">
             <header class="blog-header">
-                <h1>Experimental Systems Project</h1>
+                <h1>Solving the Rubik's Cube with Group Theory</h1>
                 <a href="index.html" class="back-button">Back</a>
             </header>
-            <div class="blog-content">
+            <div class="main-content">
+                <div class="sidebar">
+                    <ul class="bookmark-list">
+                        <li class="bookmark" id="section1bookmark">
+                            <a href="#section1">A general overview </a>
+                        </li>
+                        <li class="bookmark" id="section2bookmark">
+                            <a href="#section2">Coming soon...</a>
+                        </li>
+                        <!-- <li class="bookmark" id="section3bookmark">
+                            <a href="#section3">Crossover</a>
+                        </li>
+                        <li class="bookmark" id="section4bookmark">
+                            <a href="#section4">Mutation</a>
+                        </li>
+                        <li class="bookmark" id="section5bookmark">
+                            <a href="#section5">Evaluation</a>
+                        </li> -->
+                    </ul>
+                </div>
+                <div class="blog-text" id="scroll-container">
+                    <div class="section" id="section1">
+                        <p> The Two-Phase Algorithm works by breaking down the
+                            Rubik's Cube solving process into two manageable
+                            phases:
+                            <ul>
+                                <li> Phase One: Focuses on the orientations of
+                                    corners
+                                    and edges, and the positioning of edges in
+                                    the
+                                    UD-slice.
+                                </li>
+                                <li>
+                                    Phase Two: Ensures the correct permutation
+                                    of the
+                                    cube's pieces while preserving their
+                                    orientations.
+                                </li>
+                            </ul>
+                        </p>
+                        <h2> Phase One: Orientation and UD-Slice Positioning
+                        </h2>
+
+                        <p>
+                            In Phase One, the goal is to reduce the complexity
+                            of
+                            the cube's state by addressing three specific
+                            aspects:
+                            the orientation of the corners, the orientation of
+                            the
+                            edges, and the positioning of the edges in the
+                            UD-slice
+                            (the middle layer of the cube). These properties are
+                            considered separately to simplify the problem.
+                        </p>
+
+                        <p>
+                            Corner Orientation: Each corner can be twisted in
+                            one of
+                            three ways. The algorithm calculates a coordinate
+                            that
+                            represents the orientation of all corners except
+                            one, as
+                            the orientation of the last corner can be inferred
+                            from
+                            the others. This reduces the search space for corner
+                            orientations.
+                        </p>
+
+                        <p>
+                            Edge Orientation: Each edge has one of two
+                            orientations:
+                            flipped or unflipped. Like the corners, a single
+                            edge is
+                            excluded from the calculations since the sum of edge
+                            orientations must always satisfy a specific
+                            constraint.
+                        </p>
+
+                        <p>
+                            UD-Slice Positioning: The positions of the edges in
+                            the
+                            UD-slice are tracked without considering their
+                            orientation or permutation. The algorithm assigns a
+                            coordinate to this configuration, indicating whether
+                            the
+                            relevant edges are in the UD-slice or not.
+                        </p>
+
+                        <p>
+                            By representing these aspects with a set of
+                            coordinates,
+                            the algorithm reduces the overall search space.
+                            Phase
+                            One searches for a sequence of moves that brings the
+                            cube into a state where the corner orientations,
+                            edge
+                            orientations, and UD-slice edge positions are all in
+                            their "solved" configuration (coordinate 0). At this
+                            point, the cube is partially solved.
+                        </p>
+
+                        <h2> Phase Two: Permutation of Pieces </h2>
+
+                        <p>
+                            Once Phase One is complete, Phase Two begins by
+                            focusing on the permutation of the cube's pieces,
+                            ensuring they are in their correct positions while
+                            maintaining the orientations solved in Phase One.
+                        </p>
+
+                        <p>
+                            In this phase, only a subset of possible moves is
+                            allowed. Specifically, double turns of the side
+                            faces (right, front, left, and back) are used to
+                            preserve the orientation of corners and edges, while
+                            the up and down faces can be rotated freely. This
+                            restriction simplifies the search for a solution, as
+                            it prevents the cube from "undoing" the progress
+                            made in Phase One.
+                        </p>
+
+                        <p>
+                            The key tasks in Phase Two are:
+                            <ul>
+                                <li> Edge Permutation: The edges are divided
+                                    into two groups: those in the UD-slice and
+                                    those in the up and down faces. The
+                                    algorithm calculates separate coordinates
+                                    for each group and searches for a solution
+                                    that brings both sets into their correct
+                                    permutations.</li>
+                                <li> Corner Permutation:
+                                    The permutation of the corners is handled in
+                                    a similar fashion, ensuring that all corners
+                                    are correctly positioned relative to each
+                                    other.</li>
+                            </ul>
+                        </p>
+
+                        <p>
+                            By limiting the allowed moves and focusing solely on
+                            the permutations of the pieces, Phase Two
+                            dramatically reduces the complexity of the search.
+                            The algorithm finds a sequence of moves that
+                            completes the solution, bringing the cube to its
+                            fully solved state.
+                        </p>
+                    </div>
+                    <div class="section" id="section2">
+                        <h2> Coming soon... </h2>
+                        <p> My documentation is undergoing some heavy
+                            refactoring to better utilise proper math
+                            terminology - I'm finally getting a chance to put my
+                            Algebra 2A unit to use!</p>
+                    </div>
+                    <!-- <div class="section" id="section3">
+                        t. </p>
+                    </div>
+                    <div class="section" id="section4">
+                      
+                    </div>
+                    <div class="section" id="section5">
+                       
+                    </div> -->
+                </div>
             </div>
         </div>
     </body>
     <script>
         const light = document.querySelector('.light');
+
         document.addEventListener('mousemove', function(event) {
             var x = event.clientX / window.innerWidth;
             var y = event.clientY / window.innerHeight;
+
             var lightX = x * window.innerWidth;
             var lightY = y * window.innerHeight;
+
             var gradient = 'radial-gradient(600px at ' + lightX + 'px ' + lightY + 'px, rgba(29, 78, 216, 0.15),  transparent 80%';
+
             light.style.background = gradient;
+        });
+
+
+        const scrollContainer = document.getElementById('scroll-container');
+        const sections = document.querySelectorAll('.section');
+        const bookmark = document.querySelectorAll('.bookmark');
+
+        function removeActiveClasses() {
+            bookmark.forEach(l => l.classList.remove('active'));
+        }
+
+        function addActiveClassToLink(l) {
+            removeActiveClasses();
+            l.classList.add('active');
+        }
+
+        scrollContainer.addEventListener('scroll', () => {
+
+            let currentSection = '';
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - scrollContainer.offsetTop;
+                const sectionHeight = section.clientHeight;
+                const containerScrollTop = scrollContainer.scrollTop;
+
+                if (containerScrollTop >= sectionTop - sectionHeight / 3 && containerScrollTop < sectionTop + sectionHeight) {
+                    currentSection = section.getAttribute('id');
+                }
+            });
+
+            bookmark.forEach(l => {
+                if (l.id === currentSection + "bookmark") {
+                    addActiveClassToLink(l);
+                    console.log(currentSection)
+                }
+            });
         });
     </script>
 </html>
