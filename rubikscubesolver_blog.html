@@ -17,10 +17,13 @@
                 <div class="sidebar">
                     <ul class="bookmark-list">
                         <li class="bookmark" id="section1bookmark">
-                            <a href="#section1">A general overview </a>
+                            <a href="#section1">An brief overview </a>
                         </li>
                         <li class="bookmark" id="section2bookmark">
-                            <a href="#section2">Coming soon...</a>
+                            <a href="#section2">A taster </a>
+                        </li>
+                        <li class="bookmark" id="section3bookmark">
+                            <a href="#section3">Loading...</a>
                         </li>
                         <!-- <li class="bookmark" id="section3bookmark">
                             <a href="#section3">Crossover</a>
@@ -37,48 +40,61 @@
                     <div class="section" id="section1">
                         <p> The Two-Phase Algorithm works by breaking down the
                             Rubik's Cube solving process into two manageable
-                            phases:
-                            <ul>
-                                <li> Phase One: Focuses on the orientations of
-                                    corners
-                                    and edges, and the positioning of edges in
-                                    the
-                                    UD-slice.
-                                </li>
-                                <li>
-                                    Phase Two: Ensures the correct permutation
-                                    of the
-                                    cube's pieces while preserving their
-                                    orientations.
-                                </li>
-                            </ul>
+                            phases: </p>
+                        <ul>
+                            <li> Phase One: Focuses on the orientations of
+                                corners
+                                and edges, and the positioning of edges in
+                                the
+                                UD-slice.
+                            </li>
+                            <li>
+                                Phase Two: Ensures the correct permutation
+                                of the
+                                cube's pieces while preserving their
+                                orientations.
+                            </li>
+                        </ul>
+                        <p>
+                            I'm going to provide a small, very simplified taster
+                            as to what the first phase looks like. The
+                            complexity of the problem most certainly lies in the
+                            details though...
                         </p>
                         <h2> Phase One: Orientation and UD-Slice Positioning
                         </h2>
 
                         <p>
-                            In Phase One, the goal is to reduce the complexity
+                            In Phase One, the goal is to reduce the
+                            complexity
                             of
-                            the cube's state by addressing three specific
+                            the cube's state by only considering three
+                            specific
                             aspects:
-                            the orientation of the corners, the orientation of
+                            the orientation of the corners, the orientation
+                            of
                             the
                             edges, and the positioning of the edges in the
                             UD-slice
-                            (the middle layer of the cube). These properties are
+                            (the middle layer of the cube). These properties
+                            are
                             considered separately to simplify the problem.
                         </p>
 
                         <p>
-                            Corner Orientation: Each corner can be twisted in
+                            Corner Orientation: Each corner can be twisted
+                            in
                             one of
-                            three ways. The algorithm calculates a coordinate
+                            three ways. The algorithm calculates a
+                            coordinate
                             that
                             represents the orientation of all corners except
                             one, as
-                            the orientation of the last corner can be inferred
+                            the orientation of the last corner can be
+                            inferred
                             from
-                            the others. This reduces the search space for corner
+                            the others. This reduces the search space for
+                            corner
                             orientations.
                         </p>
 
@@ -87,87 +103,74 @@
                             orientations:
                             flipped or unflipped. Like the corners, a single
                             edge is
-                            excluded from the calculations since the sum of edge
+                            excluded from the calculations since the sum of
+                            edge
                             orientations must always satisfy a specific
                             constraint.
                         </p>
 
                         <p>
-                            UD-Slice Positioning: The positions of the edges in
+                            UD-Slice Positioning: The positions of the edges
+                            in
                             the
                             UD-slice are tracked without considering their
-                            orientation or permutation. The algorithm assigns a
-                            coordinate to this configuration, indicating whether
+                            orientation or permutation. The algorithm
+                            assigns a
+                            coordinate to this configuration, indicating
+                            whether
                             the
                             relevant edges are in the UD-slice or not.
                         </p>
 
                         <p>
-                            By representing these aspects with a set of
-                            coordinates,
-                            the algorithm reduces the overall search space.
-                            Phase
-                            One searches for a sequence of moves that brings the
+                            By only considering these "coordinates"
+                            the algorithm can intepret the permutation of
+                            the
+                            cube in such a way that you can navigate throguh
+                            the
+                            search space by applying moves to the cube.
+                            One searches for a sequence of moves that brings
+                            the
                             cube into a state where the corner orientations,
                             edge
-                            orientations, and UD-slice edge positions are all in
-                            their "solved" configuration (coordinate 0). At this
+                            orientations, and UD-slice edge positions are
+                            all in
+                            their "solved" configuration (coordinate 0). At
+                            this
                             point, the cube is partially solved.
-                        </p>
-
-                        <h2> Phase Two: Permutation of Pieces </h2>
-
-                        <p>
-                            Once Phase One is complete, Phase Two begins by
-                            focusing on the permutation of the cube's pieces,
-                            ensuring they are in their correct positions while
-                            maintaining the orientations solved in Phase One.
-                        </p>
-
-                        <p>
-                            In this phase, only a subset of possible moves is
-                            allowed. Specifically, double turns of the side
-                            faces (right, front, left, and back) are used to
-                            preserve the orientation of corners and edges, while
-                            the up and down faces can be rotated freely. This
-                            restriction simplifies the search for a solution, as
-                            it prevents the cube from "undoing" the progress
-                            made in Phase One.
-                        </p>
-
-                        <p>
-                            The key tasks in Phase Two are:
-                            <ul>
-                                <li> Edge Permutation: The edges are divided
-                                    into two groups: those in the UD-slice and
-                                    those in the up and down faces. The
-                                    algorithm calculates separate coordinates
-                                    for each group and searches for a solution
-                                    that brings both sets into their correct
-                                    permutations.</li>
-                                <li> Corner Permutation:
-                                    The permutation of the corners is handled in
-                                    a similar fashion, ensuring that all corners
-                                    are correctly positioned relative to each
-                                    other.</li>
-                            </ul>
-                        </p>
-
-                        <p>
-                            By limiting the allowed moves and focusing solely on
-                            the permutations of the pieces, Phase Two
-                            dramatically reduces the complexity of the search.
-                            The algorithm finds a sequence of moves that
-                            completes the solution, bringing the cube to its
-                            fully solved state.
                         </p>
                     </div>
                     <div class="section" id="section2">
+                        <h2> A sample </h2>
+                        <p> You can see here the generation flow of finding a
+                            solution:
+
+                        </p>
+                        <img src="./assets/cube_solver.png">
+
+                        <p> And possibly my favourite search algorithm: </p>
+                        <img src="./assets/cube_find_solution.png">
+                        <p> and then the complicated insides of the IDA*
+                            search... You can see the lookup tables being used
+                            to completely negate actually performing moves on
+                            the cube - why calculate the new cube state when you
+                            can partially precompute it and just look it up when
+                            you need it?
+                        </p>
+                        <p> You can also see the heuristic being used to provide
+                            a lower bound on the number of moves it will take to
+                            solve the cube. Precomputing this is where a huge
+                            amount of the magic happens, and yet it only
+                            features a few lines in the search itself... </p>
+                        <img src="./assets/cube_phase1_ida.png">
+
+                    </div>
+
+                    <div class="section" id="section3">
                         <h2> Coming soon... </h2>
-                        <p> My documentation is undergoing some heavy
+                        <p> My documentation for the whole solver is undergoing some heavy
                             refactoring to better utilise proper math
-                            terminology - I'm finally getting a chance to put my
-                            Algebra 2A unit to use!</p>
+                            terminology as well as to rewrite some of the explanations for some of the algorithms I used for encoding the cube state.</p>
                     </div>
                     <!-- <div class="section" id="section3">
                         t. </p>
