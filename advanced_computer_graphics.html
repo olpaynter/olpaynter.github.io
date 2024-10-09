@@ -1,0 +1,133 @@
+<html>
+    <head>
+        <title>Advanced Computer Graphics Blog | Oliver Paynter-Jones</title>
+        <link rel="stylesheet" href="styles.css">
+        <script defer src="https://cloud.umami.is/script.js"
+            data-website-id="b02f5a28-f7a8-4f34-8482-1222317262ca"></script>
+    </head>
+    <body>
+        <div class="light"></div>
+        <div class="blog-post">
+            <header class="blog-header">
+                <h1>Advanced Computer Graphics</h1>
+                <a href="index.html" class="back-button">Back</a>
+            </header>
+            <div class="main-content">
+                <div class="sidebar">
+                    <ul class="bookmark-list">
+                        <li class="bookmark" id="section1bookmark">
+                            <a href="#section1">Integer Rasterisation</a>
+                        </li>
+                        <li class="bookmark" id="section2bookmark">
+                            <a href="#section2">To be continued...</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="blog-text" id="scroll-container">
+                    <div class="section" id="section1">
+
+                        <h2> Integer Rasterisation</h2>
+                        <p> A graphics engine needs to be able to plot things
+                            onto the screen. To enable all of that, we need to
+                            support rasterisation.
+                        </p>
+                        <p class="quote">
+                            In computer graphics, rasterisation is the
+                            task of taking an image described in a vector
+                            graphics format (shapes) and converting it into a
+                            raster image (a series of pixels, dots or lines,
+                            which, when displayed together, create the image
+                            which was represented via shapes).
+                        </p>
+
+                        <p>
+                            Rasterisation can be implemented in a number of
+                            ways, the most obvious of which has you draw a line
+                            between two points, and then step between them from
+                            left to right by incrimenting X by 1, for example.
+                            We can
+                            calculate the points' Y location by using the
+                            function of the line, and then determine whether
+                            that Y value is in the pixel above/below or
+                            right/left of the line.
+                        </p>
+
+                        <img
+                            src="./assets/old_line_raster.png"
+                            alt="line_rasterisation_alg">
+                        <p>
+                            The above implementation uses floats in the
+                            calculations, but when you're rending a big wiremesh
+                            there's thousands of lines, and many more
+                            calculations - integers are much more preferrable.
+                            By working with the equations a little, multipling
+                            out some denominators, we can work purely with
+                            integer maths. This is Bresenham's line algorithm.
+                        </p>
+
+                        <img
+                            src="./assets/improved_raster.png"
+                            alt="improved_raster">
+                    </div>
+                    <div class="section" id="section2">
+                        <h2> To be continued...</h2>
+                        <p> This is an ongoing module. I'm currently cleaning up
+                            my wiremesh implementation, then it's onto
+                            raytracing, and then photon-mapping. </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script>
+        const light = document.querySelector('.light');
+
+        document.addEventListener('mousemove', function(event) {
+            var x = event.clientX / window.innerWidth;
+            var y = event.clientY / window.innerHeight;
+
+            var lightX = x * window.innerWidth;
+            var lightY = y * window.innerHeight;
+
+            var gradient = 'radial-gradient(600px at ' + lightX + 'px ' + lightY + 'px, rgba(29, 78, 216, 0.15),  transparent 80%';
+
+            light.style.background = gradient;
+        });
+
+
+        const scrollContainer = document.getElementById('scroll-container');
+        const sections = document.querySelectorAll('.section');
+        const bookmark = document.querySelectorAll('.bookmark');
+
+        function removeActiveClasses() {
+            bookmark.forEach(l => l.classList.remove('active'));
+        }
+
+        function addActiveClassToLink(l) {
+            removeActiveClasses();
+            l.classList.add('active');
+        }
+
+        scrollContainer.addEventListener('scroll', () => {
+
+            let currentSection = '';
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - scrollContainer.offsetTop;
+                const sectionHeight = section.clientHeight;
+                const containerScrollTop = scrollContainer.scrollTop;
+
+                if (containerScrollTop >= sectionTop - sectionHeight / 3 && containerScrollTop < sectionTop + sectionHeight) {
+                    currentSection = section.getAttribute('id');
+                }
+            });
+
+            bookmark.forEach(l => {
+                if (l.id === currentSection + "bookmark") {
+                    addActiveClassToLink(l);
+                    console.log(currentSection)
+                }
+            });
+        });
+    </script>
+</html>

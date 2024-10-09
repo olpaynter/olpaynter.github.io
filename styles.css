@@ -9,7 +9,9 @@
 
 body {
   background-color: #0f172a;
-  font-family: Helvetica, sans-serif;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  /* font-family: Helvetica, sans-serif; */
 }
 
 .container {
@@ -125,7 +127,7 @@ body {
 .statement {
   color: rgb(148 163 184);
   padding-bottom: 1rem;
-  line-height: 1.625;
+  line-height: 1.5;
   font-weight: 400;
   font-size: 1.1rem;
   padding: 0 1rem;
@@ -273,8 +275,8 @@ body {
 }
 
 .blog-text p {
-  color: rgb(148 163 184);
-  line-height: 32px;
+  color: rgb(181, 193, 211);
+  line-height: 1.5;
   font-weight: 400;
   font-size: 1.1rem;
   padding-top: 1rem;
@@ -282,9 +284,14 @@ body {
   letter-spacing: -0.003em;
 }
 
+.quote {
+  padding-top: 1.5rem;
+  font-style: italic;
+}
+
 .blog-text li {
-  color: rgba(148, 163, 184, 0.663);
-  line-height: 32px;
+  color: rgb(199, 211, 228);
+  line-height: 1.5;
   font-weight: 400;
   font-size: 1.1rem;
   padding-top: 0.6rem;
@@ -300,7 +307,7 @@ body {
 }
 
 .blog-text h2 {
-  color: rgb(176, 187, 204);
+  color: rgb(199, 211, 228);
   font-size: 2rem;
   letter-spacing: -0.025rem;
   padding-top: 2rem;
