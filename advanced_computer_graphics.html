@@ -1,133 +1,201 @@
 <html>
-    <head>
-        <title>Advanced Computer Graphics Blog | Oliver Paynter-Jones</title>
-        <link rel="stylesheet" href="styles.css">
-        <script defer src="https://cloud.umami.is/script.js"
-            data-website-id="b02f5a28-f7a8-4f34-8482-1222317262ca"></script>
-    </head>
-    <body>
-        <div class="light"></div>
-        <div class="blog-post">
-            <header class="blog-header">
-                <h1>Advanced Computer Graphics</h1>
-                <a href="index.html" class="back-button">Back</a>
-            </header>
-            <div class="main-content">
-                <div class="sidebar">
-                    <ul class="bookmark-list">
-                        <li class="bookmark" id="section1bookmark">
-                            <a href="#section1">Integer Rasterisation</a>
-                        </li>
-                        <li class="bookmark" id="section2bookmark">
-                            <a href="#section2">To be continued...</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="blog-text" id="scroll-container">
-                    <div class="section" id="section1">
-
-                        <h2> Integer Rasterisation</h2>
-                        <p> A graphics engine needs to be able to plot things
-                            onto the screen. To enable all of that, we need to
-                            support rasterisation.
-                        </p>
-                        <p class="quote">
-                            In computer graphics, rasterisation is the
-                            task of taking an image described in a vector
-                            graphics format (shapes) and converting it into a
-                            raster image (a series of pixels, dots or lines,
-                            which, when displayed together, create the image
-                            which was represented via shapes).
-                        </p>
-
-                        <p>
-                            Rasterisation can be implemented in a number of
-                            ways, the most obvious of which has you draw a line
-                            between two points, and then step between them from
-                            left to right by incrimenting X by 1, for example.
-                            We can
-                            calculate the points' Y location by using the
-                            function of the line, and then determine whether
-                            that Y value is in the pixel above/below or
-                            right/left of the line.
-                        </p>
-
-                        <img
-                            src="./assets/old_line_raster.png"
-                            alt="line_rasterisation_alg">
-                        <p>
-                            The above implementation uses floats in the
-                            calculations, but when you're rending a big wiremesh
-                            there's thousands of lines, and many more
-                            calculations - integers are much more preferrable.
-                            By working with the equations a little, multipling
-                            out some denominators, we can work purely with
-                            integer maths. This is Bresenham's line algorithm.
-                        </p>
-
-                        <img
-                            src="./assets/improved_raster.png"
-                            alt="improved_raster">
-                    </div>
-                    <div class="section" id="section2">
-                        <h2> To be continued...</h2>
-                        <p> This is an ongoing module. I'm currently cleaning up
-                            my wiremesh implementation, then it's onto
-                            raytracing, and then photon-mapping. </p>
-                    </div>
-                </div>
-            </div>
+  <head>
+    <title>Advanced Computer Graphics Blog | Oliver Paynter-Jones</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script
+      defer
+      src="https://cloud.umami.is/script.js"
+      data-website-id="b02f5a28-f7a8-4f34-8482-1222317262ca"
+    ></script>
+  </head>
+  <body>
+    <div class="light"></div>
+    <div class="blog-post">
+      <header class="blog-header">
+        <h1>Advanced Computer Graphics</h1>
+        <a href="index.html" class="back-button">Back</a>
+      </header>
+      <div class="main-content">
+        <div class="sidebar">
+          <ul class="bookmark-list">
+            <li class="bookmark" id="section1bookmark">
+              <a href="#section1">Integer Rasterisation</a>
+            </li>
+            <li class="bookmark" id="section2bookmark">
+              <a href="#section2">Ray Tracing and intersection testing</a>
+            </li>
+            <li class="bookmark" id="section3bookmark">
+              <a href="#section3">To be continued...</a>
+            </li>
+          </ul>
         </div>
-    </body>
-    <script>
-        const light = document.querySelector('.light');
+        <div class="blog-text" id="scroll-container">
+          <div class="section" id="section1">
+            <h2>Integer Rasterisation</h2>
+            <p>
+              A graphics engine needs to be able to plot things onto the screen.
+              To enable all of that, we need to support rasterisation.
+            </p>
+            <p class="quote">
+              In computer graphics, rasterisation is the task of taking an image
+              described in a vector graphics format (shapes) and converting it
+              into a raster image (a series of pixels, dots or lines, which,
+              when displayed together, create the image which was represented
+              via shapes).
+            </p>
 
-        document.addEventListener('mousemove', function(event) {
-            var x = event.clientX / window.innerWidth;
-            var y = event.clientY / window.innerHeight;
+            <p>
+              Rasterisation can be implemented in a number of ways, the most
+              obvious of which has you draw a line between two points, and then
+              step between them from left to right by incrementing X by 1, for
+              example. We can calculate the points' Y location by using the
+              function of the line, and then determine whether that Y value is
+              in the pixel above/below or right/left of the line.
+            </p>
 
-            var lightX = x * window.innerWidth;
-            var lightY = y * window.innerHeight;
+            <img
+              src="./assets/old_line_raster.png"
+              alt="line_rasterisation_alg"
+            />
+            <p>
+              The above implementation uses floats in the calculations, but when
+              you're rending a big wiremesh there's thousands of lines, and many
+              more calculations - integers are much more preferable. By working
+              with the equations a little, multiplying out some denominators, we
+              can work purely with integer maths. This is Bresenham's line
+              algorithm.
+            </p>
 
-            var gradient = 'radial-gradient(600px at ' + lightX + 'px ' + lightY + 'px, rgba(29, 78, 216, 0.15),  transparent 80%';
+            <img src="./assets/improved_raster.png" alt="improved_raster" />
+          </div>
+          <div class="section" id="section2">
+            <h2>Ray Tracing and intersection testing</h2>
+            <p>
+              Rasterisation is all well and good, but can't shine a light (pun
+              intended...) on ray tracing and it's derivatives. The general idea
+              - very general, as there are myriad different approaches,
+              optimisations and algorithms that can vastly change the way all
+              this is carried out - is that given a camera at a certain position
+              in 3D space, you can send out rays from that origin, through the
+              middle of a pixel on a virtual screen sat in front of the camera
+              (think the virtual desktop screens in virtual reality) and out
+              into the world. You can follow the path of this ray, using various
+              linear algebra techniques to compute how that ray interacts with
+              objects.
+            </p>
+            <img src="./assets/raytracing_image_1.jpg" alt="ray_tracing" />
+            <p>
+              Most things in the scene are represented as mesh objects composed
+              of triangles, mostly because triangles are always coplanar (all
+              vertices lie in the same plane), and this enables one particular
+              algorithm called the
+              <a
+                href="https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm"
+                >Möller–Trumbore intersection algorithm</a
+              >, which goes roughly as follows:
+            </p>
+            <ul>
+              <li>
+                Check first whether the ray actually intersects with the plane.
+                The dot product can show how much two vectors share a direction.
+                If it doesn't intersect, then we can move on.
+              </li>
+              <li>
+                Start calculating the
+                <a
+                  href="https://en.wikipedia.org/wiki/Barycentric_coordinate_system"
+                  >Barycentric coordinates</a
+                >
+                of the intersection point of the ray in the plane. The general
+                idea is that we move from the world-space coordinates, to
+                triangle-space coordinates, where the origin is a vertex of the
+                triangle and the basis vectors are the sides of the triangle. If
+                the coefficients of the basis vectors in this new space are too
+                large, or negative, we know the intersection lies outside the
+                triangle.
+              </li>
+              <li>
+                If the point lies in the triangle, use the Barycentric
+                coordinates to interpolate normals or texture coordinates, as
+                well as the length of the ray from origin to intersection. In
+                this coordinate system its all relative to the vertices of the
+                triangles, so this is all super computationally cheap.
+              </li>
+            </ul>
+            <p>Create the rays...</p>
+            <img src="./assets/ray_creation.png" alt="ray_tracing" />
 
-            light.style.background = gradient;
-        });
+            <p>Trace them...</p>
+            <img src="./assets/intersection_test.png" alt="intersection_test" />
+            <p>The result...</p>
+            <img src="./assets/ray_tracing_result.png" alt="ray_tracing_result" style="width: 512;"/>
+          </div>
+          <div class="section" id="section3">
+            <h2>To be continued...</h2>
+            <p>
+              This is an ongoing module. I'm currently working on cleaning up
+              photon-mapping.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+    const light = document.querySelector(".light");
 
+    document.addEventListener("mousemove", function (event) {
+      var x = event.clientX / window.innerWidth;
+      var y = event.clientY / window.innerHeight;
 
-        const scrollContainer = document.getElementById('scroll-container');
-        const sections = document.querySelectorAll('.section');
-        const bookmark = document.querySelectorAll('.bookmark');
+      var lightX = x * window.innerWidth;
+      var lightY = y * window.innerHeight;
 
-        function removeActiveClasses() {
-            bookmark.forEach(l => l.classList.remove('active'));
+      var gradient =
+        "radial-gradient(600px at " +
+        lightX +
+        "px " +
+        lightY +
+        "px, rgba(29, 78, 216, 0.15),  transparent 80%";
+
+      light.style.background = gradient;
+    });
+
+    const scrollContainer = document.getElementById("scroll-container");
+    const sections = document.querySelectorAll(".section");
+    const bookmark = document.querySelectorAll(".bookmark");
+
+    function removeActiveClasses() {
+      bookmark.forEach((l) => l.classList.remove("active"));
+    }
+
+    function addActiveClassToLink(l) {
+      removeActiveClasses();
+      l.classList.add("active");
+    }
+
+    scrollContainer.addEventListener("scroll", () => {
+      let currentSection = "";
+
+      sections.forEach((section) => {
+        const sectionTop = section.offsetTop - scrollContainer.offsetTop;
+        const sectionHeight = section.clientHeight;
+        const containerScrollTop = scrollContainer.scrollTop;
+
+        if (
+          containerScrollTop >= sectionTop - sectionHeight / 3 &&
+          containerScrollTop < sectionTop + sectionHeight
+        ) {
+          currentSection = section.getAttribute("id");
         }
+      });
 
-        function addActiveClassToLink(l) {
-            removeActiveClasses();
-            l.classList.add('active');
+      bookmark.forEach((l) => {
+        if (l.id === currentSection + "bookmark") {
+          addActiveClassToLink(l);
+          console.log(currentSection);
         }
-
-        scrollContainer.addEventListener('scroll', () => {
-
-            let currentSection = '';
-
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop - scrollContainer.offsetTop;
-                const sectionHeight = section.clientHeight;
-                const containerScrollTop = scrollContainer.scrollTop;
-
-                if (containerScrollTop >= sectionTop - sectionHeight / 3 && containerScrollTop < sectionTop + sectionHeight) {
-                    currentSection = section.getAttribute('id');
-                }
-            });
-
-            bookmark.forEach(l => {
-                if (l.id === currentSection + "bookmark") {
-                    addActiveClassToLink(l);
-                    console.log(currentSection)
-                }
-            });
-        });
-    </script>
+      });
+    });
+  </script>
 </html>
