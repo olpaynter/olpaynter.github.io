@@ -25,7 +25,13 @@
               <a href="#section2">Ray Tracing and intersection testing</a>
             </li>
             <li class="bookmark" id="section3bookmark">
-              <a href="#section3">To be continued...</a>
+              <a href="#section3">Phong Shading</a>
+            </li>
+            <li class="bookmark" id="section4bookmark">
+              <a href="#section4">Optimisation: Bounded Volume Hierarchies</a>
+            </li>
+            <li class="bookmark" id="section5bookmark">
+              <a href="#section5">To be continued...</a>
             </li>
           </ul>
         </div>
@@ -128,9 +134,152 @@
             <p>Trace them...</p>
             <img src="./assets/intersection_test.png" alt="intersection_test" />
             <p>The result...</p>
-            <img src="./assets/ray_tracing_result.png" alt="ray_tracing_result" style="width: 512;"/>
+            <img
+              src="./assets/ray_tracing_result.png"
+              alt="ray_tracing_result"
+              style="width: 512"
+            />
           </div>
           <div class="section" id="section3">
+            <h2>Phong Shading</h2>
+            <p>
+              Phong shading is a particular method of calculating the light
+              intensity of points on an object. It turns out that pretty
+              realistic lighting can be modelled simply by calculating a
+              "diffuse" contribution, a "specular" contribution, and an
+              "ambient" contribution.
+            </p>
+            <p>
+              More information can be found
+              <a href="https://en.wikipedia.org/wiki/Phong_reflection_model">
+                here </a
+              >, but to summarise:
+            </p>
+            <ul>
+              <li>
+                Ambient: This is used to emulate the residual quantity of light
+                that is bouncing around the room, lighting up portions of
+                objects that might otherwise be considered in shadow. This is
+                constant.
+                <img
+                  src="./assets/ambient_contribution.png"
+                  alt="ambient_contribution"
+                />
+              </li>
+              <li>
+                Diffuse: This is used to emulate the which bits of the object
+                are "basking in the light". With this in mind, it makes sense
+                that the more perpendicular the objects face is to the rays from
+                the light source, the stronger this aspect will be. Inversely,
+                bits of the object tilting slightly, or completely away with
+                have proportionally less diffuse light contribution.
+                <img
+                  src="./assets/diffuse_contribution.png"
+                  alt="diffuse_contribution"
+                />
+              </li>
+              <li>
+                Specular: This is used to emulate the "hot spot" on objects that
+                is the result of the light rays bouncing off the objects surface
+                and smacking straight into the back of our eyes. Approaching
+                this intuitively again, it makes sense that we can calculate the
+                specular contribution at points on the object by working out how
+                closely the rays from the light source align with our angle of
+                view after it's bounced of the object.
+                <img
+                  src="./assets/specular_contribution.png"
+                  alt="specular_contribution"
+                />
+              </li>
+            </ul>
+            <p>
+              It again makes sense that whilst ambient is constant, regardless
+              of whether a point on an object is in shadow or not, specular and
+              diffuse are not. They are conditional on the light hitting them
+              directly (or indirectly, but this will come later) - we need to do
+              a quick shadow check with a "shadow ray" before we bother
+              calculating the specular and diffuse components.
+            </p>
+            <p>Putting it all together...</p>
+            <img src="./assets/ray_tracer_phong.png" alt="ray_tracer_phong" />
+          </div>
+          <div class="section" id="section4">
+            <h2>Optimisation: Bounded Volume Hierarchies</h2>
+            <p>
+              Side note: this is easily my favourite portion of this project, as
+              the techniques used for optimisation tie so many different pieces
+              of theory together into something incredibly practical.
+            </p>
+            <p>
+              Up until this point, manually tracing width * height rays has been
+              done by manually looping through all the triangles in the scene,
+              object by object. A lot of time is spent shooting rays off into
+              the background around the outside of the object, and we still have
+              to do a number of checks proportional to the number of total
+              triangles in the scene.
+            </p>
+            <p>
+              To reduce these checks, we can apply the concept of divide and
+              conquer. We put boxes, aligned with the axis of the world-space,
+              around each object. Then we recurse inwards, splitting that box
+              down it's longest axis into two separate children and then
+              assigning triangles into those children. We keep going
+              until we have a binary tree of Axis-Aligned Boundary Boxes!
+            </p>
+            <p>
+              This algorithm uses only constant space by simply reorganising the
+              triangles in our list. I'm aiming to use stacks and arrays where
+              possible here as it's it facilitates optimisation with SIMD or
+              offloading work onto the GPU. The technique of creating an
+              ultimately flat structure within an array is beautiful:
+            </p>
+            <img src="./assets/BVH_construction.png" alt="BVH_construction" />
+            <p>
+              Now when we come to intersect our ray with the scene, if it's
+              around the border of the image where there's nothing but space,
+              the first check against our teapots AABBs immediately shows that
+              it's never going to hit anything, so we can move on. If it hits
+              the volume on the other hand, we can recurse inwards, considering
+              it's two children and checking for intersections there.
+            </p>
+            <p>
+              When we reach a child node, i.e. a node that actually contains
+              some triangles, we loop through them as we did before, but this
+              time we only have to check the triangles in that AABB, which is on
+              average only a few.
+            </p>
+            <p>
+              Note that I'm again trying to use a iterative approach with a
+              stack as opposed to recursion. We know the maximum depth of
+              "recursion" (the max number of states we need to store at the same
+              time) as we recorded it during construction.
+            </p>
+            <img src="./assets/BVH_traversal.png" alt="BVH_traversal" />
+            <p>
+              There's also some low hanging fruit with regards to pruning the
+              search a little early. If we have found an intersection in an
+              AABB, and another box is strictly behind it (relative to the
+              direction of the ray), then we know any intersections in that box
+              will be further away from the one we've already found. That is, we
+              don't need to look into that AABB. The distance from ray origin to
+              closest intersection point on any AABB was actually calculated
+              during the slab test, so this is an optimisation that includes
+              basically no overhead outside of the check itself.
+            </p>
+            <p>
+              With all that said, for our teapot, we can examine one of the
+              parent AABBs:
+            </p>
+            <img src="./assets/BVH_visulisation1.png" alt="BVH_visulisation1" />
+            <p>And all the "leaf" AABB's at the bottom of our BVH:</p>
+            <img src="./assets/BVH_visulistaion2.png" alt="BVH_visulistaion2" />
+            <p>
+              Thanks to this BVH implementation I can cast 4 million rays into a
+              scene including 6000 triangles and have it render in about 5
+              seconds, and this is only the start.
+            </p>
+          </div>
+          <div class="section" id="section5">
             <h2>To be continued...</h2>
             <p>
               This is an ongoing module. I'm currently working on cleaning up
