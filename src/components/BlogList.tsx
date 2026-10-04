@@ -4,6 +4,7 @@ import type { Post } from "@/data/blog";
 import { AccentLink } from "@/components/AccentLink";
 import { PostTitle } from "@/components/PageTransition";
 import { monthYear } from "@/lib/dates";
+import { routes } from "@/lib/routes";
 
 /** Marks work made without AI. Work made with AI carries no label. */
 export function AiLabel({ madeWithAI }: { madeWithAI: boolean }) {
@@ -27,12 +28,16 @@ export function BlogIntro() {
 }
 
 /** A plain list of posts, with each date hanging in the left margin from lg up, like the timeline. */
-export function BlogList({ posts }: { posts: Post[] }) {
+/**
+ * `anchored` gives each post an id, its slug, so the side nav on the blog index can track and
+ * scroll to it.
+ */
+export function BlogList({ posts, anchored = false }: { posts: Post[]; anchored?: boolean }) {
   return (
     <ul className="space-y-12">
       {posts.map((post) => {
         return (
-          <li key={post.slug} className="timeline-reveal relative">
+          <li key={post.slug} id={anchored ? post.slug : undefined} className="timeline-reveal relative">
             <time
               dateTime={post.date}
               className="block text-sm text-muted lg:absolute lg:top-1 lg:right-[calc(100%+1.25rem)] lg:whitespace-nowrap"
@@ -41,7 +46,7 @@ export function BlogList({ posts }: { posts: Post[] }) {
             </time>
             <PostTitle slug={post.slug}>
               <h3 className="t-serif w-fit text-xl font-semibold">
-                <Link href={`/blog/${post.slug}`} className="transition-colors duration-300 hover:text-(--link)">
+                <Link href={routes.post(post.slug)} className="transition-colors duration-300 hover:text-(--link)">
                   {post.title}
                 </Link>
               </h3>
@@ -51,7 +56,7 @@ export function BlogList({ posts }: { posts: Post[] }) {
               <span>{post.tags.join(" · ")}</span>
               <AiLabel madeWithAI={post.madeWithAI} />
             </div>
-            <AccentLink href={`/blog/${post.slug}`} className="mt-4">
+            <AccentLink href={routes.post(post.slug)} className="mt-4">
               Read the post
             </AccentLink>
           </li>

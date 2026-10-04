@@ -4,12 +4,11 @@ import Link from "next/link";
 import { HiOutlineMapPin } from "react-icons/hi2";
 import { BlogIntro, BlogList } from "@/components/BlogList";
 import { JourneyTimeline } from "@/components/JourneyTimeline";
-import { SiteNav } from "@/components/SiteNav";
 import { Socials } from "@/components/Socials";
 import { AccentLink } from "@/components/AccentLink";
 import { publishedPosts } from "@/data/blog";
 import { journey } from "@/data/journey";
-import { homeNav } from "@/lib/homeNav";
+import { homeSections, routes } from "@/lib/routes";
 
 const current = journey.find((chapter) => chapter.kind === "work")!;
 const currentRole = current.roles[0];
@@ -18,8 +17,7 @@ export default function Home() {
   return (
     <PageTransition>
       <main className="relative mx-auto w-full max-w-3xl px-6 py-20 sm:py-28">
-        <SiteNav items={homeNav(true)} />
-        <section id="about" className="grid grid-cols-1 gap-10 sm:grid-cols-[12rem_1fr] sm:gap-12">
+        <section id={homeSections.about} className="grid grid-cols-1 gap-10 sm:grid-cols-[12rem_1fr] sm:gap-12">
           <div className="flex flex-col items-center sm:items-start">
             <Image
               src="/profile.svg"
@@ -52,23 +50,23 @@ export default function Home() {
                 understand how a technology works by building something with it.
               </p>
             </div>
-            <AccentLink href="/resume" className="mt-6">
+            <AccentLink href={routes.resume} className="mt-6">
               View my resume
             </AccentLink>
           </div>
         </section>
 
-        <section id="journey" className="mt-16">
+        <section id={homeSections.journey} className="mt-16">
           <h2 className="t-serif mb-10 text-3xl font-bold tracking-tight">My Journey and Experiences</h2>
           <JourneyTimeline chapters={journey} />
         </section>
 
-        <section id="blog" className="mt-24">
+        <section id={homeSections.blog} className="mt-24">
           <h2 className="t-serif mb-6 text-3xl font-bold tracking-tight">Blog</h2>
           <BlogIntro />
           <BlogList posts={publishedPosts.slice(0, 3)} />
           <Link
-            href="/blog"
+            href={routes.blog}
             className="group mt-10 inline-block text-sm font-medium text-muted transition-colors duration-300 hover:text-foreground"
           >
             All posts

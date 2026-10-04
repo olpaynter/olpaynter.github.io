@@ -91,7 +91,7 @@ body {
   }
 }
 
-/* Scroll-driven animations are not yet in every browser; elsewhere the timeline renders static. */
+/* Scroll-driven animations are not yet in every browser; see the fallback below. */
 @media (prefers-reduced-motion: no-preference) {
   @supports (animation-timeline: view()) {
     .timeline-dot {
@@ -113,6 +113,43 @@ body {
       animation-timeline: view();
       animation-range: entry 0% entry 35%;
     }
+  }
+}
+
+/*
+ * The same entrances for browsers without scroll-driven animations, such as Firefox. The script in
+ * the root layout sets data-reveal before the first paint, and RevealOnScroll adds .revealed as each
+ * element comes into view. They play once on arrival rather than following the scroll position.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  html[data-reveal] .timeline-dot,
+  html[data-reveal] .timeline-reveal {
+    transition:
+      opacity 500ms var(--ease-settle),
+      transform 500ms var(--ease-settle);
+  }
+
+  html[data-reveal] .timeline-bar {
+    transform-origin: top;
+    transition: transform 900ms var(--ease-settle);
+  }
+
+  html[data-reveal-instant] :is(.timeline-dot, .timeline-bar, .timeline-reveal) {
+    transition: none;
+  }
+
+  html[data-reveal] .timeline-dot:not(.revealed) {
+    opacity: 0;
+    transform: scale(0);
+  }
+
+  html[data-reveal] .timeline-bar:not(.revealed) {
+    transform: scaleY(0);
+  }
+
+  html[data-reveal] .timeline-reveal:not(.revealed) {
+    opacity: 0;
+    transform: translateY(12px);
   }
 }
 
@@ -197,33 +234,61 @@ body {
   pointer-events: none;
 }
 
-/* Link navigation animates the page content; browser back and forward animate the whole root. */
-::view-transition-old(.page-out),
-html[data-history-nav]::view-transition-old(root) {
+::view-transition-old(.page-out) {
   animation:
     200ms ease-in both page-fade reverse,
     200ms ease-in both page-lift;
 }
 
-::view-transition-new(.page-in),
-html[data-history-nav]::view-transition-new(root) {
+::view-transition-new(.page-in) {
   animation:
     380ms var(--ease-settle) 140ms both page-fade,
     480ms var(--ease-settle) 140ms both page-settle;
 }
 
-/* Side nav items shared by both pages glide into place; items on only one page fade. */
-::view-transition-group(.nav-item) {
-  animation-duration: 680ms;
-  animation-timing-function: var(--ease-settle);
+/*
+ * React names the page body only for link navigation. For browser back and forward,
+ * NavigationTransitions marks the old and new pages, and these give them the same classes, so both
+ * kinds of navigation move the same parts of the screen in the same way.
+ */
+html[data-history-nav="old"] main {
+  view-transition-name: history-page-old;
+  view-transition-class: page-out;
 }
 
-::view-transition-old(.nav-item):only-child {
-  animation: 260ms ease-in both page-fade reverse;
+html[data-history-nav="new"] main {
+  view-transition-name: history-page-new;
+  view-transition-class: page-in;
 }
 
-::view-transition-new(.nav-item):only-child {
-  animation: 460ms var(--ease-settle) 220ms both page-fade;
+/*
+ * The side nav and the fades at the top and bottom of the screen take no part in page transitions.
+ * Each gets its own name, so it is lifted out of the page snapshots, and only its live view is shown,
+ * unanimated. The nav therefore keeps running its own CSS transitions while the page changes.
+ */
+.steady {
+  view-transition-class: steady;
+}
+
+.site-nav {
+  view-transition-name: site-nav;
+}
+
+.edge-fade-top {
+  view-transition-name: edge-fade-top;
+}
+
+.edge-fade-bottom {
+  view-transition-name: edge-fade-bottom;
+}
+
+::view-transition-group(.steady),
+::view-transition-new(.steady) {
+  animation: none;
+}
+
+::view-transition-old(.steady) {
+  display: none;
 }
 
 ::view-transition-group(.morph) {

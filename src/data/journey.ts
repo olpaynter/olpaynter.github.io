@@ -37,6 +37,11 @@ export type Chapter = {
   roles: Role[];
 };
 
+/** A chapter's anchor sits under the journey section, so its address reads /#journey/icrtouch. */
+export function chapterAnchor(chapter: Chapter) {
+  return `journey/${chapter.id}`;
+}
+
 /** Most recent chapter first. */
 export const journey: Chapter[] = [
   {
@@ -161,7 +166,7 @@ export const journey: Chapter[] = [
             name: "Dissertation: machine-learning anti-cheat",
             description:
               "Researched a novel anti-cheat for video games that runs locally, is non-invasive and performs well, using machine learning to detect anomalies in players' mouse movements.",
-            link: { label: "Read the dissertation", href: "/dissertation.pdf" },
+            link: { label: "Read the dissertation", href: "/journey/university-of-bath/dissertation" },
           },
         ],
         story: [

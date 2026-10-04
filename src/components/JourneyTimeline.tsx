@@ -1,6 +1,8 @@
 import Image from "next/image";
-import type { Chapter, Photo, Role } from "@/data/journey";
+import Link from "next/link";
+import { type Chapter, chapterAnchor, type Photo, type Role } from "@/data/journey";
 import { monthYear } from "@/lib/dates";
+import { checkedLink } from "@/lib/nav/siteMap";
 
 // The line's centre is 0.5rem + 0.5px from the chapter's left edge below sm, and 0.5px from sm up.
 // Chapter content is indented 2rem. Dots are 11px, so their left edge sits 5.5px left of the centre.
@@ -72,12 +74,12 @@ function RoleBlock({ role, showInlineStart }: { role: Role; showInlineStart: boo
                   <Highlights items={project.highlights} className="mt-2 space-y-1 text-sm text-foreground/70" />
                 )}
                 {project.link && (
-                  <a
-                    href={project.link.href}
+                  <Link
+                    href={checkedLink(project.link.href)}
                     className="mt-2 inline-block text-sm font-medium text-(--link) underline-offset-4 hover:underline"
                   >
                     {project.link.label} →
-                  </a>
+                  </Link>
                 )}
               </li>
             ))}
@@ -113,7 +115,7 @@ function ChapterEntry({ chapter }: { chapter: Chapter }) {
   const current = dated && !latest.end;
 
   return (
-    <li id={chapter.id} className="relative pl-8">
+    <li id={chapterAnchor(chapter)} className="relative pl-8">
       <span
         aria-hidden
         className={`timeline-bar absolute top-[11px] bottom-0 w-[3px] rounded-full bg-(--mark) ${line.bar} ${
