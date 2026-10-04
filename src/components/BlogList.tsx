@@ -20,9 +20,8 @@ export function AiLabel({ madeWithAI }: { madeWithAI: boolean }) {
 export function BlogIntro() {
   return (
     <p className="mb-12 max-w-2xl text-lg leading-relaxed text-foreground/80">
-      Posts marked &ldquo;Made without AI&rdquo; were thought through, written and built by me alone. I
-      think the effort and thinking behind a piece of work is part of its value, so it is worth saying
-      when it is entirely mine.
+      Posts marked &ldquo;Made without AI&rdquo; were thought through, written and built by me alone. I think the effort
+      and thinking behind a piece of work is part of its value, so it is worth saying when it is entirely mine.
     </p>
   );
 }

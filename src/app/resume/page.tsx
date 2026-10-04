@@ -9,18 +9,15 @@ export const metadata: Metadata = { title: "Resume | Oliver Paynter-Jones" };
 
 const RESUME = "/resume.pdf";
 
-
 export default function ResumePage() {
   return (
     <PageTransition>
       <main className="relative mx-auto w-full max-w-3xl px-6 py-20 sm:py-28">
         <SiteNav items={homeNav(false, { onResumePage: true })} />
         <BackLink href="/" label="Home" />
-        <header className="mt-8 mb-8 flex flex-wrap items-end justify-between gap-6 min-[1360px]:mt-0">
+        <header className="mt-8 mb-8 flex flex-wrap items-end justify-between gap-6 nav:mt-0">
           <div>
-            <h1 className="t-serif text-3xl font-bold tracking-tight">
-              Resume
-            </h1>
+            <h1 className="t-serif text-3xl font-bold tracking-tight">Resume</h1>
             <Socials className="mt-5" />
           </div>
           <a
@@ -30,7 +27,7 @@ export default function ResumePage() {
           >
             <HiOutlineArrowDownTray
               aria-hidden
-              className="h-4 w-4 transition-transform duration-300 ease-out group-hover:translate-y-0.5"
+              className="h-4 w-4 transition-transform duration-300 ease-out group-hover:translate-y-0.5 motion-reduce:transform-none"
             />
             Download PDF
           </a>

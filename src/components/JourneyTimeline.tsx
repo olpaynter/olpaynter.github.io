@@ -12,36 +12,21 @@ const line = {
 };
 
 // Margin labels only exist from lg up; narrower screens have no margin, so the dates go inline.
-const chapterLabel =
-  "hidden lg:block absolute right-[calc(100%+1.25rem)] whitespace-nowrap text-sm text-muted";
-const roleLabel =
-  "hidden lg:block absolute right-[calc(100%+3.25rem)] whitespace-nowrap text-sm text-muted";
+const chapterLabel = "hidden lg:block absolute right-[calc(100%+1.25rem)] whitespace-nowrap text-sm text-muted";
+const roleLabel = "hidden lg:block absolute right-[calc(100%+3.25rem)] whitespace-nowrap text-sm text-muted";
 
 function Dot({ className, live }: { className: string; live?: boolean }) {
   return (
-    <span
-      aria-hidden
-      className={`timeline-dot absolute z-10 h-[11px] w-[11px] ${className}`}
-    >
-      {live && (
-        <span className="absolute inset-0 rounded-full bg-(--mark)/70 motion-safe:animate-ping" />
-      )}
+    <span aria-hidden className={`timeline-dot absolute z-10 h-[11px] w-[11px] ${className}`}>
+      {live && <span className="absolute inset-0 rounded-full bg-(--mark)/70 motion-safe:animate-ping" />}
       <span className="absolute inset-0 rounded-full bg-(--mark) ring-4 ring-background" />
     </span>
   );
 }
 
-function Highlights({
-  items,
-  className,
-}: {
-  items: string[];
-  className: string;
-}) {
+function Highlights({ items, className }: { items: string[]; className: string }) {
   return (
-    <ul
-      className={`list-disc pl-5 leading-relaxed marker:text-muted ${className}`}
-    >
+    <ul className={`list-disc pl-5 leading-relaxed marker:text-muted ${className}`}>
       {items.map((item) => (
         <li key={item}>{item}</li>
       ))}
@@ -67,50 +52,24 @@ function Photos({ images }: { images: Photo[] }) {
   );
 }
 
-function RoleBlock({
-  role,
-  showInlineStart,
-}: {
-  role: Role;
-  showInlineStart: boolean;
-}) {
+function RoleBlock({ role, showInlineStart }: { role: Role; showInlineStart: boolean }) {
   return (
     <div className={`relative pb-7 ${role.title ? "pt-7" : "pt-3"}`}>
       <div className="timeline-reveal">
-        {role.title && (
-          <h4 className="t-title text-lg font-medium text-(--title)">
-            {role.title}
-          </h4>
-        )}
-        {showInlineStart && role.start && (
-          <p className="text-sm text-muted lg:hidden">
-            From {monthYear(role.start)}
-          </p>
-        )}
-        {role.summary && (
-          <p className="mt-2 text-lg leading-relaxed text-foreground/90">
-            {role.summary}
-          </p>
-        )}
+        {role.title && <h4 className="t-title text-lg font-medium text-(--title)">{role.title}</h4>}
+        {showInlineStart && role.start && <p className="text-sm text-muted lg:hidden">From {monthYear(role.start)}</p>}
+        {role.summary && <p className="mt-2 text-lg leading-relaxed text-foreground/90">{role.summary}</p>}
         {role.highlights && (
-          <Highlights
-            items={role.highlights}
-            className="mt-3 space-y-1.5 text-base text-foreground/80"
-          />
+          <Highlights items={role.highlights} className="mt-3 space-y-1.5 text-base text-foreground/80" />
         )}
         {role.projects && (
           <ul className="mt-7 space-y-8">
             {role.projects.map((project) => (
               <li key={project.name}>
                 <h5 className="text-base font-semibold">{project.name}</h5>
-                <p className="mt-1 text-base leading-relaxed text-foreground/80">
-                  {project.description}
-                </p>
+                <p className="mt-1 text-base leading-relaxed text-foreground/80">{project.description}</p>
                 {project.highlights && (
-                  <Highlights
-                    items={project.highlights}
-                    className="mt-2 space-y-1 text-sm text-foreground/70"
-                  />
+                  <Highlights items={project.highlights} className="mt-2 space-y-1 text-sm text-foreground/70" />
                 )}
                 {project.link && (
                   <a
@@ -154,10 +113,7 @@ function ChapterEntry({ chapter }: { chapter: Chapter }) {
   const current = dated && !latest.end;
 
   return (
-    <li
-      id={chapter.id}
-      className="relative pl-8"
-    >
+    <li id={chapter.id} className="relative pl-8">
       <span
         aria-hidden
         className={`timeline-bar absolute top-[11px] bottom-0 w-[3px] rounded-full bg-(--mark) ${line.bar} ${
@@ -177,18 +133,13 @@ function ChapterEntry({ chapter }: { chapter: Chapter }) {
         {earliest.start && (
           <span className="lg:hidden">
             {" · "}
-            {monthYear(earliest.start)} –{" "}
-            {latest.end ? monthYear(latest.end) : "Present"}
+            {monthYear(earliest.start)} – {latest.end ? monthYear(latest.end) : "Present"}
           </span>
         )}
       </p>
 
       {chapter.roles.map((role, i) => (
-        <RoleBlock
-          key={role.start ?? i}
-          role={role}
-          showInlineStart={chapter.roles.length > 1}
-        />
+        <RoleBlock key={role.start ?? i} role={role} showInlineStart={chapter.roles.length > 1} />
       ))}
     </li>
   );

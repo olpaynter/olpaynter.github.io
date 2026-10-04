@@ -3,39 +3,82 @@
 import Link from "next/link";
 import { type CSSProperties, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-/**
- * A nav entry is either a section on the current page (`id`, highlighted while it is in view) or
- * another page (`href`, highlighted when `current` is set because the reader is on that page).
- */
-export type NavItem = {
+type NavBase = {
   label: string;
-  id?: string;
-  href?: string;
-  current?: boolean;
   children?: NavItem[];
+  /**
+   * Names the item for page transitions. Defaults to the label, so an entry with the same label on
+   * both pages glides between them. Section entries pass their own key so a heading that happens to
+   * share a page label cannot produce two equal names, which would abort the transition.
+   */
+  transitionKey?: string;
 };
 
+/** A section on the current page, highlighted while it is in view. */
+type NavSection = NavBase & { id: string; href?: never; current?: never };
+
+/** Another page, highlighted when `current` is set because the reader is on it. */
+type NavPage = NavBase & { href: string; id?: never; current?: boolean };
+
+export type NavItem = NavSection | NavPage;
+
+/** How long a clicked section keeps the highlight if the browser never reports the end of the scroll. */
+const HOLD_FALLBACK_MS = 1200;
+
 /**
- * Returns the id of the section crossing a band just above the middle of the viewport, and a
- * function that selects a section directly. A direct selection holds until the scroll it starts
- * has finished, so the highlight does not flick through every section passed on the way.
+ * The shortest time the highlight stays on one section while scrolling. However fast the scroll,
+ * the highlight steps through every section in order, holding each for at least this long.
+ */
+const MIN_DWELL_MS = 75;
+
+/**
+ * Returns the highlighted section id and a function that selects a section directly.
+ *
+ * Scrolling sets a target, the section crossing a band just above the middle of the viewport, and
+ * the highlight walks towards it one section at a time so that none is skipped. A click instead
+ * jumps straight to the clicked section and holds there until the scroll it starts has finished.
  */
 function useActiveSection(ids: string[]) {
   const [active, setActive] = useState<string | undefined>(ids[0]);
+  const shown = useRef(active);
+  const target = useRef(active);
   const held = useRef(false);
+  const cancelHold = useRef<(() => void) | null>(null);
+  const stepTimer = useRef<number | undefined>(undefined);
+  const lastStep = useRef(0);
+
+  const show = useCallback((id: string) => {
+    shown.current = id;
+    lastStep.current = performance.now();
+    setActive(id);
+  }, []);
 
   useEffect(() => {
     const visible = new Set<string>();
+
+    const step = () => {
+      stepTimer.current = undefined;
+      if (held.current || !target.current || shown.current === target.current) return;
+      const from = shown.current ? ids.indexOf(shown.current) : -1;
+      const to = ids.indexOf(target.current);
+      show(from === -1 ? target.current : ids[from + Math.sign(to - from)]);
+      stepTimer.current = window.setTimeout(step, MIN_DWELL_MS);
+    };
+
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
           if (entry.isIntersecting) visible.add(entry.target.id);
           else visible.delete(entry.target.id);
         }
-        if (held.current) return;
         // Chapters sit inside the journey section, so prefer the most specific visible id.
         const match = [...ids].reverse().find((id) => visible.has(id));
-        if (match) setActive(match);
+        if (!match) return;
+        target.current = match;
+        if (held.current || stepTimer.current !== undefined) return;
+        const wait = lastStep.current + MIN_DWELL_MS - performance.now();
+        if (wait <= 0) step();
+        else stepTimer.current = window.setTimeout(step, wait);
       },
       { rootMargin: "-35% 0px -60% 0px" },
     );
@@ -43,19 +86,42 @@ function useActiveSection(ids: string[]) {
       const element = document.getElementById(id);
       if (element) observer.observe(element);
     }
-    return () => observer.disconnect();
-  }, [ids]);
-
-  const select = useCallback((id: string) => {
-    setActive(id);
-    held.current = true;
-    const release = () => {
-      held.current = false;
+    return () => {
+      observer.disconnect();
+      window.clearTimeout(stepTimer.current);
+      stepTimer.current = undefined;
     };
-    window.addEventListener("scrollend", release, { once: true });
-    // Browsers without scrollend, or a click that causes no scroll, release after a short wait.
-    window.setTimeout(release, 1200);
-  }, []);
+  }, [ids, show]);
+
+  const select = useCallback(
+    (id: string) => {
+      // A second click during the first one's scroll replaces its hold, so the first scroll's end
+      // cannot release the second.
+      cancelHold.current?.();
+      window.clearTimeout(stepTimer.current);
+      stepTimer.current = undefined;
+      target.current = id;
+      show(id);
+      held.current = true;
+
+      const listener = new AbortController();
+      const release = () => {
+        held.current = false;
+        cancel();
+      };
+      const timer = window.setTimeout(release, HOLD_FALLBACK_MS);
+      const cancel = () => {
+        window.clearTimeout(timer);
+        listener.abort();
+        cancelHold.current = null;
+      };
+      window.addEventListener("scrollend", release, { once: true, signal: listener.signal });
+      cancelHold.current = cancel;
+    },
+    [show],
+  );
+
+  useEffect(() => () => cancelHold.current?.(), []);
 
   // Arriving from another page with a section in the URL, such as /#icrtouch, highlights that
   // section even when it is too short to reach the highlight band.
@@ -69,13 +135,14 @@ function useActiveSection(ids: string[]) {
   return [active, select] as const;
 }
 
-/**
- * Items are matched across pages by label, so an entry present on both pages (Home, Blog, each
- * post) glides to its new place during a page transition while the others fade.
- */
-function transitionStyle({ label }: NavItem): CSSProperties {
-  const name = `nav-${label.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}`;
-  return { viewTransitionName: name, viewTransitionClass: "nav-item" } as CSSProperties;
+function transitionStyle(item: NavItem): CSSProperties {
+  const key =
+    item.transitionKey ??
+    item.label
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "");
+  return { viewTransitionName: `nav-${key}`, viewTransitionClass: "nav-item" } as CSSProperties;
 }
 
 /** Whether the reader is on this item, or in a section or page beneath it. */
@@ -102,11 +169,9 @@ function NavList({
   /** False while an enclosing fold is closed. */
   shown?: boolean;
 }) {
-
   return (
     <ul className={nested ? "mt-1 pl-4" : ""}>
       {items.map((item) => {
-        const key = item.href ?? item.id ?? item.label;
         const open = inBranch(item, active);
         // A parent of the current page stays highlighted, so it looks the same on both sides of a
         // page transition and glides rather than crossfading.
@@ -115,46 +180,53 @@ function NavList({
           (item.id !== undefined && item.id === active) ||
           (item.children ?? []).some((child) => child.current);
         const className = `group flex items-start ${nested ? "py-1.5 text-xs" : "py-2 text-sm"}`;
+
+        // The line is drawn at full length and scaled to half when inactive, and the label is
+        // shifted back by the same amount. Tailwind's scale and translate utilities set the CSS
+        // `scale` and `translate` properties, so those are what the transitions name. Neither
+        // touches layout, and the label still slides along as the line grows.
         const content = (
           <>
             <span
               aria-hidden
-              className={`mr-4 h-px shrink-0 ${nested ? "mt-2" : "mt-2.5"} transition-all duration-300 ease-out motion-reduce:transition-none ${
-                isActive
-                  ? `bg-(--mark) ${nested ? "w-10" : "w-16"}`
-                  : `bg-white/25 group-hover:bg-white/60 ${nested ? "w-5 group-hover:w-10" : "w-8 group-hover:w-16"}`
-              }`}
+              className={`mr-4 h-px shrink-0 origin-left transition-[scale,background-color] duration-300 ease-out motion-reduce:transition-none ${
+                nested ? "mt-2 w-10" : "mt-2.5 w-16"
+              } ${isActive ? "bg-(--mark)" : "scale-x-50 bg-white/25 group-hover:scale-x-100 group-hover:bg-white/60"}`}
             />
-            {/* A fixed width, leaving room for the longest line, so a growing line slides the label
-                along without changing where it wraps. */}
+            {/* A fixed width, leaving room for the full line, so the label never re-wraps. */}
             <span
-              className={`shrink-0 transition-colors duration-300 ease-out ${nested ? "w-[calc(100%-3.5rem)]" : "w-[calc(100%-5rem)]"} ${
-                isActive ? "text-foreground" : "text-muted group-hover:text-foreground"
+              className={`shrink-0 transition-[translate,color] duration-300 ease-out motion-reduce:transition-none ${
+                nested ? "w-[calc(100%-3.5rem)]" : "w-[calc(100%-5rem)]"
+              } ${
+                isActive
+                  ? "text-foreground"
+                  : `text-muted group-hover:translate-x-0 group-hover:text-foreground ${nested ? "-translate-x-5" : "-translate-x-8"}`
               }`}
             >
               {item.label}
             </span>
           </>
         );
+
         return (
-          <li key={key}>
+          <li key={item.href ?? item.id}>
             {/* Items inside a closed fold take no part in page transitions; otherwise the snapshot
                 shows them at full height, outside the fold, before it closes and unrolls. */}
             <div style={shown ? transitionStyle(item) : undefined}>
-            {item.href ? (
-              <Link href={item.href} aria-current={item.current ? "page" : undefined} className={className}>
-                {content}
-              </Link>
-            ) : (
-              <a
-                href={`#${item.id}`}
-                onClick={() => onSelect(item.id!)}
-                aria-current={isActive ? "location" : undefined}
-                className={className}
-              >
-                {content}
-              </a>
-            )}
+              {item.href !== undefined ? (
+                <Link href={item.href} aria-current={item.current ? "page" : undefined} className={className}>
+                  {content}
+                </Link>
+              ) : (
+                <a
+                  href={`#${item.id}`}
+                  onClick={() => onSelect(item.id)}
+                  aria-current={isActive ? "location" : undefined}
+                  className={className}
+                >
+                  {content}
+                </a>
+              )}
             </div>
             {item.children && (
               // Children stay folded away until the reader reaches this part of the site, so the
@@ -177,12 +249,15 @@ function NavList({
   );
 }
 
-/** A section list fixed in the left margin, anchored at the top so folding sections do not shift it. Hidden below 1360px, where it would collide with the timeline dates. */
+/**
+ * The section list fixed in the left margin, anchored at the top so folding sections do not shift
+ * it. It appears from the `nav` breakpoint, below which it would collide with the timeline dates.
+ */
 export function SiteNav({ items }: { items: NavItem[] }) {
   const ids = useMemo(() => sectionIds(items), [items]);
   const [active, select] = useActiveSection(ids);
   return (
-    <nav aria-label="Site" className="fixed top-[30vh] left-6 z-20 hidden w-48 min-[1360px]:block">
+    <nav aria-label="Site" className="fixed top-[30vh] left-6 z-20 hidden w-48 nav:block">
       <NavList items={items} active={active} onSelect={select} />
     </nav>
   );
@@ -191,10 +266,7 @@ export function SiteNav({ items }: { items: NavItem[] }) {
 /** A plain back link for screens too narrow to show the side nav. */
 export function BackLink({ href, label }: { href: string; label: string }) {
   return (
-    <Link
-      href={href}
-      className="text-sm text-muted transition-colors duration-300 hover:text-foreground min-[1360px]:hidden"
-    >
+    <Link href={href} className="text-sm text-muted transition-colors duration-300 hover:text-foreground nav:hidden">
       ← {label}
     </Link>
   );

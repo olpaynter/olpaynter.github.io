@@ -14,6 +14,7 @@ export function HistoryTransitions() {
   const pathname = usePathname();
   const lastPath = useRef(pathname);
   const finish = useRef<(() => void) | null>(null);
+  const current = useRef<ViewTransition | null>(null);
 
   useEffect(() => {
     let replaying = false;
@@ -28,17 +29,24 @@ export function HistoryTransitions() {
       const root = document.documentElement;
       root.dataset.historyNav = "";
       const transition = document.startViewTransition(async () => {
+        let timer: number | undefined;
         const rendered = new Promise<void>((resolve) => {
           finish.current = resolve;
           // If the route never renders, release the frozen frame rather than hold it indefinitely.
-          setTimeout(resolve, 1000);
+          timer = window.setTimeout(resolve, 1000);
         });
         replaying = true;
         window.dispatchEvent(new PopStateEvent("popstate", { state: event.state }));
         replaying = false;
         await rendered;
+        window.clearTimeout(timer);
       });
-      transition.finished.finally(() => delete root.dataset.historyNav);
+      current.current = transition;
+      // A second back or forward during this one starts a newer transition; only the newest may
+      // remove the attribute, or the newer one would lose its motion part-way through.
+      transition.finished.finally(() => {
+        if (current.current === transition) delete root.dataset.historyNav;
+      });
     };
 
     // Capture listeners on window run before the router's own popstate listener.

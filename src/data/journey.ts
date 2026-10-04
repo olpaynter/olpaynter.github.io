@@ -49,8 +49,7 @@ export const journey: Chapter[] = [
       {
         title: "SDE 5",
         start: "2027-04-01",
-        summary:
-          "Leading the design of the next generation of creative ingestion across multiple marketplaces.",
+        summary: "Leading the design of the next generation of creative ingestion across multiple marketplaces.",
         projects: [
           {
             name: "Multi-region ingestion",
@@ -72,8 +71,7 @@ export const journey: Chapter[] = [
         title: "SDE 4",
         start: "2026-08-03",
         end: "2027-03-31",
-        summary:
-          "Working on the ingestion systems that power Amazon's pilots of dynamic creatives across the world.",
+        summary: "Working on the ingestion systems that power Amazon's pilots of dynamic creatives across the world.",
         projects: [
           {
             name: "Feed validation service",
@@ -101,10 +99,7 @@ export const journey: Chapter[] = [
         end: "2026-06-10",
         summary:
           "Maintained the legacy systems used by thousands of businesses across the UK, spanning ICRTouch's wide range of interconnected software.",
-        highlights: [
-          "Delivered bespoke work for customers on request.",
-          "Fixed bugs across the product range.",
-        ],
+        highlights: ["Delivered bespoke work for customers on request.", "Fixed bugs across the product range."],
       },
     ],
   },
@@ -193,8 +188,14 @@ export const journey: Chapter[] = [
           "Placeholder: how growing up there made you who you are today.",
         ],
         images: [
-          { src: "/photos/isle-of-wight-placeholder.svg", alt: "Placeholder illustration of the Needles off the Isle of Wight" },
-          { src: "/photos/isle-of-wight-placeholder.svg", alt: "Placeholder illustration of the Needles off the Isle of Wight" },
+          {
+            src: "/photos/isle-of-wight-placeholder.svg",
+            alt: "Placeholder illustration of the Needles off the Isle of Wight",
+          },
+          {
+            src: "/photos/isle-of-wight-placeholder.svg",
+            alt: "Placeholder illustration of the Needles off the Isle of Wight",
+          },
         ],
       },
     ],

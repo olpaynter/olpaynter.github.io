@@ -2,7 +2,15 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 
 /** Text in the accent colour with a short underline that draws out to full width on hover. */
-export function AccentLink({ href, children, className = "" }: { href: string; children: ReactNode; className?: string }) {
+export function AccentLink({
+  href,
+  children,
+  className = "",
+}: {
+  href: string;
+  children: ReactNode;
+  className?: string;
+}) {
   return (
     <Link href={href} className={`group inline-flex flex-col text-sm font-medium text-(--link) ${className}`}>
       {children}

@@ -59,8 +59,7 @@ export const posts: Post[] = [
     navLabel: "Rubik's Cube",
     title: "Group theory and the Rubik's Cube",
     date: "2024-09",
-    summary:
-      "Applying group theory and a modified IDA* search to collapse a search space of 43 quintillion states.",
+    summary: "Applying group theory and a modified IDA* search to collapse a search space of 43 quintillion states.",
     tags: ["Python", "Maths"],
     madeWithAI: false,
     draft: true,

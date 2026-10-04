@@ -5,8 +5,8 @@ import { useEffect, useState } from "react";
 const THEMES = ["warm", "typographic"] as const;
 
 /**
- * Swaps between the two colour schemes in development. In a production build it is an empty
- * component, so the switcher code is dropped from the published site. The choice is written where the theme script reads it, so it
+ * Swaps between the two colour schemes. The root layout renders it only in development, so it
+ * does not reach the published site. The choice is written where the theme script reads it, so it
  * holds across pages and reloads for the rest of the session.
  */
 function Switcher() {
@@ -23,8 +23,6 @@ function Switcher() {
     sessionStorage.setItem("theme", theme);
   }, [theme]);
 
-  const choose = setTheme;
-
   return (
     <div className="fixed right-4 bottom-4 z-40 flex items-center gap-1 rounded-full border border-white/10 bg-background/90 p-1 text-xs backdrop-blur">
       <span className="px-2 text-muted">Dev</span>
@@ -32,7 +30,7 @@ function Switcher() {
         <button
           key={id}
           type="button"
-          onClick={() => choose(id)}
+          onClick={() => setTheme(id)}
           className={`rounded-full px-3 py-1.5 capitalize transition-colors ${
             theme === id ? "bg-white/15 text-foreground" : "text-muted hover:text-foreground"
           }`}
@@ -44,4 +42,5 @@ function Switcher() {
   );
 }
 
+// Replaced by an empty component outside development, so the bundler drops the switcher's code.
 export const DevThemeSwitcher = process.env.NODE_ENV === "development" ? Switcher : () => null;

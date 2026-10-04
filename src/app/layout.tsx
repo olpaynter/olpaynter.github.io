@@ -10,9 +10,12 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
+// Only the typographic theme uses the serif, so it is fetched when that theme first needs it
+// rather than preloaded on every visit.
 const newsreader = Newsreader({
   variable: "--font-serif",
   subsets: ["latin"],
+  preload: false,
 });
 
 export const metadata: Metadata = {
@@ -33,19 +36,30 @@ const pickTheme = `try {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth" className={`${inter.variable} ${newsreader.variable} h-full antialiased`}>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      data-scroll-behavior="smooth"
+      className={`${inter.variable} ${newsreader.variable} h-full antialiased`}
+    >
       <head>
         <script dangerouslySetInnerHTML={{ __html: pickTheme }} />
       </head>
       <body className="min-h-full font-sans">
         <HistoryTransitions />
-        <DevThemeSwitcher />
+        {process.env.NODE_ENV === "development" && <DevThemeSwitcher />}
         <div className="relative min-h-full">
           <IslandBackdrop />
           {children}
         </div>
-        <div aria-hidden className="pointer-events-none fixed inset-x-0 top-0 z-10 h-16 bg-linear-to-b from-background to-transparent" />
-        <div aria-hidden className="pointer-events-none fixed inset-x-0 bottom-0 z-10 h-24 bg-linear-to-t from-background to-transparent" />
+        <div
+          aria-hidden
+          className="pointer-events-none fixed inset-x-0 top-0 z-10 h-16 bg-linear-to-b from-background to-transparent"
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none fixed inset-x-0 bottom-0 z-10 h-24 bg-linear-to-t from-background to-transparent"
+        />
       </body>
     </html>
   );

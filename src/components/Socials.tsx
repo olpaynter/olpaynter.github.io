@@ -32,7 +32,7 @@ export function Socials({ className = "" }: { className?: string }) {
             aria-label={label}
             target={href.startsWith("http") ? "_blank" : undefined}
             rel="noopener noreferrer"
-            className={`flex h-11 w-11 items-center justify-center rounded-full text-white transition-transform hover:-translate-y-0.5 ${colour}`}
+            className={`flex h-11 w-11 items-center justify-center rounded-full text-white transition-transform hover:-translate-y-0.5 motion-reduce:transform-none ${colour}`}
           >
             <Icon className="h-5 w-5" aria-hidden />
           </a>
