@@ -10,7 +10,8 @@ export function blogNav(currentSlug?: string, sections: NavItem[] = []): NavItem
     { label: "Home", href: "/" },
     {
       label: "Blog",
-      href: "/blog",
+      // Leads back to the Blog section on the home page, as the home page's own entries do.
+      href: "/#blog",
       current: currentSlug === undefined,
       children: publishedPosts.map((post) => ({
         label: post.navLabel,

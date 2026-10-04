@@ -50,7 +50,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
             {monthYear(post.date)}
           </time>
           <PostTitle slug={post.slug}>
-              <h1 className="mt-2 w-fit text-3xl font-bold tracking-tight sm:text-4xl">{post.title}</h1>
+              <h1 className="t-serif mt-2 w-fit text-3xl font-bold tracking-tight sm:text-4xl">{post.title}</h1>
             </PostTitle>
           <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-muted">
             <span>{post.tags.join(" · ")}</span>

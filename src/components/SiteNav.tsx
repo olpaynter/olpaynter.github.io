@@ -73,7 +73,7 @@ function useActiveSection(ids: string[]) {
  * Items are matched across pages by label, so an entry present on both pages (Home, Blog, each
  * post) glides to its new place during a page transition while the others fade.
  */
-function transitionStyle(label: string): CSSProperties {
+function transitionStyle({ label }: NavItem): CSSProperties {
   const name = `nav-${label.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}`;
   return { viewTransitionName: name, viewTransitionClass: "nav-item" } as CSSProperties;
 }
@@ -93,18 +93,27 @@ function NavList({
   active,
   onSelect,
   nested = false,
+  shown = true,
 }: {
   items: NavItem[];
   active?: string;
   onSelect: (id: string) => void;
   nested?: boolean;
+  /** False while an enclosing fold is closed. */
+  shown?: boolean;
 }) {
+
   return (
     <ul className={nested ? "mt-1 pl-4" : ""}>
       {items.map((item) => {
         const key = item.href ?? item.id ?? item.label;
         const open = inBranch(item, active);
-        const isActive = Boolean(item.current) || (item.id !== undefined && item.id === active);
+        // A parent of the current page stays highlighted, so it looks the same on both sides of a
+        // page transition and glides rather than crossfading.
+        const isActive =
+          Boolean(item.current) ||
+          (item.id !== undefined && item.id === active) ||
+          (item.children ?? []).some((child) => child.current);
         const className = `group flex items-start ${nested ? "py-1.5 text-xs" : "py-2 text-sm"}`;
         const content = (
           <>
@@ -112,12 +121,14 @@ function NavList({
               aria-hidden
               className={`mr-4 h-px shrink-0 ${nested ? "mt-2" : "mt-2.5"} transition-all duration-300 ease-out motion-reduce:transition-none ${
                 isActive
-                  ? `bg-[#b48af9] ${nested ? "w-10" : "w-16"}`
+                  ? `bg-(--mark) ${nested ? "w-10" : "w-16"}`
                   : `bg-white/25 group-hover:bg-white/60 ${nested ? "w-5 group-hover:w-10" : "w-8 group-hover:w-16"}`
               }`}
             />
+            {/* A fixed width, leaving room for the longest line, so a growing line slides the label
+                along without changing where it wraps. */}
             <span
-              className={`min-w-0 transition-colors duration-300 ease-out ${
+              className={`shrink-0 transition-colors duration-300 ease-out ${nested ? "w-[calc(100%-3.5rem)]" : "w-[calc(100%-5rem)]"} ${
                 isActive ? "text-foreground" : "text-muted group-hover:text-foreground"
               }`}
             >
@@ -127,7 +138,9 @@ function NavList({
         );
         return (
           <li key={key}>
-            <div style={transitionStyle(item.label)}>
+            {/* Items inside a closed fold take no part in page transitions; otherwise the snapshot
+                shows them at full height, outside the fold, before it closes and unrolls. */}
+            <div style={shown ? transitionStyle(item) : undefined}>
             {item.href ? (
               <Link href={item.href} aria-current={item.current ? "page" : undefined} className={className}>
                 {content}
@@ -153,7 +166,7 @@ function NavList({
                 }`}
               >
                 <div className="overflow-hidden">
-                  <NavList items={item.children} active={active} onSelect={onSelect} nested />
+                  <NavList items={item.children} active={active} onSelect={onSelect} nested shown={shown && open} />
                 </div>
               </div>
             )}

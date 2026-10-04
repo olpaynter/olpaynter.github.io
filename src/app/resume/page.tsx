@@ -14,11 +14,11 @@ export default function ResumePage() {
   return (
     <PageTransition>
       <main className="relative mx-auto w-full max-w-3xl px-6 py-20 sm:py-28">
-        <SiteNav items={homeNav(false)} />
+        <SiteNav items={homeNav(false, { onResumePage: true })} />
         <BackLink href="/" label="Home" />
         <header className="mt-8 mb-8 flex flex-wrap items-end justify-between gap-6 min-[1360px]:mt-0">
           <div>
-            <h1 className="w-fit bg-linear-to-r from-[#4f8fff] to-[#8f9cff] bg-clip-text text-3xl font-bold tracking-tight text-transparent">
+            <h1 className="t-serif text-3xl font-bold tracking-tight">
               Resume
             </h1>
             <Socials className="mt-5" />
@@ -26,7 +26,7 @@ export default function ResumePage() {
           <a
             href={RESUME}
             download="Oliver Paynter-Jones resume.pdf"
-            className="group inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-2.5 text-sm font-medium transition-colors duration-300 hover:border-[#8f9cff]/60 hover:bg-white/5"
+            className="group inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-2.5 text-sm font-medium transition-colors duration-300 hover:border-(--link)/60 hover:bg-white/5"
           >
             <HiOutlineArrowDownTray
               aria-hidden
@@ -42,7 +42,7 @@ export default function ResumePage() {
         />
         <p className="mt-4 text-sm text-muted">
           If the preview does not load,{" "}
-          <a href={RESUME} className="text-[#8f9cff] underline-offset-4 hover:underline">
+          <a href={RESUME} className="text-(--link) underline-offset-4 hover:underline">
             open the PDF directly
           </a>
           .

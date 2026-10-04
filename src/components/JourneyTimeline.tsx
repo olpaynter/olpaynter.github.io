@@ -1,6 +1,5 @@
 import Image from "next/image";
-import type { CSSProperties } from "react";
-import type { Chapter, ChapterKind, Photo, Role } from "@/data/journey";
+import type { Chapter, Photo, Role } from "@/data/journey";
 import { monthYear } from "@/lib/dates";
 
 // The line's centre is 0.5rem + 0.5px from the chapter's left edge below sm, and 0.5px from sm up.
@@ -10,19 +9,6 @@ const line = {
   thin: "left-2 sm:left-0",
   chapterDot: "left-[calc(0.5rem-5px)] sm:-left-[5px]",
   roleDot: "-left-[calc(1.5rem+5px)] sm:-left-[calc(2rem+5px)]",
-};
-
-type Hue = [string, string];
-
-// Jobs alternate between two blues so neighbouring jobs differ; other kinds get their own colour.
-const WORK_HUES: Hue[] = [
-  ["#4f8fff", "#8f9cff"],
-  ["#38bdf8", "#5f9bff"],
-];
-const KIND_HUES: Record<Exclude<ChapterKind, "work">, Hue> = {
-  education: ["#8b7cf8", "#d08bfa"],
-  travel: ["#2dd4bf", "#86efac"],
-  home: ["#7dd3fc", "#a5b4fc"],
 };
 
 // Margin labels only exist from lg up; narrower screens have no margin, so the dates go inline.
@@ -38,9 +24,9 @@ function Dot({ className, live }: { className: string; live?: boolean }) {
       className={`timeline-dot absolute z-10 h-[11px] w-[11px] ${className}`}
     >
       {live && (
-        <span className="absolute inset-0 rounded-full bg-(--hue-from)/70 motion-safe:animate-ping" />
+        <span className="absolute inset-0 rounded-full bg-(--mark)/70 motion-safe:animate-ping" />
       )}
-      <span className="absolute inset-0 rounded-full bg-(--hue-from) ring-4 ring-background" />
+      <span className="absolute inset-0 rounded-full bg-(--mark) ring-4 ring-background" />
     </span>
   );
 }
@@ -92,7 +78,7 @@ function RoleBlock({
     <div className={`relative pb-7 ${role.title ? "pt-7" : "pt-3"}`}>
       <div className="timeline-reveal">
         {role.title && (
-          <h4 className="w-fit bg-linear-to-r from-(--hue-from) to-(--hue-to) bg-clip-text text-lg font-medium text-transparent">
+          <h4 className="t-title text-lg font-medium text-(--title)">
             {role.title}
           </h4>
         )}
@@ -129,7 +115,7 @@ function RoleBlock({
                 {project.link && (
                   <a
                     href={project.link.href}
-                    className="mt-2 inline-block text-sm font-medium text-(--hue-to) underline-offset-4 hover:underline"
+                    className="mt-2 inline-block text-sm font-medium text-(--link) underline-offset-4 hover:underline"
                   >
                     {project.link.label} →
                   </a>
@@ -160,7 +146,7 @@ function RoleBlock({
   );
 }
 
-function ChapterEntry({ chapter, hue }: { chapter: Chapter; hue: Hue }) {
+function ChapterEntry({ chapter }: { chapter: Chapter }) {
   const latest = chapter.roles[0];
   const earliest = chapter.roles.at(-1)!;
   // An undated chapter, such as home, has no start or end markers and fades out at the bottom.
@@ -171,16 +157,13 @@ function ChapterEntry({ chapter, hue }: { chapter: Chapter; hue: Hue }) {
     <li
       id={chapter.id}
       className="relative pl-8"
-      style={{ "--hue-from": hue[0], "--hue-to": hue[1] } as CSSProperties}
     >
       <span
         aria-hidden
-        className={`timeline-bar absolute top-[11px] bottom-0 w-[3px] overflow-hidden rounded-full ${line.bar} ${
+        className={`timeline-bar absolute top-[11px] bottom-0 w-[3px] rounded-full bg-(--mark) ${line.bar} ${
           current ? "" : "opacity-60"
         } ${dated ? "" : "mask-b-from-40%"}`}
-      >
-        <span className="timeline-shimmer absolute inset-0 bg-linear-to-b from-(--hue-from) via-(--hue-to) to-(--hue-from)" />
-      </span>
+      />
       <Dot className={`top-[5.5px] ${line.chapterDot}`} live={current} />
       {dated && (
         <time dateTime={latest.end} className={`top-0.5 ${chapterLabel}`}>
@@ -188,7 +171,7 @@ function ChapterEntry({ chapter, hue }: { chapter: Chapter; hue: Hue }) {
         </time>
       )}
 
-      <h3 className="text-xl font-semibold">{chapter.name}</h3>
+      <h3 className="t-serif text-xl font-semibold">{chapter.name}</h3>
       <p className="text-sm text-muted">
         {chapter.location}
         {earliest.start && (
@@ -220,21 +203,13 @@ function Connector() {
   );
 }
 
-function huesFor(chapters: Chapter[]): Hue[] {
-  let work = 0;
-  return chapters.map((chapter) =>
-    chapter.kind === "work" ? WORK_HUES[work++ % WORK_HUES.length] : KIND_HUES[chapter.kind],
-  );
-}
-
 /** Each chapter is a solid bar from its start (bottom) to its end or "Present" (top), with a dot where each role began. */
 export function JourneyTimeline({ chapters }: { chapters: Chapter[] }) {
-  const hues = huesFor(chapters);
   return (
     <ol>
       {chapters.flatMap((chapter, i) => {
         const key = `${chapter.name}-${chapter.roles.at(-1)!.start ?? "undated"}`;
-        const entry = <ChapterEntry key={key} chapter={chapter} hue={hues[i]} />;
+        const entry = <ChapterEntry key={key} chapter={chapter} />;
         return i < chapters.length - 1 ? [entry, <Connector key={`after-${key}`} />] : [entry];
       })}
     </ol>

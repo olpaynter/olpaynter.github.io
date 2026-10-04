@@ -1,11 +1,51 @@
 @import "tailwindcss";
 
 @theme {
+  --color-background: #0b0a09;
+  --color-foreground: #ece6dc;
+  --color-muted: #a39a8c;
+  --font-sans: var(--font-inter);
+}
+
+/*
+ * Two themes, chosen at random once per visit by the script in the root layout. Warm is the
+ * default, so it also applies if that script does not run. Elements read these variables:
+ * --mark for dots, bars and the active nav line; --link for links; --role for the role under the
+ * name; --title for role titles in the timeline; --shape for the floating outlines.
+ */
+:root {
+  --mark: #e0a458;
+  --link: #e0a458;
+  --role: #e0a458;
+  --title: var(--color-foreground);
+  --shape: #e0a458;
+}
+
+html[data-theme="typographic"] {
   --color-background: #05070b;
   --color-foreground: #e6edf3;
   --color-muted: #9aa7b4;
-  --color-accent: #4f8fff;
-  --font-sans: var(--font-inter);
+  --mark: rgb(230 237 243 / 0.9);
+  --link: var(--color-foreground);
+  --role: var(--color-muted);
+  --title: var(--color-muted);
+  --shape: #ffffff;
+}
+
+html[data-theme="typographic"] .t-serif {
+  font-family: var(--font-serif), serif;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+html[data-theme="typographic"] .t-title {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.95rem;
+}
+
+html[data-theme="typographic"] .post-body a {
+  text-decoration: underline;
 }
 
 /* Without this the browser draws light scrollbars, and overscroll bounce exposes a white canvas. */
@@ -48,19 +88,6 @@ body {
   from {
     opacity: 0;
     transform: translateY(12px);
-  }
-}
-
-@keyframes timeline-shimmer {
-  to {
-    background-position: 0 200%;
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .timeline-shimmer {
-    background-size: 100% 200%;
-    animation: timeline-shimmer 8s linear infinite;
   }
 }
 
@@ -117,7 +144,7 @@ body {
 .post-body {
   font-size: 1.125rem;
   line-height: 1.75;
-  color: rgb(230 237 243 / 0.9);
+  color: color-mix(in srgb, var(--color-foreground) 90%, transparent);
 }
 
 .post-body > * + *,
@@ -137,7 +164,7 @@ body {
 }
 
 .post-body a {
-  color: #8f9cff;
+  color: var(--link);
   text-underline-offset: 4px;
 }
 

@@ -6,7 +6,7 @@ import { BlogIntro, BlogList } from "@/components/BlogList";
 import { JourneyTimeline } from "@/components/JourneyTimeline";
 import { SiteNav } from "@/components/SiteNav";
 import { Socials } from "@/components/Socials";
-import { GradientLink } from "@/components/GradientLink";
+import { AccentLink } from "@/components/AccentLink";
 import { publishedPosts } from "@/data/blog";
 import { journey } from "@/data/journey";
 import { homeNav } from "@/lib/homeNav";
@@ -38,10 +38,10 @@ export default function Home() {
           </div>
 
           <div>
-            <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
+            <h1 className="t-serif text-3xl font-bold tracking-tight sm:text-4xl">
               Oliver Paynter-Jones
             </h1>
-            <p className="mt-2 w-fit bg-linear-to-r from-[#4f8fff] to-[#8f9cff] bg-clip-text text-lg font-medium text-transparent">
+            <p className="mt-2 text-lg font-medium text-(--role)">
               {currentRole.title} at {current.name}
             </p>
             <div className="mt-6 space-y-4 text-lg leading-relaxed text-foreground/90">
@@ -57,21 +57,21 @@ export default function Home() {
                 works by building something with it.
               </p>
             </div>
-            <GradientLink href="/resume" from="#4f8fff" to="#8f9cff" className="mt-6">
+            <AccentLink href="/resume" className="mt-6">
               View my resume
-            </GradientLink>
+            </AccentLink>
           </div>
         </section>
 
         <section id="journey" className="mt-16">
-          <h2 className="mb-10 w-fit bg-linear-to-r from-[#8b7cf8] to-[#d08bfa] bg-clip-text text-3xl font-bold tracking-tight text-transparent">
+          <h2 className="t-serif mb-10 text-3xl font-bold tracking-tight">
             My Journey and Experiences
           </h2>
           <JourneyTimeline chapters={journey} />
         </section>
 
         <section id="blog" className="mt-24">
-          <h2 className="mb-6 w-fit bg-linear-to-r from-[#4f8fff] to-[#8f9cff] bg-clip-text text-3xl font-bold tracking-tight text-transparent">
+          <h2 className="t-serif mb-6 text-3xl font-bold tracking-tight">
             Blog
           </h2>
           <BlogIntro />

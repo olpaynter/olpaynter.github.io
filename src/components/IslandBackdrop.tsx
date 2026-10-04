@@ -70,7 +70,6 @@ type Item = {
   top: string;
   width: number;
   rotate: number;
-  hue: string;
   /** Seconds; negative so each item starts part-way through its cycle. */
   delay: number;
   duration: number;
@@ -79,19 +78,19 @@ type Item = {
 };
 
 const ITEMS: Item[] = [
-  { shape: "island", side: "left", x: 0.35, top: "5%", width: 120, rotate: -8, hue: "#4f8fff", delay: 0, duration: 22, drift: [1, -1] },
-  { shape: "mountain", side: "right", x: 0.5, top: "9%", width: 140, rotate: 4, hue: "#8f9cff", delay: -7, duration: 26, drift: [-1, 0.6] },
-  { shape: "snowboard", side: "left", x: 0.65, top: "21%", width: 110, rotate: -24, hue: "#d08bfa", delay: -12, duration: 19, drift: [0.4, 1] },
-  { shape: "island", side: "right", x: 0.3, top: "30%", width: 140, rotate: -14, hue: "#4f8fff", delay: -3, duration: 24, drift: [-0.8, -1] },
-  { shape: "castle", side: "left", x: 0.3, top: "40%", width: 150, rotate: 2, hue: "#8b7cf8", delay: -9, duration: 28, drift: [1, 0.3] },
-  { shape: "barbell", side: "right", x: 0.6, top: "50%", width: 110, rotate: 16, hue: "#d08bfa", delay: -15, duration: 21, drift: [-0.5, 1] },
-  { shape: "island", side: "left", x: 0.55, top: "60%", width: 95, rotate: 18, hue: "#8f9cff", delay: -5, duration: 20, drift: [0.9, 0.8] },
-  { shape: "mountain", side: "right", x: 0.35, top: "70%", width: 150, rotate: -5, hue: "#8b7cf8", delay: -11, duration: 25, drift: [-1, -0.4] },
-  { shape: "barbell", side: "left", x: 0.3, top: "81%", width: 100, rotate: -12, hue: "#4f8fff", delay: -2, duration: 23, drift: [0.3, -1] },
-  { shape: "island", side: "right", x: 0.55, top: "90%", width: 115, rotate: 8, hue: "#d08bfa", delay: -14, duration: 27, drift: [-0.7, 0.9] },
-  { shape: "snowboard", side: "right", x: 0.2, top: "22%", width: 95, rotate: 28, hue: "#8f9cff", delay: -4, duration: 24, drift: [0.6, -0.8] },
-  { shape: "island", side: "left", x: 0.15, top: "33%", width: 85, rotate: -16, hue: "#d08bfa", delay: -10, duration: 21, drift: [-0.6, -0.7] },
-  { shape: "castle", side: "right", x: 0.45, top: "80%", width: 125, rotate: -3, hue: "#4f8fff", delay: -16, duration: 27, drift: [0.8, 0.5] },
+  { shape: "island", side: "left", x: 0.35, top: "5%", width: 120, rotate: -8, delay: 0, duration: 22, drift: [1, -1] },
+  { shape: "mountain", side: "right", x: 0.5, top: "9%", width: 140, rotate: 4, delay: -7, duration: 26, drift: [-1, 0.6] },
+  { shape: "snowboard", side: "left", x: 0.65, top: "21%", width: 110, rotate: -24, delay: -12, duration: 19, drift: [0.4, 1] },
+  { shape: "island", side: "right", x: 0.3, top: "30%", width: 140, rotate: -14, delay: -3, duration: 24, drift: [-0.8, -1] },
+  { shape: "castle", side: "left", x: 0.3, top: "40%", width: 150, rotate: 2, delay: -9, duration: 28, drift: [1, 0.3] },
+  { shape: "barbell", side: "right", x: 0.6, top: "50%", width: 110, rotate: 16, delay: -15, duration: 21, drift: [-0.5, 1] },
+  { shape: "island", side: "left", x: 0.55, top: "60%", width: 95, rotate: 18, delay: -5, duration: 20, drift: [0.9, 0.8] },
+  { shape: "mountain", side: "right", x: 0.35, top: "70%", width: 150, rotate: -5, delay: -11, duration: 25, drift: [-1, -0.4] },
+  { shape: "barbell", side: "left", x: 0.3, top: "81%", width: 100, rotate: -12, delay: -2, duration: 23, drift: [0.3, -1] },
+  { shape: "island", side: "right", x: 0.55, top: "90%", width: 115, rotate: 8, delay: -14, duration: 27, drift: [-0.7, 0.9] },
+  { shape: "snowboard", side: "right", x: 0.2, top: "22%", width: 95, rotate: 28, delay: -4, duration: 24, drift: [0.6, -0.8] },
+  { shape: "island", side: "left", x: 0.15, top: "33%", width: 85, rotate: -16, delay: -10, duration: 21, drift: [-0.6, -0.7] },
+  { shape: "castle", side: "right", x: 0.45, top: "80%", width: 125, rotate: -3, delay: -16, duration: 27, drift: [0.8, 0.5] },
 ];
 
 /** Decorative outlines in the side margins. Hidden below lg, where there are no margins to fill. */
@@ -103,7 +102,6 @@ export function IslandBackdrop() {
         const style = {
           top: item.top,
           width: item.width,
-          color: item.hue,
           [item.side]: `calc((50% - 24rem - ${item.width}px) * ${item.x})`,
           "--float-rotate": `${item.rotate}deg`,
           "--dx": item.drift[0],
@@ -112,7 +110,7 @@ export function IslandBackdrop() {
           animationDuration: `${item.duration}s`,
         } as CSSProperties;
         return (
-          <svg key={i} viewBox={viewBox} className="float-shape absolute opacity-[0.14]" style={style}>
+          <svg key={i} viewBox={viewBox} className="float-shape absolute text-(--shape) opacity-[0.14]" style={style}>
             <g fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinejoin="round" strokeLinecap="round" vectorEffect="non-scaling-stroke">
               {body}
             </g>

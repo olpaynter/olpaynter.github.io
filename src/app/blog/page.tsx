@@ -13,7 +13,7 @@ export default function BlogIndex() {
       <main className="relative mx-auto w-full max-w-3xl px-6 py-20 sm:py-28">
         <SiteNav items={blogNav()} />
         <BackLink href="/" label="Home" />
-        <h1 className="mt-8 mb-6 w-fit min-[1360px]:mt-0 bg-linear-to-r from-[#4f8fff] to-[#8f9cff] bg-clip-text text-3xl font-bold tracking-tight text-transparent">
+        <h1 className="t-serif mt-8 mb-6 text-3xl font-bold tracking-tight min-[1360px]:mt-0">
           Blog
         </h1>
         <BlogIntro />

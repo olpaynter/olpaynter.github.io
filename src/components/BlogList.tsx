@@ -1,17 +1,9 @@
 import Link from "next/link";
-import type { CSSProperties } from "react";
 import { HiOutlinePencil } from "react-icons/hi2";
 import type { Post } from "@/data/blog";
-import { GradientLink } from "@/components/GradientLink";
+import { AccentLink } from "@/components/AccentLink";
 import { PostTitle } from "@/components/PageTransition";
 import { monthYear } from "@/lib/dates";
-
-// Posts cycle through the same close colour pairs as the timeline.
-const HUES: [string, string][] = [
-  ["#8b7cf8", "#d08bfa"],
-  ["#4f8fff", "#8f9cff"],
-  ["#2dd4bf", "#86efac"],
-];
 
 /** Marks work made without AI. Work made with AI carries no label. */
 export function AiLabel({ madeWithAI }: { madeWithAI: boolean }) {
@@ -39,14 +31,9 @@ export function BlogIntro() {
 export function BlogList({ posts }: { posts: Post[] }) {
   return (
     <ul className="space-y-12">
-      {posts.map((post, i) => {
-        const [from, to] = HUES[i % HUES.length];
+      {posts.map((post) => {
         return (
-          <li
-            key={post.slug}
-            className="timeline-reveal relative"
-            style={{ "--hue-from": from, "--hue-to": to } as CSSProperties}
-          >
+          <li key={post.slug} className="timeline-reveal relative">
             <time
               dateTime={post.date}
               className="block text-sm text-muted lg:absolute lg:top-1 lg:right-[calc(100%+1.25rem)] lg:whitespace-nowrap"
@@ -54,8 +41,8 @@ export function BlogList({ posts }: { posts: Post[] }) {
               {monthYear(post.date)}
             </time>
             <PostTitle slug={post.slug}>
-              <h3 className="w-fit text-xl font-semibold">
-                <Link href={`/blog/${post.slug}`} className="transition-colors duration-300 hover:text-(--hue-to)">
+              <h3 className="t-serif w-fit text-xl font-semibold">
+                <Link href={`/blog/${post.slug}`} className="transition-colors duration-300 hover:text-(--link)">
                   {post.title}
                 </Link>
               </h3>
@@ -65,9 +52,9 @@ export function BlogList({ posts }: { posts: Post[] }) {
               <span>{post.tags.join(" · ")}</span>
               <AiLabel madeWithAI={post.madeWithAI} />
             </div>
-            <GradientLink href={`/blog/${post.slug}`} from={from} to={to} className="mt-4">
+            <AccentLink href={`/blog/${post.slug}`} className="mt-4">
               Read the post
-            </GradientLink>
+            </AccentLink>
           </li>
         );
       })}
