@@ -1,3 +1,4 @@
+import { walk } from "@/lib/nav/tree";
 import type { EntryAction, NavNode } from "@/lib/nav/types";
 
 /** One entry of the side nav as drawn on the current page, with the entries beneath it. */
@@ -15,18 +16,15 @@ export type NavRowView = {
   children: NavRowView[];
 };
 
+/** A section of the current page, and the key of its entry. */
+export type SectionEntry = { section: string; key: string };
+
 /** The page's sections in nav order, with the key of the entry for each. */
-export function sectionEntries(tree: NavNode[], actions: Record<string, EntryAction>) {
-  const found: { section: string; key: string }[] = [];
-  const visit = (nodes: NavNode[]) => {
-    for (const node of nodes) {
-      const section = actions[node.key]?.section;
-      if (section !== undefined) found.push({ section, key: node.key });
-      visit(node.children);
-    }
-  };
-  visit(tree);
-  return found;
+export function sectionEntries(tree: NavNode[], actions: Record<string, EntryAction>): SectionEntry[] {
+  return walk(tree).flatMap((node) => {
+    const section = actions[node.key]?.section;
+    return section === undefined ? [] : [{ section, key: node.key }];
+  });
 }
 
 /**
@@ -39,7 +37,7 @@ export function sectionEntries(tree: NavNode[], actions: Record<string, EntryAct
 export function navRows(
   tree: NavNode[],
   actions: Record<string, EntryAction>,
-  sections: { section: string; key: string }[],
+  sections: SectionEntry[],
   activeSection: string | undefined,
 ): NavRowView[] {
   const current = Object.keys(actions).find((key) => actions[key].current);

@@ -1,3 +1,5 @@
+import { sectionFromHash } from "@/lib/nav/hash";
+
 /**
  * The page and section a navigation in progress is heading for. `NavigationTransitions` records it
  * from link clicks and from back and forward, before the router renders the next page. The side nav
@@ -8,7 +10,7 @@
 let intent: { path: string; section: string } | null = null;
 
 export function expectNavigation(url: URL) {
-  intent = { path: url.pathname, section: decodeURIComponent(url.hash.slice(1)) };
+  intent = { path: url.pathname, section: sectionFromHash(url.hash) };
 }
 
 /** The section a navigation to `path` is heading for, if one is in progress. */

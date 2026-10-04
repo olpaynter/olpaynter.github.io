@@ -13,16 +13,16 @@ Personal site of Oliver Paynter-Jones. It is a Next.js 16 app exported as static
 
 ## Layout of the code
 
-| Path                  | Contents                                                                                                                                                                                                                                            |
-| --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `src/app/`            | Routes: `/`, `/blog`, `/blog/[slug]`, `/resume`, `/journey/university-of-bath/dissertation`, the root layout, `globals.css`.                                                                                                                        |
-| `src/components/`     | Page pieces. `NavigationTransitions`, `RevealOnScroll` and `DevThemeSwitcher` run in the browser; the rest render at build time.                                                                                                                    |
-| `src/components/nav/` | The side nav: `SiteNav` (the component), `view.ts` (the rules for what each row shows), `NavRow`, `useScrollSpy` (the section in view), and `BackLink` for narrow screens.                                                                          |
-| `src/data/`           | `journey.ts` (the timeline) and `blog.ts` (the post list).                                                                                                                                                                                          |
-| `src/content/posts/`  | One HTML body per post, named after its slug.                                                                                                                                                                                                       |
-| `src/lib/`            | `routes.ts` (page addresses), `posts.ts` (post bodies and their sections), dates and site details.                                                                                                                                                  |
-| `src/lib/nav/`        | The side nav's data: `siteMap.ts` (the nav trees, declared), `build.ts` (turns them into the site-wide nav at build time), `checks.ts` (the build-time rules), `types.ts` (what the browser receives), `intent.ts` (where a navigation is heading). |
-| `public/`             | Files served as they are: images, the outline shapes in `shapes/`, the resume and the dissertation.                                                                                                                                                 |
+| Path                  | Contents                                                                                                                                                                                                                                                                                                                               |
+| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/app/`            | Routes: `/`, `/blog`, `/blog/[slug]`, `/resume`, `/journey/university-of-bath/dissertation`, the root layout, `globals.css`.                                                                                                                                                                                                           |
+| `src/components/`     | Page pieces. `NavigationTransitions`, `RevealOnScroll` and `DevThemeSwitcher` run in the browser; the rest render at build time.                                                                                                                                                                                                       |
+| `src/components/nav/` | The side nav: `SiteNav` (the component), `view.ts` (the rules for what each row shows), `NavRow`, `useScrollSpy` (the section in view), and `BackLink` for narrow screens.                                                                                                                                                             |
+| `src/data/`           | `journey.ts` (the timeline) and `blog.ts` (the post list).                                                                                                                                                                                                                                                                             |
+| `src/content/posts/`  | One HTML body per post, named after its slug.                                                                                                                                                                                                                                                                                          |
+| `src/lib/`            | `routes.ts` (page addresses), `posts.ts` (post bodies and their sections), dates and site details.                                                                                                                                                                                                                                     |
+| `src/lib/nav/`        | The side nav's data: `siteMap.ts` (the nav trees, declared), `build.ts` (turns them into the site-wide nav at build time), `checks.ts` (the build-time rules), `types.ts` (the shapes passed between them and to the browser), `hash.ts` (reading and writing section hashes), `tree.ts`, `intent.ts` (where a navigation is heading). |
+| `public/`             | Files served as they are: images, the outline shapes in `shapes/`, the resume and the dissertation.                                                                                                                                                                                                                                    |
 
 ## Adding content
 
@@ -91,7 +91,7 @@ Page transitions use React's `<ViewTransition>` and the browser's View Transitio
 
 | Name or class                                                   | Where                                                           | Effect                                                                     |
 | --------------------------------------------------------------- | --------------------------------------------------------------- | -------------------------------------------------------------------------- |
-| `page-out`, `page-in`                                           | `PageTransition`, wrapped around each page                      | The old page lifts away in 200ms; the new one settles in over about 500ms. |
+| `page-out`, `page-in`                                           | `PageTransition`, wrapped around each page                      | The old page lifts away in 200ms; the new one settles in over about 600ms. |
 | `history-page-old`, `history-page-new`                          | `main`, while `html[data-history-nav]` is set                   | Browser back and forward give the page body the same two classes.          |
 | `post-title-<slug>`, class `morph`                              | `PostTitle`                                                     | A post's title glides between the list and the post page on link clicks.   |
 | `site-nav`, `edge-fade-top`, `edge-fade-bottom`, class `steady` | The side nav, and the fades at the top and bottom of the screen | Lifted out of the page snapshots and shown live, unanimated.               |
@@ -146,9 +146,11 @@ The build creates every page's nav and the merged nav, and fails, and with it th
 - Every link goes to a page in the site map, and a link to a section of a root page names a section that page declares.
 - Every page in the site map has a page file under `src/app`, and belongs to exactly one tree, and every tree has an entry for its own root page.
 - Only one entry is current.
-- Every post section heading is plain text, so none is silently left out of the nav.
+- Every page address is written as `/a/b`, with no trailing slash, hash or query.
+- Sections are given only for pages that exist.
+- Every post section heading is plain text with no entities, and every section id is letters, digits, hyphens and underscores, so no section is silently left out of the nav or mislabelled.
 
-`checkedLink` in `src/lib/nav/siteMap.ts` applies the same link check to links written into content, such as a project's link in the timeline. Use it for any internal link that is not a nav entry.
+`checkedLink` in `src/lib/nav/siteMap.ts` applies the same link check to links written into content, such as a project's link in the timeline. Use it for any internal link that is not a nav entry. It checks sections only on root pages, whose sections the site map declares; a link to a post's section is checked for its page but not its section.
 
 While developing, the side nav also logs an error in the browser console for any section it cannot find on the page, and for any section listed out of page order. The build cannot tell whether a page passes its own address to `BackLink` or `DocumentPage`, so check that when copying a page.
 
@@ -156,7 +158,7 @@ While developing, the side nav also logs an error in the browser console for any
 
 Scrolling sets a target, the section crossing a band just above the middle of the screen, and the highlight walks towards it one entry at a time. It never skips an entry and holds each for at least 75ms (`MIN_DWELL_MS` in `useScrollSpy.ts`), so a fast scroll plays through every section in order. At the very top of a page the first entry is highlighted, and at the very bottom the last, so a page too short for its last sections to reach the band still highlights them.
 
-Clicking an entry is the exception. The nav does the scrolling itself: the highlight jumps straight to the entry and holds there until the scroll has been quiet for 150ms. If the reader scrolls during the hold, the highlight then catches up with where they are; otherwise it stays on the clicked entry, even one too short to reach the band. Modified clicks, such as opening in a new tab, are left to the browser.
+Clicking an entry is the exception. The nav does the scrolling itself: the highlight jumps straight to the entry and holds there until the scroll has been quiet for 150ms, or for at most 3 seconds. If the reader scrolls during the hold, the highlight then catches up with where they are; otherwise it stays on the clicked entry, even one too short to reach the band. Modified clicks, such as opening in a new tab, are left to the browser.
 
 The address bar follows the highlight (`/#journey/icrtouch`, or the bare address for the first section) by replacing the current history entry, so scrolling adds nothing to the back button. While scrolling, it updates once the highlight has rested for 200ms, because browsers refuse a page that replaces its history entry many times a second. A click updates it straight away.
 
@@ -166,7 +168,7 @@ The site is built for current Chrome, Safari and Firefox, and each feature falls
 
 | Feature                  | Used for                      | Without it                                                                 |
 | ------------------------ | ----------------------------- | -------------------------------------------------------------------------- |
-| View transitions         | Page changes and nav glides   | Pages change instantly.                                                    |
+| View transitions         | Page changes and title morphs | Pages change instantly.                                                    |
 | Scroll-driven animations | The timeline entrances        | `RevealOnScroll` plays each entrance once as it comes into view (Firefox). |
 | `scrollend`              | Ending the hold after a click | The hold ends when scroll events stop arriving.                            |
 
@@ -207,7 +209,7 @@ A page can unroll beneath another unrolled page in the same way, to any depth: g
 
 ### Sections on a page that is not a root
 
-Add them to the `sections` map built in `src/app/layout.tsx`, under the page's address, as the posts' sections are. They appear beneath the page's entry while the reader is on it. Give them keys of the form `section-<page>-<id>` so they cannot collide with any other entry.
+Pass them to `siteNavigation` in `src/app/layout.tsx`, under the page's address, alongside the posts' sections from `postSectionsByPage`. They appear beneath the page's entry while the reader is on it. Give them keys of the form `section-<page>-<id>` so they cannot collide with any other entry.
 
 ### A link written into content
 

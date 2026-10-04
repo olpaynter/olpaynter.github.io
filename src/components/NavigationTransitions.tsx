@@ -2,11 +2,12 @@
 
 import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
+import { isPlainClick } from "@/lib/clicks";
 import { expectNavigation, navigationCommitted } from "@/lib/nav/intent";
 
-/** Whether a click on this link starts a client-side navigation to another page. */
-function navigatesAway(event: MouseEvent): URL | undefined {
-  if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+/** The page a click is navigating to, if it is a plain click on a link to another page of the site. */
+function navigationTarget(event: MouseEvent): URL | undefined {
+  if (!isPlainClick(event)) return;
   const link = event.target instanceof Element ? event.target.closest("a[href]") : null;
   if (
     !(link instanceof HTMLAnchorElement) ||
@@ -29,11 +30,11 @@ export function NavigationTransitions() {
   const pathname = usePathname();
   const lastPath = useRef(pathname);
   const finish = useRef<(() => void) | null>(null);
-  const current = useRef<ViewTransition | null>(null);
+  const latestTransition = useRef<ViewTransition | null>(null);
 
   useEffect(() => {
     const onClick = (event: MouseEvent) => {
-      const url = navigatesAway(event);
+      const url = navigationTarget(event);
       if (url) expectNavigation(url);
     };
     // Capture listeners on window run before React's and the router's handlers.
@@ -55,6 +56,8 @@ export function NavigationTransitions() {
       event.stopImmediatePropagation();
       root.dataset.historyNav = "old";
       const transition = document.startViewTransition(async () => {
+        // An earlier back or forward still waiting for its page is superseded by this one.
+        finish.current?.();
         let timer: number | undefined;
         const rendered = new Promise<void>((resolve) => {
           finish.current = resolve;
@@ -70,12 +73,13 @@ export function NavigationTransitions() {
         // ignores the entry because it holds none of its state.
         if (location.pathname !== lastPath.current && history.state?.__NA) await rendered;
         window.clearTimeout(timer);
-        root.dataset.historyNav = "new";
+        // Only the newest transition may set or remove the attribute, or a newer one would lose
+        // its motion.
+        if (latestTransition.current === transition) root.dataset.historyNav = "new";
       });
-      current.current = transition;
-      // Only the newest transition may remove the attribute, or a newer one would lose its motion.
+      latestTransition.current = transition;
       transition.finished.finally(() => {
-        if (current.current === transition) delete root.dataset.historyNav;
+        if (latestTransition.current === transition) delete root.dataset.historyNav;
       });
     };
 

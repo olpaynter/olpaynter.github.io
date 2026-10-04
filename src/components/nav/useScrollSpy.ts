@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { hashFor, sectionFromHash } from "@/lib/nav/hash";
 import { sectionOnArrival } from "@/lib/nav/intent";
 
 /**
@@ -73,7 +74,7 @@ export function useScrollSpy(ids: string[]) {
       addressTimer.current = undefined;
       // A write scheduled before navigating away must not land on the next page's address.
       if (location.pathname !== pathname) return;
-      const hash = id === ids[0] ? "" : `#${id}`;
+      const hash = id === ids[0] ? "" : hashFor(id);
       if (location.hash === hash) return;
       try {
         history.replaceState(history.state, "", `${location.pathname}${location.search}${hash}`);
@@ -100,6 +101,7 @@ export function useScrollSpy(ids: string[]) {
 
   useEffect(() => {
     shown.current = target.current = activeNow.current;
+    if (ids.length === 0) return;
     const visible = new Set<string>();
 
     const step = () => {
@@ -240,7 +242,7 @@ export function useScrollSpy(ids: string[]) {
   // Arriving with a section in the address, by a link or a reload, holds the highlight on it while
   // the browser scrolls there, even if the section is too short to reach the highlight band.
   useEffect(() => {
-    const id = decodeURIComponent(location.hash.slice(1));
+    const id = sectionFromHash(location.hash);
     if (!ids.includes(id)) return;
     const frame = requestAnimationFrame(() => select(id));
     return () => cancelAnimationFrame(frame);

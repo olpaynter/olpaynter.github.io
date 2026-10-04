@@ -5,13 +5,10 @@ import { type MouseEvent, useMemo } from "react";
 import { NavRow } from "@/components/nav/NavRow";
 import { useScrollSpy } from "@/components/nav/useScrollSpy";
 import { navRows, sectionEntries } from "@/components/nav/view";
+import { isPlainClick } from "@/lib/clicks";
 import type { EntryAction, SiteNavigation } from "@/lib/nav/types";
 
 const NO_ACTIONS: Record<string, EntryAction> = {};
-
-function isPlainClick(event: MouseEvent) {
-  return event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey;
-}
 
 /**
  * The side nav, fixed in the left margin from the `nav` breakpoint, below which it would collide
@@ -21,7 +18,7 @@ function isPlainClick(event: MouseEvent) {
  */
 export function SiteNav({ navigation }: { navigation: SiteNavigation }) {
   const pathname = usePathname();
-  const actions = navigation.pages[pathname] ?? navigation.pages[pathname.replace(/\/$/, "")] ?? NO_ACTIONS;
+  const actions = navigation.pages[pathname] ?? NO_ACTIONS;
   const sections = useMemo(() => sectionEntries(navigation.tree, actions), [navigation.tree, actions]);
   const ids = useMemo(() => sections.map(({ section }) => section), [sections]);
   const [active, goTo] = useScrollSpy(ids);
@@ -37,13 +34,10 @@ export function SiteNav({ navigation }: { navigation: SiteNavigation }) {
       goTo(action.section);
       return;
     }
-    const url = new URL(action.href, location.href);
-    if (url.pathname !== location.pathname) return;
-    // A link to the page already open, such as the current post, returns to its top, or to the
-    // section it names.
+    if (new URL(action.href, location.href).pathname !== location.pathname) return;
+    // A link to the page already open, such as the current post, returns to its top.
     event.preventDefault();
-    const section = decodeURIComponent(url.hash.slice(1));
-    goTo(ids.includes(section) ? section : undefined);
+    goTo(undefined);
   };
 
   return (

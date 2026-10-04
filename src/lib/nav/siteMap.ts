@@ -1,5 +1,7 @@
 import { publishedPosts } from "@/data/blog";
 import { chapterAnchor, journey } from "@/data/journey";
+import { sectionFromHash } from "@/lib/nav/hash";
+import { walk } from "@/lib/nav/tree";
 import { homeSections, routes } from "@/lib/routes";
 
 /**
@@ -83,11 +85,6 @@ export const navTrees: NavTree[] = [
   },
 ];
 
-/** Every entry of a list and its descendants, in reading order. */
-export function walk(entries: Entry[]): Entry[] {
-  return entries.flatMap((entry) => [entry, ...walk(entry.children ?? [])]);
-}
-
 for (const [parent, pages] of Object.entries(unrolledPages)) {
   const entries = navTrees.flatMap((tree) => walk(tree.entries)).filter((entry) => entry.key === parent);
   if (entries.length === 0) throw new Error(`Site map: unrolledPages lists "${parent}", which is not an entry key`);
@@ -95,12 +92,11 @@ for (const [parent, pages] of Object.entries(unrolledPages)) {
 }
 
 /** Every page on the site: each tree's root and every page an entry stands for. */
-export function knownPaths(): string[] {
-  const paths = navTrees.flatMap((tree) => [tree.root, ...walk(tree.entries).flatMap((entry) => entry.page ?? [])]);
-  return [...new Set(paths)];
-}
+export const knownPaths: readonly string[] = [
+  ...new Set(navTrees.flatMap((tree) => [tree.root, ...walk(tree.entries).flatMap((entry) => entry.page ?? [])])),
+];
 
-/** The section ids a root page renders, or undefined for a page whose sections are not declared. */
+/** The section ids a root page renders, or undefined for a page whose sections are not declared here. */
 export function sectionsOf(path: string): string[] | undefined {
   const tree = navTrees.find((candidate) => candidate.root === path);
   return tree && walk(tree.entries).flatMap((entry) => entry.section ?? []);
@@ -119,20 +115,20 @@ export function treeFor(path: string): NavTree {
   );
 }
 
-/** Why an internal link is broken, or undefined if it leads to a page and section that exist. */
+/**
+ * Why an internal link is broken, or undefined if its page exists and, for a root page, so does the
+ * section it names. Sections of other pages, such as a post's headings, are not checked.
+ */
 export function linkProblem(href: string): string | undefined {
   const url = new URL(href, "https://site.invalid");
   if (url.origin !== "https://site.invalid") return undefined;
-  if (!knownPaths().includes(url.pathname)) return `${url.pathname} is not in the site map`;
-  const anchor = decodeURIComponent(url.hash.slice(1));
+  if (!knownPaths.includes(url.pathname)) return `${url.pathname} is not in the site map`;
+  const section = sectionFromHash(url.hash);
   const sections = sectionsOf(url.pathname);
-  if (anchor && sections && !sections.includes(anchor)) return `#${anchor} is not a section of ${url.pathname}`;
+  if (section && sections && !sections.includes(section)) return `#${section} is not a section of ${url.pathname}`;
 }
 
-/**
- * Returns an internal link unchanged, or fails the build if it points at a page that does not exist,
- * or at a section a root page does not declare. Use it for links written into content data.
- */
+/** Returns an internal link unchanged, or fails the build if `linkProblem` finds it broken. */
 export function checkedLink(href: string): string {
   const problem = linkProblem(href);
   if (problem) throw new Error(`Link to ${href}: ${problem}`);

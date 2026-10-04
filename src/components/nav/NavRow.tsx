@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { createContext, type MouseEvent, type ReactNode, useContext, useEffect, useState } from "react";
 import type { NavRowView } from "@/components/nav/view";
+import { hashFor } from "@/lib/nav/hash";
 import type { EntryAction } from "@/lib/nav/types";
 
-/** How long a fold takes to unroll or roll up. */
+/** How long a fold takes to unroll or roll up. It sets both the CSS transition and the settle timer. */
 const FOLD_MS = 700;
 
 /** Whether a fold around this point is opening or closing, if one is. */
@@ -40,12 +41,13 @@ function Fold({ open, children }: { open: boolean; children: ReactNode }) {
   // fades it only at the end, so the reader sees it roll up rather than an empty space closing.
   const motion = enclosing
     ? "transition-none"
-    : `transition-[grid-template-rows,opacity] duration-700 motion-reduce:transition-none ${
+    : `transition-[grid-template-rows,opacity] motion-reduce:transition-none ${
         shown ? "ease-out" : "[transition-timing-function:var(--ease-settle),cubic-bezier(0.7,0,0.84,0)]"
       }`;
   return (
     <div
       inert={!shown}
+      style={{ transitionDuration: enclosing ? undefined : `${FOLD_MS}ms` }}
       className={`grid ${motion} ${shown ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}
     >
       <div className="overflow-hidden">
@@ -74,7 +76,7 @@ export function NavRow({
     <li>
       <Fold open={row.present}>
         <Link
-          href={action?.href ?? (action?.section === undefined ? "#" : `#${action.section}`)}
+          href={action?.href ?? (action?.section === undefined ? "#" : hashFor(action.section))}
           aria-current={action?.current ? "page" : highlighted ? "location" : undefined}
           onClick={(event) => onClick(event, action)}
           className={`group flex items-start ${nested ? "py-1.5 text-xs" : "py-2 text-sm"}`}
