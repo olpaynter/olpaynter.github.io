@@ -138,10 +138,7 @@ export function MobileNav({ rows, onClick }: { rows: NavRowView[]; onClick: Clic
   const topActive = rows.find((row) => row.present && holdsHighlight(row))?.key ?? "";
 
   return (
-    <nav
-      aria-label="Site"
-      className="steady mobile-nav fixed inset-x-0 top-0 z-20 bg-linear-to-b from-background from-70% to-transparent pt-4 pb-5 nav:hidden"
-    >
+    <nav aria-label="Site" className="steady mobile-nav fixed inset-x-0 top-0 z-20 bg-background pt-4 pb-2 nav:hidden">
       <div className="mx-auto max-w-3xl text-sm">
         <Scroller watch={topActive}>
           {rows.map((row) => (
@@ -194,6 +191,12 @@ export function MobileNav({ rows, onClick }: { rows: NavRowView[]; onClick: Clic
           </div>
         </div>
       </div>
+      {/* Both rows sit on a solid background, so the page cannot show through the second; the
+          fade starts below them. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-full h-6 bg-linear-to-b from-background to-transparent"
+      />
     </nav>
   );
 }
