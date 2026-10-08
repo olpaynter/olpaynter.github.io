@@ -145,65 +145,70 @@ export function MobileNav({ rows, onClick }: { rows: NavRowView[]; onClick: Clic
   const topActive = rows.find((row) => row.present && holdsHighlight(row))?.key ?? "";
 
   return (
-    <nav aria-label="Site" className="steady mobile-nav fixed inset-x-0 top-0 z-20 bg-background pt-4 pb-2 nav:hidden">
-      <div className="mx-auto max-w-3xl text-sm">
-        <Scroller watch={topActive}>
-          {rows.map((row) => (
-            <SideFold key={row.key} open={row.present}>
-              <Entry row={row} active={row.key === topActive} onClick={onClick} />
-            </SideFold>
-          ))}
-        </Scroller>
-      </div>
-      <div
-        inert={!open}
-        style={{ transitionDuration: `${FOLD_MS}ms` }}
-        className={`grid transition-[grid-template-rows,opacity] motion-reduce:transition-none ${
-          open
-            ? "grid-rows-[1fr] opacity-100 ease-out"
-            : "grid-rows-[0fr] opacity-0 [transition-timing-function:var(--ease-settle),cubic-bezier(0.7,0,0.84,0)]"
-        }`}
-      >
-        <div className="overflow-hidden">
-          <div className="mx-auto flex max-w-3xl items-baseline pt-2 text-xs">
-            <ul className="flex shrink-0 items-baseline">
-              {deeper
-                .filter((row) => row.children.length > 0)
-                .map((row) => (
-                  <SideFold key={row.key} open={row.key === pinned}>
-                    <span className="ml-6 inline-flex items-baseline gap-2 text-muted">
-                      <Link
-                        href={hrefOf(row.action)}
-                        onClick={(event) => onClick(event, row.action)}
-                        className="max-w-[9rem] truncate py-1 transition-colors duration-300 hover:text-foreground"
-                      >
-                        {row.label}
-                      </Link>
-                      <span aria-hidden>›</span>
-                    </span>
+    // As with the side nav, the nav's box has a fixed height, tall enough for both rows and the fade:
+    // a page transition draws the nav in a box sized when it starts, and would squash a second row
+    // unrolling during it. The bar inside grows freely, and only it takes clicks.
+    <nav aria-label="Site" className="steady mobile-nav pointer-events-none fixed inset-x-0 top-0 z-20 h-32 nav:hidden">
+      <div className="pointer-events-auto relative bg-background pt-4 pb-2">
+        <div className="mx-auto max-w-3xl text-sm">
+          <Scroller watch={topActive}>
+            {rows.map((row) => (
+              <SideFold key={row.key} open={row.present}>
+                <Entry row={row} active={row.key === topActive} onClick={onClick} />
+              </SideFold>
+            ))}
+          </Scroller>
+        </div>
+        <div
+          inert={!open}
+          style={{ transitionDuration: `${FOLD_MS}ms` }}
+          className={`grid transition-[grid-template-rows,opacity] motion-reduce:transition-none ${
+            open
+              ? "grid-rows-[1fr] opacity-100 ease-out"
+              : "grid-rows-[0fr] opacity-0 [transition-timing-function:var(--ease-settle),cubic-bezier(0.7,0,0.84,0)]"
+          }`}
+        >
+          <div className="overflow-hidden">
+            <div className="mx-auto flex max-w-3xl items-baseline pt-2 text-xs">
+              <ul className="flex shrink-0 items-baseline">
+                {deeper
+                  .filter((row) => row.children.length > 0)
+                  .map((row) => (
+                    <SideFold key={row.key} open={row.key === pinned}>
+                      <span className="ml-6 inline-flex items-baseline gap-2 text-muted">
+                        <Link
+                          href={hrefOf(row.action)}
+                          onClick={(event) => onClick(event, row.action)}
+                          className="max-w-[9rem] truncate py-1 transition-colors duration-300 hover:text-foreground"
+                        >
+                          {row.label}
+                        </Link>
+                        <span aria-hidden>›</span>
+                      </span>
+                    </SideFold>
+                  ))}
+              </ul>
+              <Scroller watch={`${shown?.parent}:${shown?.active}`}>
+                {deeper.map((row) => (
+                  <SideFold key={row.key} open={items.has(row.key)}>
+                    <Entry
+                      row={row}
+                      active={row.key === shown?.active || (items.has(row.key) && holdsHighlight(row))}
+                      onClick={onClick}
+                    />
                   </SideFold>
                 ))}
-            </ul>
-            <Scroller watch={`${shown?.parent}:${shown?.active}`}>
-              {deeper.map((row) => (
-                <SideFold key={row.key} open={items.has(row.key)}>
-                  <Entry
-                    row={row}
-                    active={row.key === shown?.active || (items.has(row.key) && holdsHighlight(row))}
-                    onClick={onClick}
-                  />
-                </SideFold>
-              ))}
-            </Scroller>
+              </Scroller>
+            </div>
           </div>
         </div>
-      </div>
-      {/* Both rows sit on a solid background, so the page cannot show through the second; the
+        {/* Both rows sit on a solid background, so the page cannot show through the second; the
           fade starts below them. */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-full h-6 bg-linear-to-b from-background to-transparent"
-      />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-full h-6 bg-linear-to-b from-background to-transparent"
+        />
+      </div>
     </nav>
   );
 }
