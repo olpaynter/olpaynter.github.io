@@ -4,3 +4,6 @@ export const SITE_URL = "https://olpaynter.github.io";
 export const SITE_NAME = "Oliver Paynter-Jones";
 
 export const SITE_DESCRIPTION = "Software Development Engineer at Amazon, based in Edinburgh.";
+
+/** Shown in place of any image that fails to load. */
+export const FALLBACK_IMAGE = "/photos/fallback.svg";

@@ -41,14 +41,16 @@ function Photos({ images }: { images: Photo[] }) {
   return (
     <div className={`mt-6 grid gap-3 ${single ? "max-w-md" : "sm:grid-cols-2"}`}>
       {images.map((image, i) => (
-        <Image
-          key={`${image.src}-${i}`}
-          src={image.src}
-          alt={image.alt}
-          width={640}
-          height={480}
-          className={`w-full rounded-xl object-cover ${single ? "aspect-video" : "aspect-[4/3]"}`}
-        />
+        <figure key={`${image.src}-${i}`}>
+          <Image
+            src={image.src}
+            alt={image.alt}
+            width={640}
+            height={480}
+            className={`w-full rounded-xl object-cover ${single ? "aspect-video" : "aspect-[4/3]"}`}
+          />
+          {image.caption && <figcaption className="mt-2 text-sm text-muted">{image.caption}</figcaption>}
+        </figure>
       ))}
     </div>
   );

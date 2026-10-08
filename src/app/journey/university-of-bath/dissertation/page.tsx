@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { DocumentPage } from "@/components/DocumentPage";
-import { routes } from "@/lib/routes";
+import { documentFiles, routes } from "@/lib/routes";
 
 export const metadata: Metadata = {
   title: "Dissertation | Oliver Paynter-Jones",
@@ -16,7 +16,7 @@ export default function DissertationPage() {
           Behavioural Biometrics in Anti-cheat: Evaluating Angle-Based Mouse Dynamics for Anomaly Detection
         </p>
       }
-      file="/dissertation.pdf"
+      file={documentFiles[routes.dissertation]}
       downloadName="Oliver Paynter-Jones dissertation.pdf"
       path={routes.dissertation}
     />

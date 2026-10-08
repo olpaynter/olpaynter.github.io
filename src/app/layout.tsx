@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import { Inter, Newsreader } from "next/font/google";
 import { DevThemeSwitcher } from "@/components/DevThemeSwitcher";
+import { DocumentPrefetch } from "@/components/DocumentPrefetch";
 import { NavigationTransitions } from "@/components/NavigationTransitions";
 import { RevealOnScroll } from "@/components/RevealOnScroll";
 import { SiteNav } from "@/components/nav/SiteNav";
 import { siteNavigation } from "@/lib/nav/build";
 import { postSectionsByPage } from "@/lib/posts";
 import { IslandBackdrop } from "@/components/IslandBackdrop";
-import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
+import { FALLBACK_IMAGE, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 const inter = Inter({
@@ -34,6 +35,9 @@ export const metadata: Metadata = {
 // Runs before first paint, so the page never flashes the other theme or shows the timeline before
 // its entrance. It picks warm or typographic once per visit: sessionStorage survives reloads but not
 // a new visit. Where scroll-driven animations are missing, it turns on the fallback in globals.css.
+// It also swaps any image that fails to load for the site's fallback image; listening this early
+// catches images that fail before React hydrates, and the data attribute stops a failing fallback
+// from retrying forever.
 const beforePaint = `try {
   var t = sessionStorage.getItem("theme");
   if (t !== "warm" && t !== "typographic") {
@@ -42,7 +46,14 @@ const beforePaint = `try {
   }
   document.documentElement.dataset.theme = t;
 } catch (e) {}
-if (window.CSS && !CSS.supports("animation-timeline: view()")) document.documentElement.dataset.reveal = "";`;
+if (window.CSS && !CSS.supports("animation-timeline: view()")) document.documentElement.dataset.reveal = "";
+document.addEventListener("error", function (e) {
+  var img = e.target;
+  if (!(img instanceof HTMLImageElement) || "fallback" in img.dataset) return;
+  img.dataset.fallback = "";
+  img.removeAttribute("srcset");
+  img.src = "${FALLBACK_IMAGE}";
+}, true);`;
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
   const navigation = siteNavigation(await postSectionsByPage());
@@ -58,6 +69,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
       </head>
       <body className="min-h-full font-sans">
         <NavigationTransitions />
+        <DocumentPrefetch />
         {process.env.NODE_ENV === "development" && <DevThemeSwitcher />}
         <div className="relative min-h-full">
           <IslandBackdrop />

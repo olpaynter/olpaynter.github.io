@@ -5,7 +5,7 @@ import { hashFor } from "@/lib/nav/hash";
 import type { EntryAction } from "@/lib/nav/types";
 
 /** How long a fold takes to unroll or roll up. It sets both the CSS transition and the settle timer. */
-const FOLD_MS = 700;
+const FOLD_MS = 600;
 
 /** Whether a fold around this point is opening or closing, if one is. */
 const EnclosingFold = createContext<"opening" | "closing" | undefined>(undefined);

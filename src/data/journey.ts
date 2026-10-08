@@ -6,7 +6,12 @@ export type Project = {
 };
 
 /** A path under public/, for example /photos/paris.jpg. */
-export type Photo = { src: string; alt: string };
+export type Photo = {
+  src: string;
+  alt: string;
+  /** Shown beneath the photo. */
+  caption?: string;
+};
 
 export type Role = {
   title?: string;
@@ -123,6 +128,7 @@ export const journey: Chapter[] = [
           {
             src: "/photos/travel-placeholder.svg",
             alt: "Placeholder illustration of a sunset over hills with the Eiffel Tower",
+            caption: "Sunset on the way into Paris, October 2025.",
           },
         ],
       },
@@ -174,8 +180,16 @@ export const journey: Chapter[] = [
           "Placeholder: the experiences, people and moments that shaped your time there.",
         ],
         images: [
-          { src: "/photos/bath-placeholder.svg", alt: "Placeholder illustration of the Royal Crescent in Bath" },
-          { src: "/photos/bath-placeholder.svg", alt: "Placeholder illustration of the Royal Crescent in Bath" },
+          {
+            src: "/photos/bath-placeholder.svg",
+            alt: "Placeholder illustration of the Royal Crescent in Bath",
+            caption: "The Royal Crescent, a short walk from campus.",
+          },
+          {
+            src: "/photos/bath-placeholder.svg",
+            alt: "Placeholder illustration of the Royal Crescent in Bath",
+            caption: "Graduation week, summer 2025.",
+          },
         ],
       },
     ],
@@ -196,10 +210,12 @@ export const journey: Chapter[] = [
           {
             src: "/photos/isle-of-wight-placeholder.svg",
             alt: "Placeholder illustration of the Needles off the Isle of Wight",
+            caption: "The Needles from the cliffs above Alum Bay.",
           },
           {
             src: "/photos/isle-of-wight-placeholder.svg",
             alt: "Placeholder illustration of the Needles off the Isle of Wight",
+            caption: "Evening on the West Wight coast.",
           },
         ],
       },

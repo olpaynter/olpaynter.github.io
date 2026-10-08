@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" width="640" height="360">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2a2350"/>
+      <stop offset="0.6" stop-color="#7a4d8f"/>
+      <stop offset="1" stop-color="#e08a9a"/>
+    </linearGradient>
+    <linearGradient id="pool" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e08a9a"/>
+      <stop offset="0.5" stop-color="#7a4d8f"/>
+      <stop offset="1" stop-color="#3f2d63"/>
+    </linearGradient>
+    <linearGradient id="cliff" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#b886aa"/>
+      <stop offset="1" stop-color="#dcb0c6"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#sky)"/>
+  <g fill="#f3c3cc" opacity="0.4">
+    <path d="M40 70 C40 50 70 44 84 56 C94 40 126 42 132 62 C152 60 160 80 144 88 H52 C34 88 30 74 40 70 Z"/>
+    <path d="M440 92 C442 70 476 62 492 78 C504 58 542 60 548 84 C574 82 584 104 562 112 H456 C434 112 428 98 440 92 Z"/>
+    <path d="M286 136 C290 122 312 120 320 130 C330 118 352 122 352 138 H294 C282 138 280 134 286 136 Z"/>
+  </g>
+  <path d="M100 196 C130 186 180 184 220 188 L300 192 L300 200 H100 Z" fill="#3b2c5c"/>
+  <path d="M104 196 L112 186 C150 182 196 182 222 186 L230 196 Z" fill="#a77aa6" opacity="0.6"/>
+  <path d="M300 200 L300 188 C390 170 480 140 560 118 C600 108 625 104 640 102 V200 Z" fill="#3b2c5c"/>
+  <path d="M318 200 L330 186 C410 170 490 146 560 126 C596 116 622 112 640 110 V200 Z" fill="url(#cliff)"/>
+  <g stroke="#a77aa6" stroke-width="2" opacity="0.6">
+    <path d="M420 200 L432 168 M470 200 L486 156 M520 200 L534 142 M570 200 L584 130 M610 200 L620 120"/>
+  </g>
+  <rect y="200" width="640" height="34" fill="#5a3f7f"/>
+  <g stroke="#f3c3cc" stroke-width="2" stroke-linecap="round" opacity="0.6" fill="none">
+    <path d="M0 214 H180 M240 210 H420 M480 216 H640"/>
+    <path d="M60 226 H300 M360 224 H560"/>
+  </g>
+  <path d="M0 234 H640 V360 H0 Z" fill="#3b2c5c"/>
+  <path d="M120 250 C260 238 470 240 640 252 V284 C470 270 280 268 150 276 Z" fill="#4c3670"/>
+  <path d="M0 292 C120 280 300 286 420 300 C520 310 600 304 640 300 V360 H0 Z" fill="url(#pool)"/>
+  <g fill="#f3c3cc" opacity="0.35">
+    <path d="M30 320 C30 334 60 340 76 330 C88 346 124 344 130 326 Z"/>
+    <path d="M440 316 C442 334 476 342 492 328 C504 348 544 344 548 320 Z"/>
+  </g>
+  <g stroke="#241c3d" stroke-width="2" stroke-linecap="round" opacity="0.5" fill="none">
+    <path d="M40 350 C80 346 120 352 160 348 M220 344 C260 340 300 346 340 342 M420 352 C460 348 500 354 540 350"/>
+  </g>
+</svg>
