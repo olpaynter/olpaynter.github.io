@@ -18,11 +18,16 @@ type ShapeName = keyof typeof SHAPES;
 
 const SHAPE_NAMES = Object.keys(SHAPES) as ShapeName[];
 
-/** Outlines per side of the column. */
-const PER_SIDE = 16;
+/**
+ * Outlines are spaced a fixed distance apart down the page, in rem, rather than a share of its
+ * height, so content that grows after load, such as a quote's reason unrolling, does not move them.
+ * There are enough slots for the longest page; the backdrop clips the rest.
+ */
+const SLOT_REM = 22;
+const PER_SIDE = 48;
 
-/** Two outlines of the same shape are kept at least this far apart, as a percentage of page height. */
-const SAME_SHAPE_GAP = 12;
+/** Two outlines of the same shape are kept at least this far apart, in rem. */
+const SAME_SHAPE_GAP = 44;
 
 /** The same seed gives the same layout on every build, so the outlines do not move between visits. */
 const SEED = 20251004;
@@ -32,6 +37,7 @@ type Outline = {
   side: "left" | "right";
   /** Position across the side margin: 0 at the outer edge, 1 next to the column. */
   x: number;
+  /** Distance from the top of the page, in rem. */
   top: number;
   width: number;
   rotate: number;
@@ -58,9 +64,8 @@ function layout(): Outline[] {
   const outlines: Outline[] = [];
   for (const side of ["left", "right"] as const) {
     // Even slots down the page, each nudged a little, so coverage is even without looking gridded.
-    const slot = 100 / PER_SIDE;
     for (let i = 0; i < PER_SIDE; i++) {
-      const top = Math.min(97, Math.max(1, (i + 0.5) * slot + between(-0.35, 0.35) * slot));
+      const top = Math.max(2, (i + 0.5) * SLOT_REM + between(-0.35, 0.35) * SLOT_REM);
       outlines.push({
         shape: "island",
         side,
@@ -98,7 +103,7 @@ export function IslandBackdrop() {
         // Never wider than the margin, so an outline cannot reach into the content column.
         const width = `min(${(outline.width / 16).toFixed(3)}rem, calc(50% - 24rem - 1rem))`;
         const style = {
-          top: `${outline.top.toFixed(2)}%`,
+          top: `${outline.top.toFixed(2)}rem`,
           width,
           aspectRatio: SHAPES[outline.shape].aspect,
           [outline.side]: `calc((50% - 24rem - ${width}) * ${outline.x.toFixed(3)})`,

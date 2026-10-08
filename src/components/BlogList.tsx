@@ -20,7 +20,7 @@ export function AiLabel({ madeWithAI }: { madeWithAI: boolean }) {
 /** Explains the "Made without AI" label. */
 export function BlogIntro() {
   return (
-    <p className="mb-12 max-w-2xl text-lg leading-relaxed text-foreground/80">
+    <p className="mb-10 max-w-2xl text-base leading-relaxed text-foreground/80 sm:mb-12 sm:text-lg">
       Posts marked &ldquo;Made without AI&rdquo; were thought through, written and built by me alone. I think the effort
       and thinking behind a piece of work is part of its value, so it is worth saying when it is entirely mine.
     </p>
@@ -34,7 +34,7 @@ export function BlogIntro() {
  */
 export function BlogList({ posts, anchored = false }: { posts: Post[]; anchored?: boolean }) {
   return (
-    <ul className="space-y-12">
+    <ul className="space-y-10 sm:space-y-12">
       {posts.map((post) => {
         return (
           <li key={post.slug} id={anchored ? post.slug : undefined} className="timeline-reveal relative">
@@ -45,13 +45,13 @@ export function BlogList({ posts, anchored = false }: { posts: Post[]; anchored?
               {monthYear(post.date)}
             </time>
             <PostTitle slug={post.slug}>
-              <h3 className="t-serif w-fit text-xl font-semibold">
+              <h3 className="t-serif w-fit text-lg font-semibold sm:text-xl">
                 <Link href={routes.post(post.slug)} className="transition-colors duration-300 hover:text-(--link)">
                   {post.title}
                 </Link>
               </h3>
             </PostTitle>
-            <p className="mt-2 text-lg leading-relaxed text-foreground/80">{post.summary}</p>
+            <p className="mt-2 text-base leading-relaxed text-foreground/80 sm:text-lg">{post.summary}</p>
             <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-muted">
               <span>{post.tags.join(" · ")}</span>
               <AiLabel madeWithAI={post.madeWithAI} />

@@ -6,7 +6,7 @@ import { BlogIntro, BlogList } from "@/components/BlogList";
 import { JourneyTimeline } from "@/components/JourneyTimeline";
 import { Socials } from "@/components/Socials";
 import { AccentLink } from "@/components/AccentLink";
-import { MarginNote, PullQuote } from "@/components/QuoteVariants";
+import { Quote } from "@/components/Quote";
 import { publishedPosts } from "@/data/blog";
 import { journey } from "@/data/journey";
 import { reminders } from "@/data/reminders";
@@ -15,36 +15,48 @@ import { FALLBACK_IMAGE } from "@/lib/site";
 
 const current = journey.find((chapter) => chapter.kind === "work")!;
 const currentRole = current.roles[0];
-const quote = reminders[0];
+
+function Location({ className = "" }: { className?: string }) {
+  return (
+    <p className={`flex items-center gap-2 text-muted ${className}`}>
+      <HiOutlineMapPin className="h-[1.25em] w-[1.25em]" aria-hidden />
+      Edinburgh, UK
+    </p>
+  );
+}
 
 export default function Home() {
   return (
     <PageTransition>
-      <main className="relative mx-auto w-full max-w-3xl px-6 py-20 sm:py-28">
+      <main className="relative mx-auto w-full max-w-3xl px-6 pt-20 pb-16 sm:py-28">
         <section id={homeSections.about}>
-          <div className="grid grid-cols-1 gap-10 sm:grid-cols-[12rem_1fr] sm:gap-12">
-            <div className="flex flex-col items-center sm:items-start">
+          {/* From sm the photo column spans both rows, so the introduction sits directly under the name. */}
+          <div className="grid grid-cols-[6rem_1fr] items-center gap-x-5 gap-y-8 sm:grid-cols-[12rem_1fr] sm:items-start sm:gap-x-12 sm:gap-y-6">
+            <div className="sm:row-span-2">
               <Image
                 src={FALLBACK_IMAGE}
                 alt="Oliver Paynter-Jones"
                 width={240}
                 height={240}
                 preload
-                className="aspect-square w-40 rounded-full object-cover ring-2 ring-white/10 sm:w-48"
+                className="aspect-square w-24 rounded-full object-cover ring-2 ring-white/10 sm:w-48"
               />
-              <p className="mt-5 flex items-center gap-2 text-base text-muted">
-                <HiOutlineMapPin className="h-5 w-5" aria-hidden />
-                Edinburgh, UK
-              </p>
-              <Socials className="mt-5" />
+              <div className="hidden sm:block">
+                <Location className="mt-5" />
+                <Socials className="mt-5" />
+              </div>
             </div>
 
             <div>
-              <h1 className="t-serif text-2xl font-bold tracking-tight sm:text-3xl">Oliver Paynter-Jones</h1>
-              <p className="mt-2 text-lg font-medium text-(--role)">
+              <h1 className="t-serif text-xl font-bold tracking-tight sm:text-3xl">Oliver Paynter-Jones</h1>
+              <p className="mt-1 text-base font-medium text-(--role) sm:mt-2 sm:text-lg">
                 {currentRole.title} at {current.name}
               </p>
-              <div className="mt-6 space-y-4 text-lg leading-relaxed text-foreground/90">
+              <Location className="mt-1 text-sm sm:hidden" />
+            </div>
+
+            <div className="col-span-2 sm:col-span-1 sm:col-start-2">
+              <div className="space-y-4 text-base leading-relaxed text-foreground/90 sm:text-lg">
                 <p>
                   I&rsquo;m a software engineer with a background in Computer Science and Mathematics from the
                   University of Bath. I find the intersection of abstract logic and working code more interesting than
@@ -55,54 +67,31 @@ export default function Home() {
                   understand how a technology works by building something with it.
                 </p>
               </div>
-              <AccentLink href={routes.resume} className="mt-6">
-                View my resume
-              </AccentLink>
+              <div className="mt-6 flex items-center justify-between sm:block">
+                <AccentLink href={routes.resume}>View my resume</AccentLink>
+                <Socials className="sm:hidden" />
+              </div>
             </div>
           </div>
 
-          <div className="mt-14 space-y-16">
-            <PullQuote reminder={quote} />
-            <MarginNote reminder={quote} />
-          </div>
-
-          <ul className="mt-14 space-y-8">
-            {reminders.slice(1).map((reminder, i) => (
+          <ul className="mt-12 space-y-12 sm:mt-14">
+            {reminders.map((reminder, i) => (
               <li key={i}>
-                <p className="t-serif text-lg font-semibold">{reminder.text}</p>
-                {reminder.source && (
-                  <p className="mt-1 text-sm text-muted">
-                    {reminder.href ? (
-                      <a href={reminder.href} className="text-(--link) underline-offset-4 hover:underline">
-                        {reminder.source}
-                      </a>
-                    ) : (
-                      reminder.source
-                    )}
-                    {reminder.archiveHref && (
-                      <>
-                        {" ("}
-                        <a href={reminder.archiveHref} className="underline-offset-4 hover:underline">
-                          saved copy
-                        </a>
-                        {")"}
-                      </>
-                    )}
-                  </p>
-                )}
-                <p className="mt-2 leading-relaxed text-foreground/90">{reminder.why}</p>
+                <Quote reminder={reminder} />
               </li>
             ))}
           </ul>
         </section>
 
-        <section id={homeSections.journey} className="mt-16">
-          <h2 className="t-serif mb-10 text-3xl font-bold tracking-tight">My Journey and Experiences</h2>
+        <section id={homeSections.journey} className="mt-20 sm:mt-16">
+          <h2 className="t-serif mb-8 text-2xl font-bold tracking-tight sm:mb-10 sm:text-3xl">
+            My Journey and Experiences
+          </h2>
           <JourneyTimeline chapters={journey} />
         </section>
 
-        <section id={homeSections.blog} className="mt-24">
-          <h2 className="t-serif mb-6 text-3xl font-bold tracking-tight">Blog</h2>
+        <section id={homeSections.blog} className="mt-20 sm:mt-24">
+          <h2 className="t-serif mb-6 text-2xl font-bold tracking-tight sm:text-3xl">Blog</h2>
           <BlogIntro />
           <BlogList posts={publishedPosts.slice(0, 3)} />
           <Link

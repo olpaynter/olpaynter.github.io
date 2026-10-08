@@ -62,12 +62,13 @@ The typographic theme also restyles elements marked `t-serif` (headings and name
 
 ## Floating outlines
 
-`IslandBackdrop` lays out the outlines in the side margins from a fixed seed, so the layout is the same on every build. `PER_SIDE` sets how many there are, and each one gets a random size, rotation, position across the margin and drift. Two outlines of the same shape are kept `SAME_SHAPE_GAP` percent of the page apart. Each shape is a file in `public/shapes/`, used as a mask over the theme's `--shape` colour; to add a shape, add its file and its aspect ratio to `SHAPES`.
+`IslandBackdrop` lays out the outlines in the side margins from a fixed seed, so the layout is the same on every build. They sit `SLOT_REM` apart down the page, measured in rem from the top rather than as a share of the page height, so content that grows after load, such as a quote's reason unrolling, does not move them. `PER_SIDE` slots cover the longest page and the rest are clipped. Each outline gets a random size, rotation, position across the margin and drift, and two outlines of the same shape are kept `SAME_SHAPE_GAP` rem apart. Each shape is a file in `public/shapes/`, used as a mask over the theme's `--shape` colour; to add a shape, add its file and its aspect ratio to `SHAPES`.
 
 ## Layout rules
 
 - Above a 1512px viewport, the width of a 14-inch MacBook Pro at default scaling, the root font size in `globals.css` grows with the viewport, up to twice the default, so large screens show the same proportions. Write sizes in rem rather than px so they scale with it; media queries are unaffected.
 - The content column is `max-w-3xl` (48rem). `IslandBackdrop` places the outlines in the margins either side of it using half that width, `24rem`, so change both together.
+- Below `sm` (40rem), text in the home page, timeline, blog list and post bodies is a step smaller, and the home page header puts the photo beside the name.
 - The side nav and the margin dates appear from the `nav` breakpoint (1360px, declared in `globals.css`), below which they would collide. Use the `nav:` variant rather than a pixel value.
 - The timeline's line, dot and indent offsets are calculated together in the `line` constants at the top of `JourneyTimeline.tsx`. A change to the dot size or indent needs those offsets recalculated.
 
@@ -116,7 +117,7 @@ Each page's nav is resolved in `build.ts` from the trees in `src/lib/nav/siteMap
 - a `section`, an id on the tree's root page. On the root page the entry scrolls to it; elsewhere it links to it, as in `/#journey/icrtouch`.
 - a `page`, an address from `routes.ts`. The entry links to it, and is the current entry while the reader is on it. On the root page, an entry with a section scrolls to the section instead.
 
-An entry with `unrolls: true` is shown only while the reader is on its page or a page beneath it (rule 3). A page that is not a root belongs to the one tree that lists it. On narrow screens, where the side nav is hidden, `BackLink` shows a single link to the entry one step above the current page.
+An entry with `unrolls: true` is shown only while the reader is on its page or a page beneath it (rule 3). A page that is not a root belongs to the one tree that lists it. Below the `nav` breakpoint, where the side nav is hidden, `MobileNav` in `SiteNav.tsx` shows the page's top-level entries in a bar across the top of the screen, highlighting the one the reader is beneath, and `BackLink` shows a single link to the entry one step above the current page. `scroll-padding-top` in `globals.css` keeps sections clear of the bar.
 
 Keys follow one scheme, so the same thing has the same key on every page and different things never share one:
 

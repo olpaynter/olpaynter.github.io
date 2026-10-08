@@ -62,9 +62,9 @@ function RoleBlock({ role, showInlineStart }: { role: Role; showInlineStart: boo
   return (
     <div className={`relative pb-7 ${role.title ? "pt-7" : "pt-3"}`}>
       <div className="timeline-reveal">
-        {role.title && <h4 className="t-title text-lg font-medium text-(--title)">{role.title}</h4>}
+        {role.title && <h4 className="t-title text-base font-medium text-(--title) sm:text-lg">{role.title}</h4>}
         {showInlineStart && role.start && <p className="text-sm text-muted lg:hidden">From {monthYear(role.start)}</p>}
-        {role.summary && <p className="mt-2 text-lg leading-relaxed text-foreground/90">{role.summary}</p>}
+        {role.summary && <p className="mt-2 text-base leading-relaxed text-foreground/90 sm:text-lg">{role.summary}</p>}
         {role.highlights && (
           <Highlights items={role.highlights} className="mt-3 space-y-1.5 text-base text-foreground/80" />
         )}
@@ -90,7 +90,7 @@ function RoleBlock({ role, showInlineStart }: { role: Role; showInlineStart: boo
           </ul>
         )}
         {role.story && (
-          <div className="mt-7 space-y-4 text-lg leading-relaxed text-foreground/90">
+          <div className="mt-7 space-y-4 text-base leading-relaxed text-foreground/90 sm:text-lg">
             {role.story.map((paragraph) => (
               <p key={paragraph}>{paragraph}</p>
             ))}
@@ -133,7 +133,7 @@ function ChapterEntry({ chapter }: { chapter: Chapter }) {
         </time>
       )}
 
-      <h3 className="t-serif text-xl font-semibold">{chapter.name}</h3>
+      <h3 className="t-serif text-lg font-semibold sm:text-xl">{chapter.name}</h3>
       <p className="text-sm text-muted">
         {chapter.location}
         {earliest.start && (

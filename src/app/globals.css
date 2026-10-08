@@ -73,6 +73,13 @@ html {
   }
 }
 
+/* Below the nav breakpoint the nav is a bar across the top, so sections stop beneath it. */
+@media (width < 1360px) {
+  html {
+    scroll-padding-top: 4.5rem;
+  }
+}
+
 body {
   color: var(--color-foreground);
 }
@@ -204,6 +211,16 @@ body {
   color: var(--color-foreground);
 }
 
+@media (width < 40rem) {
+  .post-body {
+    font-size: 1rem;
+  }
+
+  .post-body h2 {
+    font-size: 1.25rem;
+  }
+}
+
 .post-body a {
   color: var(--link);
   text-underline-offset: 4px;
@@ -278,6 +295,10 @@ html[data-history-nav="new"] main {
 
 .site-nav {
   view-transition-name: site-nav;
+}
+
+.mobile-nav {
+  view-transition-name: mobile-nav;
 }
 
 .edge-fade-top {
