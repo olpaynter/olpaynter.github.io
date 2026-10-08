@@ -15,7 +15,9 @@ const line = {
   roleDot: "left-[calc(0.5px-1.5rem-0.34375rem)] sm:left-[calc(0.5px-2rem-0.34375rem)]",
 };
 
-// Margin labels only exist from lg up; narrower screens have no margin, so the dates go inline.
+// Margin labels only exist from lg up; narrower screens have no margin, so the dates go inline,
+// in the timeline's colour so they read as part of it.
+const inlineDate = "text-xs font-medium tracking-wide text-(--mark) lg:hidden";
 const chapterLabel = "hidden lg:block absolute right-[calc(100%+1.25rem)] whitespace-nowrap text-sm text-muted";
 const roleLabel = "hidden lg:block absolute right-[calc(100%+3.25rem)] whitespace-nowrap text-sm text-muted";
 
@@ -63,7 +65,11 @@ function RoleBlock({ role, showInlineStart }: { role: Role; showInlineStart: boo
     <div className={`relative pb-7 ${role.title ? "pt-7" : "pt-3"}`}>
       <div className="timeline-reveal">
         {role.title && <h4 className="t-title text-base font-medium text-(--title) sm:text-lg">{role.title}</h4>}
-        {showInlineStart && role.start && <p className="text-sm text-muted lg:hidden">From {monthYear(role.start)}</p>}
+        {showInlineStart && role.start && (
+          <p className={`mt-1 ${inlineDate}`}>
+            {monthYear(role.start)} – {role.end ? monthYear(role.end) : "Present"}
+          </p>
+        )}
         {role.summary && <p className="mt-2 text-base leading-relaxed text-foreground/90 sm:text-lg">{role.summary}</p>}
         {role.highlights && (
           <Highlights items={role.highlights} className="mt-3 space-y-1.5 text-base text-foreground/80" />
@@ -133,16 +139,13 @@ function ChapterEntry({ chapter }: { chapter: Chapter }) {
         </time>
       )}
 
+      {earliest.start && (
+        <p className={`mb-1 ${inlineDate}`}>
+          {monthYear(earliest.start)} – {latest.end ? monthYear(latest.end) : "Present"}
+        </p>
+      )}
       <h3 className="t-serif text-lg font-semibold sm:text-xl">{chapter.name}</h3>
-      <p className="text-sm text-muted">
-        {chapter.location}
-        {earliest.start && (
-          <span className="lg:hidden">
-            {" · "}
-            {monthYear(earliest.start)} – {latest.end ? monthYear(latest.end) : "Present"}
-          </span>
-        )}
-      </p>
+      <p className="text-sm text-muted">{chapter.location}</p>
 
       {chapter.roles.map((role, i) => (
         <RoleBlock key={role.start ?? i} role={role} showInlineStart={chapter.roles.length > 1} />
