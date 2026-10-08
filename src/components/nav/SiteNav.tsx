@@ -4,15 +4,12 @@ import { usePathname } from "next/navigation";
 import { type MouseEvent, useMemo } from "react";
 import { NavRow } from "@/components/nav/NavRow";
 import { useScrollSpy } from "@/components/nav/useScrollSpy";
-import { type NavRowView, navRows, sectionEntries } from "@/components/nav/view";
-import Link from "next/link";
-import { hashFor } from "@/lib/nav/hash";
+import { MobileNav } from "@/components/nav/MobileNav";
+import { navRows, sectionEntries } from "@/components/nav/view";
 import { isPlainClick } from "@/lib/clicks";
 import type { EntryAction, SiteNavigation } from "@/lib/nav/types";
 
 const NO_ACTIONS: Record<string, EntryAction> = {};
-
-const holdsHighlight = (row: NavRowView): boolean => row.highlighted || row.children.some(holdsHighlight);
 
 /**
  * The side nav, fixed in the left margin from the `nav` breakpoint, below which it would collide
@@ -46,7 +43,7 @@ export function SiteNav({ navigation }: { navigation: SiteNavigation }) {
 
   return (
     <>
-      <MobileNav rows={rows.filter((row) => row.present)} onClick={onClick} />
+      <MobileNav rows={rows} onClick={onClick} />
       {/* A fixed height, to the bottom of the screen, so the nav's box never changes size: a page
           transition draws the nav in a box sized when it starts, and would squash an unrolling entry
           into it. Only the list takes clicks, so the empty part of the box does not cover the page.
@@ -62,51 +59,5 @@ export function SiteNav({ navigation }: { navigation: SiteNavigation }) {
         </ul>
       </nav>
     </>
-  );
-}
-
-/**
- * Below the `nav` breakpoint, where the side nav is hidden, the page's top-level entries sit in a
- * bar across the top of the screen. An entry is highlighted while the reader is anywhere beneath it.
- */
-function MobileNav({
-  rows,
-  onClick,
-}: {
-  rows: NavRowView[];
-  onClick: (event: MouseEvent, action: EntryAction | undefined) => void;
-}) {
-  return (
-    <nav
-      aria-label="Site"
-      className="steady mobile-nav fixed inset-x-0 top-0 z-20 bg-linear-to-b from-background from-60% to-transparent nav:hidden"
-    >
-      <ul className="mx-auto flex max-w-3xl [scrollbar-width:none] gap-6 overflow-x-auto px-6 pt-4 pb-5 text-sm whitespace-nowrap">
-        {rows.map((row) => {
-          const { action } = row;
-          const active = holdsHighlight(row);
-          return (
-            <li key={row.key}>
-              <Link
-                href={action?.href ?? (action?.section === undefined ? "#" : hashFor(action.section))}
-                aria-current={action?.current ? "page" : active ? "location" : undefined}
-                onClick={(event) => onClick(event, action)}
-                className={`group relative inline-block py-1 transition-colors duration-300 ${
-                  active ? "text-foreground" : "text-muted hover:text-foreground"
-                }`}
-              >
-                {row.label}
-                <span
-                  aria-hidden
-                  className={`absolute inset-x-0 -bottom-0.5 h-px origin-left bg-(--mark) transition-transform duration-300 ease-out motion-reduce:transition-none ${
-                    active ? "scale-x-100" : "scale-x-0"
-                  }`}
-                />
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
-    </nav>
   );
 }

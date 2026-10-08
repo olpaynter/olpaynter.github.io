@@ -34,25 +34,6 @@ function resolvePage(path: string, sections: PageSection[] = []): PageEntry[] {
 }
 
 /**
- * The link one step up the nav from the page at `path`: the entry above the current one, or Home
- * for a page at the top of its tree. Undefined on a page with nowhere to go back to.
- */
-export function backLinkFor(path: string): { href: string; label: string } | undefined {
-  const entries = resolvePage(path);
-  const trail = (list: PageEntry[]): PageEntry[] | undefined => {
-    for (const entry of list) {
-      if (entry.current) return [entry];
-      const below = trail(entry.children);
-      if (below) return [entry, ...below];
-    }
-  };
-  const found = trail(entries);
-  if (!found) return undefined;
-  const parent = found.length > 1 ? found.at(-2)! : found[0] === entries[0] ? undefined : entries[0];
-  return parent && { href: parent.href ?? hashFor(parent.section), label: parent.label };
-}
-
-/**
  * Merges one page's nav into the site-wide nav. An entry shared by two pages is one element of the
  * side nav, so it must have the same label and the same order among its siblings on both.
  */

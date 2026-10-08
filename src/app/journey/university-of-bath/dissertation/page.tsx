@@ -18,7 +18,6 @@ export default function DissertationPage() {
       }
       file={documentFiles[routes.dissertation]}
       downloadName="Oliver Paynter-Jones dissertation.pdf"
-      path={routes.dissertation}
     />
   );
 }

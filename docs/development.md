@@ -8,7 +8,7 @@ How the code is organised, the rules it follows, and how to add pages. The [READ
 | --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `src/app/`            | Routes: `/`, `/blog`, `/blog/[slug]`, `/resume`, `/journey/university-of-bath/dissertation`, the root layout, `globals.css`.                                                                                                                                                                                                           |
 | `src/components/`     | Page pieces. `NavigationTransitions`, `RevealOnScroll` and `DevThemeSwitcher` run in the browser; the rest render at build time.                                                                                                                                                                                                       |
-| `src/components/nav/` | The side nav: `SiteNav` (the component), `view.ts` (the rules for what each row shows), `NavRow`, `useScrollSpy` (the section in view), and `BackLink` for narrow screens.                                                                                                                                                             |
+| `src/components/nav/` | The side nav: `SiteNav` (the component), `view.ts` (the rules for what each row shows), `NavRow`, `useScrollSpy` (the section in view), and `MobileNav`, the bar that replaces it on narrow screens.                                                                                                                                   |
 | `src/data/`           | `journey.ts` (the timeline) and `blog.ts` (the post list).                                                                                                                                                                                                                                                                             |
 | `src/content/posts/`  | One HTML body per post, named after its slug.                                                                                                                                                                                                                                                                                          |
 | `src/lib/`            | `routes.ts` (page addresses), `posts.ts` (post bodies and their sections), dates and site details.                                                                                                                                                                                                                                     |
@@ -62,7 +62,7 @@ The typographic theme also restyles elements marked `t-serif` (headings and name
 
 ## Floating outlines
 
-`IslandBackdrop` lays out the outlines in the side margins from a fixed seed, so the layout is the same on every build. They sit `SLOT_REM` apart down the page, measured in rem from the top rather than as a share of the page height, so content that grows after load, such as a quote's reason unrolling, does not move them. `PER_SIDE` slots cover the longest page and the rest are clipped. Each outline gets a random size, rotation, position across the margin and drift, and two outlines of the same shape are kept `SAME_SHAPE_GAP` rem apart. Each shape is a file in `public/shapes/`, used as a mask over the theme's `--shape` colour; to add a shape, add its file and its aspect ratio to `SHAPES`.
+`IslandBackdrop` lays out the outlines in the side margins from a fixed seed, so the layout is the same on every build. They sit `SLOT_REM` apart down the page, measured in rem from the top rather than as a share of the page height, so content that grows after load, such as a quote's reason unrolling, does not move them. `PER_SIDE` slots cover the longest page and the rest are clipped. Each outline gets a random size, rotation, position across the margin and drift, and two outlines of the same shape are kept `SAME_SHAPE_GAP` rem apart. From `lg` they sit in the side margins; below it they drift behind the text, smaller and fainter, with the placement for each in `.float-shape` in `globals.css`. Each shape is a file in `public/shapes/`, used as a mask over the theme's `--shape` colour; to add a shape, add its file and its aspect ratio to `SHAPES`.
 
 ## Layout rules
 
@@ -117,7 +117,7 @@ Each page's nav is resolved in `build.ts` from the trees in `src/lib/nav/siteMap
 - a `section`, an id on the tree's root page. On the root page the entry scrolls to it; elsewhere it links to it, as in `/#journey/icrtouch`.
 - a `page`, an address from `routes.ts`. The entry links to it, and is the current entry while the reader is on it. On the root page, an entry with a section scrolls to the section instead.
 
-An entry with `unrolls: true` is shown only while the reader is on its page or a page beneath it (rule 3). A page that is not a root belongs to the one tree that lists it. Below the `nav` breakpoint, where the side nav is hidden, `MobileNav` in `SiteNav.tsx` shows the page's top-level entries in a bar across the top of the screen, highlighting the one the reader is beneath, and `BackLink` shows a single link to the entry one step above the current page. `scroll-padding-top` in `globals.css` keeps sections clear of the bar.
+An entry with `unrolls: true` is shown only while the reader is on its page or a page beneath it (rule 3). A page that is not a root belongs to the one tree that lists it. Below the `nav` breakpoint, where the side nav is hidden, `MobileNav` shows the nav as a bar across the top of the screen. Its first row holds the page's top-level entries, highlighting the one the reader is beneath. When the highlight is deeper, a second row unrolls with the highlighted entry and those beside it, led by their parent when the parent is not in the first row, such as a post's title before its sections. Only these two rows show, however deep the nav goes, and each scrolls sideways to keep its highlighted entry in view. `scroll-padding-top` in `globals.css` keeps sections clear of the bar.
 
 Keys follow one scheme, so the same thing has the same key on every page and different things never share one:
 
@@ -147,7 +147,7 @@ The build creates every page's nav and the merged nav, and fails, and with it th
 
 `checkedLink` in `src/lib/nav/siteMap.ts` applies the same link check to links written into content, such as a project's link in the timeline. Use it for any internal link that is not a nav entry. It checks sections only on root pages, whose sections the site map declares; a link to a post's section is checked for its page but not its section.
 
-While developing, the side nav also logs an error in the browser console for any section it cannot find on the page, and for any section listed out of page order. The build cannot tell whether a page passes its own address to `BackLink` or `DocumentPage`, so check that when copying a page.
+While developing, the side nav also logs an error in the browser console for any section it cannot find on the page, and for any section listed out of page order.
 
 ### Side nav highlight
 
@@ -190,7 +190,7 @@ Add it to the data file as described under "Adding content". The nav, its keys, 
 For example a project page beneath a journey chapter.
 
 1. Add its address to `routes` in `src/lib/routes.ts`. Nest the address under the part of the site it belongs to, as `/journey/university-of-bath/dissertation` is.
-2. Create the page file at the matching path under `src/app`. For a document, use `DocumentPage` with `path={routes.<name>}`, which adds the back link for narrow screens. Otherwise wrap the page in `<PageTransition>` and render `<BackLink path={routes.<name>} />` first inside `<main>`, as the other pages do. The side nav itself is in the root layout and needs no change.
+2. Create the page file at the matching path under `src/app`. For a document, use `DocumentPage`. Otherwise wrap the page in `<PageTransition>`, as the other pages do. The side nav itself is in the root layout and needs no change.
 3. Add an entry under its parent in `src/lib/nav/siteMap.ts` with key `page-<name>`, a label, `page: routes.<name>` and `unrolls: true`. Beneath an entry generated from content data, such as a journey chapter or a post, add it to `unrolledPages` under that entry's key, for example `chapter-university-of-bath`.
 
 A page can unroll beneath another unrolled page in the same way, to any depth: give the inner entry `unrolls: true` too, and every entry above it unrolls on the inner page.

@@ -95,18 +95,19 @@ function layout(): Outline[] {
 
 const OUTLINES = layout();
 
-/** Decorative outlines in the side margins. Hidden below lg, where there are no margins to fill. */
+/**
+ * Decorative outlines. From lg they sit in the side margins; below it there are no margins, so they
+ * drift faintly behind the text instead. The placement for each is in `.float-shape` in globals.css.
+ */
 export function IslandBackdrop() {
   return (
-    <div aria-hidden className="pointer-events-none absolute inset-0 hidden overflow-hidden lg:block">
+    <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
       {OUTLINES.map((outline, i) => {
-        // Never wider than the margin, so an outline cannot reach into the content column.
-        const width = `min(${(outline.width / 16).toFixed(3)}rem, calc(50% - 24rem - 1rem))`;
         const style = {
           top: `${outline.top.toFixed(2)}rem`,
-          width,
           aspectRatio: SHAPES[outline.shape].aspect,
-          [outline.side]: `calc((50% - 24rem - ${width}) * ${outline.x.toFixed(3)})`,
+          "--w": `${(outline.width / 16).toFixed(3)}rem`,
+          "--x": outline.x.toFixed(3),
           maskImage: `url(/shapes/${outline.shape}.svg)`,
           "--float-rotate": `${outline.rotate.toFixed(1)}deg`,
           "--dx": outline.drift[0].toFixed(2),
@@ -117,7 +118,7 @@ export function IslandBackdrop() {
         return (
           <span
             key={i}
-            className="float-shape absolute bg-(--shape) [mask-size:contain] [mask-repeat:no-repeat] opacity-[0.14]"
+            className={`float-shape float-${outline.side} absolute bg-(--shape) [mask-size:contain] [mask-repeat:no-repeat]`}
             style={style}
           />
         );

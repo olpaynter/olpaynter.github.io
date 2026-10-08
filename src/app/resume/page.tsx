@@ -12,7 +12,6 @@ export default function ResumePage() {
       intro={<Socials className="mt-5" />}
       file={documentFiles[routes.resume]}
       downloadName="Oliver Paynter-Jones resume.pdf"
-      path={routes.resume}
     />
   );
 }

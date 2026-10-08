@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 import { HiOutlineArrowDownTray } from "react-icons/hi2";
 import { PageTransition } from "@/components/PageTransition";
-import { BackLink } from "@/components/nav/BackLink";
 
 /** A page that shows a PDF with a download button, used by the resume and the dissertation. */
 export function DocumentPage({
@@ -9,7 +8,6 @@ export function DocumentPage({
   intro,
   file,
   downloadName,
-  path,
 }: {
   title: string;
   /** Shown under the title, such as socials or a subtitle. */
@@ -17,14 +15,11 @@ export function DocumentPage({
   /** Path of the PDF under public/. */
   file: string;
   downloadName: string;
-  /** The page's address in `routes`, which places it in the side nav. */
-  path: string;
 }) {
   return (
     <PageTransition>
-      <main className="relative mx-auto w-full max-w-3xl px-6 py-20 sm:py-28">
-        <BackLink path={path} />
-        <header className="mt-8 mb-8 flex flex-wrap items-end justify-between gap-6 nav:mt-0">
+      <main className="relative mx-auto w-full max-w-3xl px-6 pt-28 pb-20 sm:py-28">
+        <header className="mb-8 flex flex-wrap items-end justify-between gap-6">
           <div>
             <h1 className="t-serif text-3xl font-bold tracking-tight">{title}</h1>
             {intro}

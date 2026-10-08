@@ -73,10 +73,10 @@ html {
   }
 }
 
-/* Below the nav breakpoint the nav is a bar across the top, so sections stop beneath it. */
+/* Below the nav breakpoint the nav is a bar across the top, up to two rows tall, so sections stop beneath it. */
 @media (width < 1360px) {
   html {
-    scroll-padding-top: 4.5rem;
+    scroll-padding-top: 6rem;
   }
 }
 
@@ -166,8 +166,39 @@ body {
   }
 }
 
+/*
+ * Below lg an outline sits in its half of the screen, behind the text, so it is smaller and fainter.
+ * From lg it sits in its side margin and is never wider than it, so it cannot reach the column.
+ * --x is 0 at the outer edge and 1 towards the middle.
+ */
 .float-shape {
   transform: rotate(var(--float-rotate));
+  --width: calc(var(--w) * 0.75);
+  width: var(--width);
+  opacity: 0.07;
+}
+
+.float-left {
+  left: calc((50% - var(--width)) * var(--x));
+}
+
+.float-right {
+  right: calc((50% - var(--width)) * var(--x));
+}
+
+@media (width >= 64rem) {
+  .float-shape {
+    --width: min(var(--w), calc(50% - 24rem - 1rem));
+    opacity: 0.14;
+  }
+
+  .float-left {
+    left: calc((50% - 24rem - var(--width)) * var(--x));
+  }
+
+  .float-right {
+    right: calc((50% - 24rem - var(--width)) * var(--x));
+  }
 }
 
 @keyframes float-shape {

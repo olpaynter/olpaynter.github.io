@@ -3,7 +3,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AiLabel } from "@/components/BlogList";
 import { PageTransition, PostTitle } from "@/components/PageTransition";
-import { BackLink } from "@/components/nav/BackLink";
 import { publishedPosts } from "@/data/blog";
 import { readPostBody } from "@/lib/posts";
 import { routes } from "@/lib/routes";
@@ -39,9 +38,8 @@ export default async function PostPage({ params }: PageProps<"/blog/[slug]">) {
 
   return (
     <PageTransition>
-      <main className="relative mx-auto w-full max-w-3xl px-6 py-20 sm:py-28">
-        <BackLink path={routes.post(post.slug)} />
-        <header className="mt-8 mb-12 nav:mt-0">
+      <main className="relative mx-auto w-full max-w-3xl px-6 pt-28 pb-20 sm:py-28">
+        <header className="mb-12">
           <time dateTime={post.date} className="text-sm text-muted">
             {monthYear(post.date)}
           </time>
