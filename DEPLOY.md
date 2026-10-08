@@ -9,7 +9,7 @@
 
 ## Check that pages load directly after the first deploy
 
-1. Open `https://olpaynter.github.io/blog` and `https://olpaynter.github.io/resume` in a new tab, typing the address rather than following a link.
+1. Open `https://opaynter.com/blog` and `https://opaynter.com/resume` in a new tab, typing the address rather than following a link.
 2. If both load, nothing more is needed.
 3. If either ends up on the home page (the 404 page redirects there), the host is not serving `blog.html` for `/blog`. Fix it as follows:
    - Set `trailingSlash: true` in `next.config.ts`, so the export writes `blog/index.html` instead.

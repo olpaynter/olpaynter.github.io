@@ -1,5 +1,5 @@
 /** Absolute address of the published site. Search engines and link previews need full URLs. */
-export const SITE_URL = "https://olpaynter.github.io";
+export const SITE_URL = "https://opaynter.com";
 
 export const SITE_NAME = "Oliver Paynter-Jones";
 
