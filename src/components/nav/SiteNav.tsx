@@ -14,7 +14,7 @@ const NO_ACTIONS: Record<string, EntryAction> = {};
  * The side nav, fixed in the left margin from the `nav` breakpoint, below which it would collide
  * with the timeline dates. It is mounted once, in the root layout, and never replaced: moving to
  * another page changes only which rows are shown, where they lead and which is highlighted, so every
- * change is a CSS transition on the same elements. See "Side nav structure" in the README.
+ * change is a CSS transition on the same elements. See "Side nav structure" in docs/development.md.
  */
 export function SiteNav({ navigation }: { navigation: SiteNavigation }) {
   const pathname = usePathname();

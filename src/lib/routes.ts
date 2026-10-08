@@ -1,7 +1,7 @@
 /**
  * Page addresses and home page section ids. Every page must also appear in a nav tree in
  * `siteMap.ts`, which is what the build checks links against. See "Adding pages and sections" in the
- * README before adding one.
+ * docs/development.md before adding one.
  */
 export const routes = {
   home: "/",

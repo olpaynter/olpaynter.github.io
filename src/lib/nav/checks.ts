@@ -57,7 +57,7 @@ export function checkSiteMap() {
   }
 }
 
-/** Checks one page's nav against the rules in "What the build checks" in the README. */
+/** Checks one page's nav against the rules in "What the build checks" in docs/development.md. */
 export function checkPage(path: string, entries: PageEntry[]) {
   const fail = (problem: string): never => {
     throw new Error(`Side nav on ${path}: ${problem}`);

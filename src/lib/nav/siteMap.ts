@@ -24,12 +24,12 @@ export type Entry = {
   section?: string;
   /** A page address from `routes`. */
   page?: string;
-  /** Shown only while the reader is on this page or a page beneath it (rule 3 in the README). */
+  /** Shown only while the reader is on this page or a page beneath it (rule 3 in docs/development.md). */
   unrolls?: boolean;
   children?: Entry[];
 };
 
-/** A nav of its own (rule 2 in the README), used by its root page and every page in its entries. */
+/** A nav of its own (rule 2 in docs/development.md), used by its root page and every page in its entries. */
 export type NavTree = { root: string; entries: Entry[] };
 
 /**

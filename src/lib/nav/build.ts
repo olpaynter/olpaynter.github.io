@@ -89,7 +89,7 @@ function actionsOf(entries: PageEntry[]): Record<string, EntryAction> {
 
 /**
  * Builds the nav of every page and merges them into the one side nav the site renders. Fails the
- * build if the site map or any page's nav breaks a rule in "What the build checks" in the README.
+ * build if the site map or any page's nav breaks a rule in "What the build checks" in docs/development.md.
  * `sections` gives the sections of pages that are not tree roots, by page address.
  */
 export function siteNavigation(sections: Record<string, PageSection[]>): SiteNavigation {

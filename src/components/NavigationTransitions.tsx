@@ -21,7 +21,7 @@ function navigationTarget(event: MouseEvent): URL | undefined {
 }
 
 /**
- * Coordinates navigation between pages; see "Page transitions" in the README. Next.js applies back
+ * Coordinates navigation between pages; see "Page transitions" in docs/development.md. Next.js applies back
  * and forward as an immediate render, so by the time a view transition could capture the old page it
  * has already gone. Popstate is therefore intercepted before the router sees it and replayed to the
  * router once the old page is captured.

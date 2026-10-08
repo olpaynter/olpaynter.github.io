@@ -12,7 +12,7 @@ export function readPostBody(slug: string): Promise<string> {
 
 /**
  * The side nav entries for a post's sections. Post bodies mark each section as
- * <div class="section" id="..."> followed by its <h2>; see README. A section with no heading, such
+ * <div class="section" id="..."> followed by its <h2>; see docs/development.md. A section with no heading, such
  * as an introduction, is left out of the nav. Fails the build for a headed section the nav would
  * otherwise drop or mislabel.
  */
