@@ -110,7 +110,7 @@ function RoleBlock({ role }: { role: Role }) {
           <time dateTime={role.start} className={`-bottom-2.5 ${roleLabel}`}>
             {monthYear(role.start)}
           </time>
-          <time dateTime={role.start} className={`-bottom-[0.84375rem] ${roleLabelInline}`}>
+          <time dateTime={role.start} className={`-bottom-[0.53125rem] ${roleLabelInline}`}>
             {monthYear(role.start)}
           </time>
         </>
@@ -142,7 +142,7 @@ function ChapterEntry({ chapter }: { chapter: Chapter }) {
       )}
 
       {dated && (
-        <time dateTime={latest.end} className={`mb-1 block ${chapterLabelInline}`}>
+        <time dateTime={latest.end} className={`mb-1 block pt-[0.21875rem] ${chapterLabelInline}`}>
           {latest.end ? monthYear(latest.end) : "Present"}
         </time>
       )}
