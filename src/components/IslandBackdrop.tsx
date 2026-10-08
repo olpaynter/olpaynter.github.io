@@ -96,7 +96,7 @@ export function IslandBackdrop() {
     <div aria-hidden className="pointer-events-none absolute inset-0 hidden overflow-hidden lg:block">
       {OUTLINES.map((outline, i) => {
         // Never wider than the margin, so an outline cannot reach into the content column.
-        const width = `min(${outline.width.toFixed(0)}px, calc(50% - 24rem - 1rem))`;
+        const width = `min(${(outline.width / 16).toFixed(3)}rem, calc(50% - 24rem - 1rem))`;
         const style = {
           top: `${outline.top.toFixed(2)}%`,
           width,

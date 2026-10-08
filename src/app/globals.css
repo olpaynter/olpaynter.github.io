@@ -53,6 +53,12 @@ html[data-theme="typographic"] .post-body a {
 }
 
 html {
+  /*
+   * Above 1512px, the width of a 14-inch MacBook Pro at its default scaling, the root font size grows
+   * with the viewport, so every rem-based size keeps the proportions that screen shows. It stops at
+   * twice the default. Media queries use the browser's default size, so breakpoints do not move.
+   */
+  font-size: clamp(100%, 100vw / 94.5, 200%);
   /* Without these the browser draws light scrollbars, and overscroll bounce exposes a white canvas. */
   color-scheme: dark;
   background: var(--color-background);

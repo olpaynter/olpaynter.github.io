@@ -5,12 +5,14 @@ import { monthYear } from "@/lib/dates";
 import { checkedLink } from "@/lib/nav/siteMap";
 
 // The line's centre is 0.5rem + 0.5px from the chapter's left edge below sm, and 0.5px from sm up.
-// Chapter content is indented 2rem. Dots are 11px, so their left edge sits 5.5px left of the centre.
+// Chapter content is indented 2rem. Dots are 0.6875rem (11px at the default size) and the bar is
+// 0.1875rem, so each sits half its width left of the centre. Sizes are in rem so they scale with the
+// root font size on large screens; only the 1px line stays in px.
 const line = {
-  bar: "left-[calc(0.5rem-1px)] sm:-left-px",
+  bar: "left-[calc(0.5rem+0.5px-0.09375rem)] sm:left-[calc(0.5px-0.09375rem)]",
   thin: "left-2 sm:left-0",
-  chapterDot: "left-[calc(0.5rem-5px)] sm:-left-[5px]",
-  roleDot: "-left-[calc(1.5rem+5px)] sm:-left-[calc(2rem+5px)]",
+  chapterDot: "left-[calc(0.5rem+0.5px-0.34375rem)] sm:left-[calc(0.5px-0.34375rem)]",
+  roleDot: "left-[calc(0.5px-1.5rem-0.34375rem)] sm:left-[calc(0.5px-2rem-0.34375rem)]",
 };
 
 // Margin labels only exist from lg up; narrower screens have no margin, so the dates go inline.
@@ -19,9 +21,9 @@ const roleLabel = "hidden lg:block absolute right-[calc(100%+3.25rem)] whitespac
 
 function Dot({ className, live }: { className: string; live?: boolean }) {
   return (
-    <span aria-hidden className={`timeline-dot absolute z-10 h-[11px] w-[11px] ${className}`}>
+    <span aria-hidden className={`timeline-dot absolute z-10 h-[0.6875rem] w-[0.6875rem] ${className}`}>
       {live && <span className="absolute inset-0 rounded-full bg-(--mark)/70 motion-safe:animate-ping" />}
-      <span className="absolute inset-0 rounded-full bg-(--mark) ring-4 ring-background" />
+      <span className="absolute inset-0 rounded-full bg-(--mark) ring-[0.25rem] ring-background" />
     </span>
   );
 }
@@ -99,7 +101,7 @@ function RoleBlock({ role, showInlineStart }: { role: Role; showInlineStart: boo
 
       {role.start && (
         <>
-          <Dot className={`-bottom-[5.5px] ${line.roleDot}`} />
+          <Dot className={`-bottom-[0.34375rem] ${line.roleDot}`} />
           <time dateTime={role.start} className={`-bottom-2.5 ${roleLabel}`}>
             {monthYear(role.start)}
           </time>
@@ -120,11 +122,11 @@ function ChapterEntry({ chapter }: { chapter: Chapter }) {
     <li id={chapterAnchor(chapter)} className="relative pl-8">
       <span
         aria-hidden
-        className={`timeline-bar absolute top-[11px] bottom-0 w-[3px] rounded-full bg-(--mark) ${line.bar} ${
+        className={`timeline-bar absolute top-[0.6875rem] bottom-0 w-[0.1875rem] rounded-full bg-(--mark) ${line.bar} ${
           current ? "" : "opacity-60"
         } ${dated ? "" : "mask-b-from-40%"}`}
       />
-      <Dot className={`top-[5.5px] ${line.chapterDot}`} live={current} />
+      <Dot className={`top-[0.34375rem] ${line.chapterDot}`} live={current} />
       {dated && (
         <time dateTime={latest.end} className={`top-0.5 ${chapterLabel}`}>
           {latest.end ? monthYear(latest.end) : "Present"}
@@ -153,7 +155,7 @@ function Connector() {
   return (
     <li aria-hidden className="relative h-10">
       {/* Runs on under the next chapter's dot, whose background ring then leaves the same gap as elsewhere. */}
-      <span className={`absolute top-0 -bottom-[11px] w-px bg-white/15 ${line.thin}`} />
+      <span className={`absolute top-0 -bottom-[0.6875rem] w-px bg-white/15 ${line.thin}`} />
     </li>
   );
 }
