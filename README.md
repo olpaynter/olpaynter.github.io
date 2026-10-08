@@ -52,7 +52,7 @@ The resume is `public/resume.pdf`. Replace the file to update it. Each document 
 
 ## Themes
 
-There are two themes, warm and typographic. The inline script in `src/app/layout.tsx` picks one at random on the first page of a visit and stores it in `sessionStorage`, so it holds across pages and reloads but a new visit picks again. It runs before the first paint, so the page never shows the other theme first. Warm is also the default if the script does not run.
+There are two themes, warm and typographic. The published site always uses warm, which is the default in `globals.css` and needs no script. The typographic theme is kept but not active: under `npm run dev`, `DevThemeSwitcher` stores a choice in `sessionStorage` and the inline script in `src/app/layout.tsx` applies it before the first paint. To make it live again, restore a theme choice in that script for production builds.
 
 Components never use colours directly. They read the variables declared at the top of `src/app/globals.css`, which each theme sets:
 

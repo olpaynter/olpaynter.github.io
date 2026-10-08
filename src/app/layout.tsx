@@ -32,21 +32,19 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image" },
 };
 
-// Runs before first paint, so the page never flashes the other theme or shows the timeline before
-// its entrance. It picks warm or typographic once per visit: sessionStorage survives reloads but not
-// a new visit. Where scroll-driven animations are missing, it turns on the fallback in globals.css.
+// Runs before first paint, so the page never shows the timeline before its entrance. The published
+// site always uses the warm theme; in development it applies the theme chosen in DevThemeSwitcher,
+// so the typographic theme can still be previewed. Where scroll-driven animations are missing, it
+// turns on the fallback in globals.css.
 // It also swaps any image that fails to load for the site's fallback image; listening this early
 // catches images that fail before React hydrates, and the data attribute stops a failing fallback
 // from retrying forever.
-const beforePaint = `try {
+const devTheme = `try {
   var t = sessionStorage.getItem("theme");
-  if (t !== "warm" && t !== "typographic") {
-    t = Math.random() < 0.5 ? "warm" : "typographic";
-    sessionStorage.setItem("theme", t);
-  }
-  document.documentElement.dataset.theme = t;
+  if (t === "warm" || t === "typographic") document.documentElement.dataset.theme = t;
 } catch (e) {}
-if (window.CSS && !CSS.supports("animation-timeline: view()")) document.documentElement.dataset.reveal = "";
+`;
+const beforePaint = `${process.env.NODE_ENV === "development" ? devTheme : ""}if (window.CSS && !CSS.supports("animation-timeline: view()")) document.documentElement.dataset.reveal = "";
 document.addEventListener("error", function (e) {
   var img = e.target;
   if (!(img instanceof HTMLImageElement) || "fallback" in img.dataset) return;

@@ -10,8 +10,8 @@
 }
 
 /*
- * Two themes, chosen at random once per visit by the script in the root layout. Warm is the
- * default, so it also applies if that script does not run. Elements read these variables:
+ * Two themes. Warm is the default and the only one the published site uses; typographic is kept
+ * for previewing with DevThemeSwitcher under `npm run dev`. Elements read these variables:
  * --mark for dots, bars and the active nav line; --link for links; --role for the role under the
  * name; --title for role titles in the timeline; --shape for the floating outlines.
  */
