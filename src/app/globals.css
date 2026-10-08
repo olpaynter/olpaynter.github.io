@@ -353,6 +353,18 @@ html[data-history-nav="new"] main {
   display: none;
 }
 
+/*
+ * A page that only exists in the new state, such as the one being navigated to, gets its group
+ * after every group from the old state, so it would be drawn over the navs and fades. They are
+ * raised above it. The backdrop is left in order, behind the pages.
+ */
+::view-transition-group(site-nav),
+::view-transition-group(mobile-nav),
+::view-transition-group(edge-fade-top),
+::view-transition-group(edge-fade-bottom) {
+  z-index: 1;
+}
+
 ::view-transition-group(.morph) {
   animation-duration: 520ms;
   animation-timing-function: var(--ease-settle);

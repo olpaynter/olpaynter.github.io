@@ -12,8 +12,9 @@ const FOLD_MS = 600;
 type Click = (event: MouseEvent, action: EntryAction | undefined) => void;
 
 /**
- * What the second row shows: the entries under `parent`, one of which holds the highlight. Keys
- * only, so a row that is rolling up can keep showing them after the page has moved on.
+ * What the second row shows: the entries under `parent`. `active` is the one holding the highlight,
+ * or empty when the highlight is on the parent itself. Keys only, so a row that is rolling up can
+ * keep showing them after the page has moved on.
  */
 type Level = { parent: string; parentDepth: number; items: string[]; active: string };
 
@@ -22,6 +23,12 @@ const holdsHighlight = (row: NavRowView): boolean => row.highlighted || row.chil
 function levelOf(rows: NavRowView[], parent?: NavRowView): Level | undefined {
   for (const row of rows) {
     if (row.highlighted) {
+      // As in the side nav, a highlighted entry unrolls its own entries, such as Journey's chapters
+      // straight after Journey is clicked, before any chapter is in view.
+      const own = row.children.filter((child) => child.present);
+      if (row.unrolled && own.length > 0) {
+        return { parent: row.key, parentDepth: row.depth, items: own.map((child) => child.key), active: "" };
+      }
       if (!parent) return undefined;
       const items = parent.children.filter((child) => child.present).map((child) => child.key);
       return { parent: parent.key, parentDepth: parent.depth, items, active: row.key };
