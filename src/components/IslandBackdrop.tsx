@@ -18,16 +18,11 @@ type ShapeName = keyof typeof SHAPES;
 
 const SHAPE_NAMES = Object.keys(SHAPES) as ShapeName[];
 
-/**
- * Outlines are spaced a fixed distance apart down the page, in rem, rather than a share of its
- * height, so content that grows after load, such as a quote's reason unrolling, does not move them.
- * There are enough slots for the longest page; the backdrop clips the rest.
- */
-const SLOT_REM = 22;
-const PER_SIDE = 48;
+/** Outlines per side. They fill one screen, which stays still while the page scrolls over it. */
+const PER_SIDE = 5;
 
-/** Two outlines of the same shape are kept at least this far apart, in rem. */
-const SAME_SHAPE_GAP = 44;
+/** Two outlines of the same shape are kept at least this far apart, as a percentage of the screen height. */
+const SAME_SHAPE_GAP = 30;
 
 /** The same seed gives the same layout on every build, so the outlines do not move between visits. */
 const SEED = 20251004;
@@ -37,7 +32,7 @@ type Outline = {
   side: "left" | "right";
   /** Position across the side margin: 0 at the outer edge, 1 next to the column. */
   x: number;
-  /** Distance from the top of the page, in rem. */
+  /** Distance from the top of the screen, as a percentage of its height. */
   top: number;
   width: number;
   rotate: number;
@@ -63,9 +58,10 @@ function layout(): Outline[] {
 
   const outlines: Outline[] = [];
   for (const side of ["left", "right"] as const) {
-    // Even slots down the page, each nudged a little, so coverage is even without looking gridded.
+    // Even slots down the screen, each nudged a little, so coverage is even without looking gridded.
+    const slot = 100 / PER_SIDE;
     for (let i = 0; i < PER_SIDE; i++) {
-      const top = Math.max(2, (i + 0.5) * SLOT_REM + between(-0.35, 0.35) * SLOT_REM);
+      const top = Math.min(90, Math.max(2, (i + 0.5) * slot + between(-0.3, 0.3) * slot));
       outlines.push({
         shape: "island",
         side,
@@ -96,15 +92,17 @@ function layout(): Outline[] {
 const OUTLINES = layout();
 
 /**
- * Decorative outlines. From lg they sit in the side margins; below it there are no margins, so they
- * drift faintly behind the text instead. The placement for each is in `.float-shape` in globals.css.
+ * Decorative outlines, fixed to the screen so the page scrolls past them. From lg they sit in the
+ * side margins; below it there are no margins, so they drift behind the text instead. The placement
+ * for each is in `.float-shape` in globals.css. The `steady` class keeps them drifting, live, during
+ * page transitions rather than frozen in the page snapshots.
  */
 export function IslandBackdrop() {
   return (
-    <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+    <div aria-hidden className="steady backdrop pointer-events-none fixed inset-0 overflow-hidden">
       {OUTLINES.map((outline, i) => {
         const style = {
-          top: `${outline.top.toFixed(2)}rem`,
+          top: `${outline.top.toFixed(2)}%`,
           aspectRatio: SHAPES[outline.shape].aspect,
           "--w": `${(outline.width / 16).toFixed(3)}rem`,
           "--x": outline.x.toFixed(3),

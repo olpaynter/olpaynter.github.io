@@ -62,7 +62,7 @@ The typographic theme also restyles elements marked `t-serif` (headings and name
 
 ## Floating outlines
 
-`IslandBackdrop` lays out the outlines in the side margins from a fixed seed, so the layout is the same on every build. They sit `SLOT_REM` apart down the page, measured in rem from the top rather than as a share of the page height, so content that grows after load, such as a quote's reason unrolling, does not move them. `PER_SIDE` slots cover the longest page and the rest are clipped. Each outline gets a random size, rotation, position across the margin and drift, and two outlines of the same shape are kept `SAME_SHAPE_GAP` rem apart. From `lg` they sit in the side margins; below it they drift behind the text, smaller and fainter, with the placement for each in `.float-shape` in `globals.css`. Each shape is a file in `public/shapes/`, used as a mask over the theme's `--shape` colour; to add a shape, add its file and its aspect ratio to `SHAPES`.
+`IslandBackdrop` lays out the outlines from a fixed seed, so the layout is the same on every build. The backdrop is fixed to the screen, so the page scrolls past the outlines, and they keep drifting live during page transitions (the `steady` class). `PER_SIDE` sets how many there are on each side of the screen, and each one gets a random size, rotation, position and drift. Two outlines of the same shape are kept `SAME_SHAPE_GAP` percent of the screen height apart. From `lg` they sit in the side margins; below it they drift behind the text, smaller and fainter, with the placement for each in `.float-shape` in `globals.css`. Each shape is a file in `public/shapes/`, used as a mask over the theme's `--shape` colour; to add a shape, add its file and its aspect ratio to `SHAPES`.
 
 ## Layout rules
 
