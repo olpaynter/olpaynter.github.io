@@ -59,21 +59,21 @@ export const journey: Chapter[] = [
       {
         title: "SDE 5",
         start: "2027-04-01",
-        summary: "Leading the design of the next generation of creative ingestion across multiple marketplaces.",
+        summary: "Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt.",
         projects: [
           {
             name: "Multi-region ingestion",
             description:
-              "Designed and led the rollout of ingestion to three new regions, cutting feed latency for European advertisers.",
+              "Ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi.",
             highlights: [
-              "Wrote the high-level design and secured sign-off from four partner teams.",
-              "Mentored two engineers through their first production launches.",
+              "Reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+              "Excepteur sint occaecat cupidatat non proident sunt in.",
             ],
           },
           {
             name: "Ingestion observability",
             description:
-              "Built per-feed dashboards and alarms so that a failed upload is detected in minutes rather than hours.",
+              "Ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum.",
           },
         ],
       },
@@ -81,15 +81,15 @@ export const journey: Chapter[] = [
         title: "SDE 4",
         start: "2026-08-03",
         end: "2027-03-31",
-        summary: "Working on the ingestion systems that power Amazon's pilots of dynamic creatives across the world.",
+        summary: "Dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa qui.",
         projects: [
           {
             name: "Feed validation service",
             description:
-              "Built a validation step that rejects malformed advertiser feeds before processing, with clear error reports for each row.",
+              "Officia deserunt mollit anim id est laborum lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod.",
             highlights: [
-              "Reduced failed ingestion runs by 40% in the first month.",
-              "Added load tests covering feeds of up to a million rows.",
+              "Culpa qui officia deserunt mollit anim id est laborum lorem.",
+              "Ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor.",
             ],
           },
         ],
@@ -108,8 +108,8 @@ export const journey: Chapter[] = [
         start: "2025-11",
         end: "2026-06-10",
         summary:
-          "Maintained the legacy systems used by thousands of businesses across the UK, spanning ICRTouch's wide range of interconnected software.",
-        highlights: ["Delivered bespoke work for customers on request.", "Fixed bugs across the product range."],
+          "Tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi.",
+        highlights: ["Incididunt ut labore et dolore magna aliqua.", "Ut enim ad minim veniam quis."],
       },
     ],
   },
@@ -123,12 +123,12 @@ export const journey: Chapter[] = [
       {
         start: "2025-09",
         end: "2025-10",
-        summary: "Took time off after university and my internship to travel through the Netherlands and France.",
+        summary: "Ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit.",
         images: [
           {
             src: "/photos/travel-placeholder.svg",
-            alt: "Placeholder illustration of a sunset over hills with the Eiffel Tower",
-            caption: "Sunset on the way into Paris, October 2025.",
+            alt: "Esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat.",
+            caption: "Non proident sunt in culpa qui officia deserunt.",
           },
         ],
       },
@@ -146,11 +146,11 @@ export const journey: Chapter[] = [
         start: "2025-06-02",
         end: "2025-08-28",
         summary:
-          "Built a TypeScript browser tool that automated product intake and delivery tracking, replacing an error-prone manual workflow.",
+          "Mollit anim id est laborum lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor.",
         highlights: [
-          "Gathered requirements from non-technical stakeholders and wrote the design documents recommending the chosen approach.",
-          "Led design reviews with peers and senior engineers to agree the approach.",
-          "Added unit tests and CI/CD pipelines, and delivered a final presentation and live demo to engineers and managers.",
+          "Nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure.",
+          "Dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla.",
+          "Pariatur excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit anim id est laborum.",
         ],
       },
     ],
@@ -166,29 +166,29 @@ export const journey: Chapter[] = [
         title: "BSc (Hons) Computer Science and Mathematics",
         start: "2022-09",
         end: "2025-05",
-        summary: "Graduated with a strong First Class Honours, specialising in machine learning.",
+        summary: "Incididunt ut labore et dolore magna aliqua ut enim ad minim.",
         projects: [
           {
             name: "Dissertation: machine-learning anti-cheat",
             description:
-              "Researched a novel anti-cheat for video games that runs locally, is non-invasive and performs well, using machine learning to detect anomalies in players' mouse movements.",
+              "Veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.",
             link: { label: "Read the dissertation", href: "/journey/university-of-bath/dissertation" },
           },
         ],
         story: [
-          "Placeholder: a few sentences on what you learnt at Bath beyond the degree itself.",
-          "Placeholder: the experiences, people and moments that shaped your time there.",
+          "Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut.",
+          "Labore et dolore magna aliqua ut enim ad minim veniam quis.",
         ],
         images: [
           {
             src: "/photos/bath-placeholder.svg",
-            alt: "Placeholder illustration of the Royal Crescent in Bath",
-            caption: "The Royal Crescent, a short walk from campus.",
+            alt: "Eu fugiat nulla pariatur excepteur sint occaecat cupidatat.",
+            caption: "Non proident sunt in culpa qui officia deserunt.",
           },
           {
             src: "/photos/bath-placeholder.svg",
-            alt: "Placeholder illustration of the Royal Crescent in Bath",
-            caption: "Graduation week, summer 2025.",
+            alt: "Mollit anim id est laborum lorem ipsum dolor.",
+            caption: "Sit amet consectetur adipiscing.",
           },
         ],
       },
@@ -203,19 +203,19 @@ export const journey: Chapter[] = [
     roles: [
       {
         story: [
-          "Placeholder: what you love about the Isle of Wight and what makes it special.",
-          "Placeholder: how growing up there made you who you are today.",
+          "Nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure.",
+          "Dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat.",
         ],
         images: [
           {
             src: "/photos/isle-of-wight-placeholder.svg",
-            alt: "Placeholder illustration of the Needles off the Isle of Wight",
-            caption: "The Needles from the cliffs above Alum Bay.",
+            alt: "Elit sed do eiusmod tempor incididunt ut labore et dolore.",
+            caption: "Magna aliqua ut enim ad minim veniam quis.",
           },
           {
             src: "/photos/isle-of-wight-placeholder.svg",
-            alt: "Placeholder illustration of the Needles off the Isle of Wight",
-            caption: "Evening on the West Wight coast.",
+            alt: "Nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.",
+            caption: "Consequat duis aute irure dolor in.",
           },
         ],
       },

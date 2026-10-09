@@ -58,13 +58,13 @@ export default function Home() {
             <div className="col-span-2 sm:col-span-1 sm:col-start-2">
               <div className="space-y-4 text-base leading-relaxed text-foreground/90 sm:text-lg">
                 <p>
-                  I&rsquo;m a software engineer with a background in Computer Science and Mathematics from the
-                  University of Bath. I find the intersection of abstract logic and working code more interesting than
-                  either on its own.
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+                  dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+                  aliquip ex ea commodo consequat.
                 </p>
                 <p>
-                  I care about building systems that are simple to reason about and resilient at scale, and I like to
-                  understand how a technology works by building something with it.
+                  Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                  Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim.
                 </p>
               </div>
               <div className="mt-6 flex items-center justify-between sm:block">

@@ -18,16 +18,16 @@ export const reminders: Reminder[] = [
     source: "Steven Shaw, quoted in Addy Osmani’s “Cognitive Surrender”, May 2026",
     href: "https://addyosmani.com/blog/cognitive-surrender/",
     archiveHref: "https://web.archive.org/web/20260927123103/https://addyosmani.com/blog/cognitive-surrender/",
-    why: "Between the end of my internship and the start of my full-time role at Amazon, the way software gets written changed a great deal. AI has not lowered my bar for quality; if anything, it lets me iterate towards that bar faster than I could before. The cost is that it becomes easy to forget how to do the work yourself. Some see that as no more worrying than no longer writing assembly, but I want to keep the skill, because it deepens my understanding of the field, so each week I spend time on a task that does not affect delivery and do it the old-fashioned way. When I work with agents, I set them up so that I drive the work and nothing moves on without me. Autonomous development has its place, but for systems that customers rely on and that carry my name, I read and verify the code and the claims an agent makes before I stand behind them.",
+    why: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
   },
   {
-    text: "Something you read or heard that stays with you.",
-    source: "Where it came from",
-    why: "A sentence or two on why it matters to you day to day.",
+    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.",
+    source: "Lorem ipsum dolor",
+    why: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   },
   {
-    text: "Something you read or heard that stays with you.",
-    source: "Where it came from",
-    why: "A sentence or two on why it matters to you day to day.",
+    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.",
+    source: "Lorem ipsum dolor",
+    why: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   },
 ];
