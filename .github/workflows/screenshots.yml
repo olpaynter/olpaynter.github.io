@@ -3,10 +3,9 @@ name: Screenshots
 # Compares every page as this commit builds it with the same page built from the commit before it: the
 # previous head of main for a push, or the base branch for a pull request. Visual changes are usually
 # intended, so differences are reported rather than failing the run.
+# deploy.yml and check.yml call it as their last job, so it never runs alongside them.
 on:
-  push:
-    branches: [main]
-  pull_request:
+  workflow_call:
 
 permissions:
   contents: read

@@ -54,3 +54,9 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v5
+
+  screenshots:
+    needs: deploy
+    permissions:
+      contents: read
+    uses: ./.github/workflows/screenshots.yml

@@ -36,4 +36,4 @@ The user can open the same comparison in a browser with `npx playwright show-rep
 
 ## CI
 
-`.github/workflows/screenshots.yml` runs the same comparison on every push to `main` and every pull request, with screenshots of the commit before it as the baseline. It uploads the report as the `screenshot-report` artifact and does not fail the run when pages differ.
+`.github/workflows/screenshots.yml` runs the same comparison after each deploy from `main` and after the check on each pull request, with screenshots of the commit before as the baseline. It uploads the report as the `screenshot-report` artifact and does not fail the run when pages differ.
