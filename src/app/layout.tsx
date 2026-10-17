@@ -44,7 +44,13 @@ const devTheme = `try {
   if (t === "warm" || t === "typographic") document.documentElement.dataset.theme = t;
 } catch (e) {}
 `;
-const beforePaint = `${process.env.NODE_ENV === "development" ? devTheme : ""}if (window.CSS && !CSS.supports("animation-timeline: view()")) document.documentElement.dataset.reveal = "";
+// Temporary: ?debug-scroll turns on the scroll log in public/debug-scroll.js for the rest of the tab's session.
+const debugScroll = `try {
+  if (/[?&]debug-scroll/.test(location.search)) sessionStorage.setItem("debug-scroll", "1");
+  if (sessionStorage.getItem("debug-scroll")) { var s = document.createElement("script"); s.src = "/debug-scroll.js"; s.async = false; document.head.appendChild(s); }
+} catch (e) {}
+`;
+const beforePaint = `${debugScroll}${process.env.NODE_ENV === "development" ? devTheme : ""}if (window.CSS && !CSS.supports("animation-timeline: view()")) document.documentElement.dataset.reveal = "";
 document.addEventListener("error", function (e) {
   var img = e.target;
   if (!(img instanceof HTMLImageElement) || "fallback" in img.dataset) return;
