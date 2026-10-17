@@ -47,6 +47,8 @@
     document.startViewTransition = (...args) => {
       log("transition start");
       const transition = start(...args);
+      // Ready resolves once the new page has been captured, so its y is the position the animation shows.
+      transition.ready.then(() => log("transition ready"));
       transition.finished.then(() => log("transition end"));
       return transition;
     };
