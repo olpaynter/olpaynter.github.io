@@ -4,13 +4,14 @@ The personal site of Oliver Paynter-Jones, live at [opaynter.com](https://opaynt
 
 ## Commands
 
-| Command               | What it does                                                                                                              |
-| --------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| `npm run dev`         | Development server at http://localhost:3000, with a theme switcher.                                                       |
-| `npm run build`       | Static export into `out/`.                                                                                                |
-| `npm run format`      | Formats everything with Prettier.                                                                                         |
-| `npm run check`       | Format check, ESLint and the TypeScript compiler. Run it before committing.                                               |
-| `npm run screenshots` | Builds, then compares every page at four widths with the saved screenshots. Add `-- --update-snapshots` to save new ones. |
+| Command               | What it does                                                                                                                                                                    |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run dev`         | Development server at http://localhost:3000, with a theme switcher.                                                                                                             |
+| `npm run build`       | Static export into `out/`.                                                                                                                                                      |
+| `npm run format`      | Formats everything with Prettier.                                                                                                                                               |
+| `npm run check`       | Format check, ESLint and the TypeScript compiler. Run it before committing.                                                                                                     |
+| `npm test`            | Builds, then runs the Playwright tests: no page logs an error, back and forward keep the scroll position, the nav highlight follows the journey, and the screenshot comparison. |
+| `npm run screenshots` | Builds, then compares every page at four widths with the saved screenshots. Add `-- --update-snapshots` to save new ones.                                                       |
 
 ## Content
 

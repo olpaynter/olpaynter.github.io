@@ -21,7 +21,7 @@ description: Use when a change could alter how any page of this site looks (CSS,
 1. Before editing, record the current look with `npm run screenshots -- --update-snapshots`. `.screenshots/` is not committed, so a fresh clone needs this before its first comparison. If you have already edited, run `git stash` first and `git stash pop` afterwards.
 2. Make the change, then run `npm run screenshots`.
 3. Each failing test is a page at one width that looks different. Its folder in `test-results/` holds `-expected.png` (before), `-actual.png` (after) and `-diff.png`, which marks the changed pixels in red. Read the diff and the actual image for every failure, and confirm each difference is one the change intended. A failure on a page or width the change should not have affected is a regression.
-4. A failure in `expect(errors)` means the page logged a console or page error. Fix it.
+4. Run `npm test` as well. A failure in `errors.spec.ts` or `navigation.spec.ts` is a bug to fix, whatever the screenshots show.
 5. When the result is right, run `npm run screenshots -- --update-snapshots` again, so the next change is compared with this one.
 
 The user can open the same comparison in a browser with `npx playwright show-report`.

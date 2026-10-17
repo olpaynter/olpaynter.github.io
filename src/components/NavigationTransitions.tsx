@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { useEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import { isPlainClick } from "@/lib/clicks";
 import { expectNavigation, navigationCommitted } from "@/lib/nav/intent";
 
@@ -61,17 +61,15 @@ export function NavigationTransitions() {
     const reloaded = saved.get(key);
     if (reloaded !== undefined) window.scrollTo({ top: reloaded, behavior: "instant" });
 
-    let frame: number | undefined;
     const onScroll = () => {
-      if (frame !== undefined) return;
-      frame = requestAnimationFrame(() => {
-        frame = undefined;
-        const current = entryKey();
-        if (current === undefined) return;
-        // Re-inserting keeps the map in order of use, so the oldest entries are the ones dropped.
-        saved.delete(current);
-        saved.set(current, window.scrollY);
-      });
+      // Between a back or forward and its restore, the page showing belongs to another entry, and the
+      // page swap caps its scroll position, so nothing is recorded.
+      if (restoreTo.current !== undefined) return;
+      const current = entryKey();
+      if (current === undefined) return;
+      // Re-inserting keeps the map in order of use, so the oldest entries are the ones dropped.
+      saved.delete(current);
+      saved.set(current, window.scrollY);
     };
     const store = () => {
       try {
@@ -85,7 +83,6 @@ export function NavigationTransitions() {
     return () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("pagehide", store);
-      if (frame !== undefined) cancelAnimationFrame(frame);
       history.scrollRestoration = "auto";
     };
   }, []);
@@ -161,7 +158,9 @@ export function NavigationTransitions() {
     return () => window.removeEventListener("popstate", onPopState, { capture: true });
   }, []);
 
-  useEffect(() => {
+  // A layout effect runs as the page is committed. A passive effect can run well after the new page is
+  // showing, and a back or forward in that gap would be taken for a hash change on the old page.
+  useLayoutEffect(() => {
     lastPath.current = pathname;
     navigationCommitted();
     // Scrolled before the transition is released, so its new snapshot already shows the restored position.
