@@ -6,8 +6,25 @@ import { routes } from "@/lib/routes";
 
 const ENTITIES: Record<string, string> = { "&amp;": "&", "&lt;": "<", "&gt;": ">", "&quot;": '"', "&#39;": "'" };
 
-export function readPostBody(slug: string): Promise<string> {
-  return readFile(path.join(process.cwd(), "src/content/posts", `${slug}.html`), "utf8");
+export async function readPostBody(slug: string): Promise<string> {
+  return withAspectRatios(await readFile(path.join(process.cwd(), "src/content/posts", `${slug}.html`), "utf8"));
+}
+
+/**
+ * Gives each image and video an aspect-ratio from its width and height attributes, so its box has its
+ * final size before the file loads. Firefox on Android sized a lazy image on the first screen
+ * differently until it loaded, which pushed the text below it down as the page appeared.
+ */
+function withAspectRatios(html: string): string {
+  return html.replace(/<(img|video)\b[^>]*>/g, (tag) => {
+    const width = /\swidth="(\d+)"/.exec(tag)?.[1];
+    const height = /\sheight="(\d+)"/.exec(tag)?.[1];
+    if (!width || !height) return tag;
+    const ratio = `aspect-ratio: ${width} / ${height};`;
+    return /\sstyle="/.test(tag)
+      ? tag.replace(/\sstyle="/, ` style="${ratio} `)
+      : tag.replace(/^<(img|video)/, `<$1 style="${ratio}"`);
+  });
 }
 
 /**
