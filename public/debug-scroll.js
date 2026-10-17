@@ -63,6 +63,24 @@
     { passive: true },
   );
   addEventListener("resize", () => log("resize"));
+  addEventListener(
+    "load",
+    (event) => {
+      if (event.target instanceof HTMLImageElement) {
+        log(`img ${event.target.src.split("/").pop()} top=${Math.round(event.target.getBoundingClientRect().top)}`);
+      }
+    },
+    true,
+  );
+  addEventListener("focusin", (event) => log(`focus <${event.target.tagName?.toLowerCase()}>`), true);
+  document.fonts?.addEventListener("loadingdone", () => log("fonts loaded"));
+  // Each visit with ?debug-scroll starts a new log, with anchoring off only if &no-anchor is given.
+  if (/[?&]debug-scroll/.test(location.search)) {
+    lines.length = 0;
+    sessionStorage.setItem("debug-no-anchor", /[?&]no-anchor/.test(location.search) ? "1" : "");
+  }
+  const noAnchor = sessionStorage.getItem("debug-no-anchor") === "1";
+  if (noAnchor) document.documentElement.style.overflowAnchor = "none";
   addEventListener("popstate", () => log("popstate"), true);
   addEventListener("click", (event) => log(`tap ${event.target.closest?.("a")?.getAttribute("href") ?? ""}`), true);
   let path = location.pathname;
@@ -70,7 +88,9 @@
     if (location.pathname !== path) log(`page ${(path = location.pathname)}`);
   }, 50);
 
-  log(`start ${navigator.userAgent.replace(/.*(Firefox\/[\d.]+|Chrome\/[\d.]+).*/, "$1")} navApi=${"navigation" in window}`);
+  log(
+    `start ${navigator.userAgent.replace(/.*(Firefox\/[\d.]+|Chrome\/[\d.]+).*/, "$1")} navApi=${"navigation" in window} anchoring=${noAnchor ? "off" : "on"}`,
+  );
   if (document.readyState === "loading") addEventListener("DOMContentLoaded", () => document.documentElement.append(panel));
   else document.documentElement.append(panel);
 })();
