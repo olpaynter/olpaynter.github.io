@@ -69,11 +69,18 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
         <NavigationTransitions />
         <DocumentPrefetch />
         {process.env.NODE_ENV === "development" && <DevThemeSwitcher />}
-        <div className="relative min-h-full">
+        <a
+          href="#content"
+          className="sr-only rounded-full border border-white/15 bg-background text-sm focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-30 focus:px-4 focus:py-2"
+        >
+          Skip to content
+        </a>
+        {/* The nav is fixed, so its place here sets only the reading and focus order: before the page, as it is drawn. */}
+        <SiteNav navigation={navigation} />
+        <div id="content" className="relative min-h-full">
           <IslandBackdrop />
           {children}
         </div>
-        <SiteNav navigation={navigation} />
         <RevealOnScroll />
         <div
           aria-hidden

@@ -11,7 +11,7 @@ export default function BlogIndex() {
       <main className="relative mx-auto w-full max-w-3xl px-6 pt-28 pb-20 sm:py-28">
         <h1 className="t-serif mb-6 text-3xl font-bold tracking-tight">Blog</h1>
         <BlogIntro />
-        <BlogList posts={publishedPosts} anchored />
+        <BlogList posts={publishedPosts} anchored Heading="h2" />
       </main>
     </PageTransition>
   );

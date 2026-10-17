@@ -25,6 +25,10 @@ const ADDRESS_DELAY_MS = 200;
 
 const READER_INPUT = ["wheel", "touchmove", "keydown", "pointerdown"] as const;
 
+/** The band a section must cross to be in view, as fractions of the viewport height from the top. */
+const BAND_TOP = 0.35;
+const BAND_BOTTOM = 0.4;
+
 /**
  * Returns the section in view and a function that scrolls to a section and highlights it. `ids`
  * are the page's section ids in page order; a new array, as on moving to another page, starts over.
@@ -115,11 +119,35 @@ export function useScrollSpy(ids: string[]) {
 
     let band: string | undefined;
 
+    // Read when the page resizes rather than on each scroll frame, where reading them forces a style
+    // recalculation.
+    let pageHeight = document.documentElement.scrollHeight;
+    let viewportHeight = window.innerHeight;
+    const resized = new ResizeObserver(() => (pageHeight = document.documentElement.scrollHeight));
+    resized.observe(document.body);
+    // A phone's toolbars change the viewport without resizing the page.
+    const onResize = () => (viewportHeight = window.innerHeight);
+    window.addEventListener("resize", onResize, { passive: true });
+
     // A page too short for its last sections to reach the band highlights its first entry at the
     // very top and its last entry at the very bottom.
     const edge = () => {
       if (window.scrollY <= 1) return ids[0];
-      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2) return ids.at(-1);
+      if (viewportHeight + window.scrollY >= pageHeight - 2) return ids.at(-1);
+    };
+
+    // The gap between two chapters belongs to neither, so a band inside it would see only the journey
+    // section and step the highlight back through the chapters above. The last child section the band
+    // has passed keeps the highlight instead.
+    const passedChild = (id: string) => {
+      const parent = document.getElementById(id);
+      const bandTop = window.innerHeight * BAND_TOP;
+      return ids
+        .filter((child) => {
+          const element = document.getElementById(child);
+          return element && element !== parent && parent?.contains(element);
+        })
+        .findLast((child) => document.getElementById(child)!.getBoundingClientRect().top < bandTop);
     };
 
     retarget.current = () => {
@@ -139,10 +167,11 @@ export function useScrollSpy(ids: string[]) {
           else visible.delete(entry.target.id);
         }
         // Chapters sit inside the journey section, so prefer the most specific visible id.
-        band = [...ids].reverse().find((id) => visible.has(id)) ?? band;
+        const specific = [...ids].reverse().find((id) => visible.has(id));
+        if (specific) band = passedChild(specific) ?? specific;
         retarget.current();
       },
-      { rootMargin: "-35% 0px -60% 0px" },
+      { rootMargin: `-${BAND_TOP * 100}% 0px -${(1 - BAND_BOTTOM) * 100}% 0px` },
     );
     let previous: Element | undefined;
     for (const id of ids) {
@@ -171,6 +200,8 @@ export function useScrollSpy(ids: string[]) {
 
     return () => {
       observer.disconnect();
+      resized.disconnect();
+      window.removeEventListener("resize", onResize);
       window.removeEventListener("scroll", onScroll);
       if (frame !== undefined) cancelAnimationFrame(frame);
       window.clearTimeout(stepTimer.current);

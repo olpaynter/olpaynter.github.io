@@ -119,6 +119,17 @@ function RoleBlock({ role }: { role: Role }) {
   );
 }
 
+/** A <time> needs a machine-readable date, which "Present" does not have. */
+function EndDate({ end, className }: { end?: string; className: string }) {
+  return end ? (
+    <time dateTime={end} className={className}>
+      {monthYear(end)}
+    </time>
+  ) : (
+    <span className={className}>Present</span>
+  );
+}
+
 function ChapterEntry({ chapter }: { chapter: Chapter }) {
   const latest = chapter.roles[0];
   const earliest = chapter.roles.at(-1)!;
@@ -135,17 +146,9 @@ function ChapterEntry({ chapter }: { chapter: Chapter }) {
         } ${dated ? "" : "mask-b-from-40%"}`}
       />
       <Dot className={`top-[0.34375rem] ${line.chapterDot}`} live={current} />
-      {dated && (
-        <time dateTime={latest.end} className={`top-0.5 ${chapterLabel}`}>
-          {latest.end ? monthYear(latest.end) : "Present"}
-        </time>
-      )}
+      {dated && <EndDate end={latest.end} className={`top-0.5 ${chapterLabel}`} />}
 
-      {dated && (
-        <time dateTime={latest.end} className={`mb-1 block pt-[0.21875rem] ${chapterLabelInline}`}>
-          {latest.end ? monthYear(latest.end) : "Present"}
-        </time>
-      )}
+      {dated && <EndDate end={latest.end} className={`mb-1 block pt-[0.21875rem] ${chapterLabelInline}`} />}
       <h3 className="t-serif text-lg font-semibold sm:text-xl">{chapter.name}</h3>
       <p className="text-sm text-muted">{chapter.location}</p>
 

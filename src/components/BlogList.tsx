@@ -27,12 +27,21 @@ export function BlogIntro() {
   );
 }
 
-/** A plain list of posts, with each date hanging in the left margin from lg up, like the timeline. */
 /**
+ * A plain list of posts, with each date hanging in the left margin from lg up, like the timeline.
  * `anchored` gives each post an id, its slug, so the side nav on the blog index can track and
  * scroll to it.
  */
-export function BlogList({ posts, anchored = false }: { posts: Post[]; anchored?: boolean }) {
+export function BlogList({
+  posts,
+  anchored = false,
+  Heading = "h3",
+}: {
+  posts: Post[];
+  anchored?: boolean;
+  /** The level of each post title, one below the heading the list sits under. */
+  Heading?: "h2" | "h3";
+}) {
   return (
     <ul className="space-y-10 sm:space-y-12">
       {posts.map((post) => {
@@ -45,11 +54,11 @@ export function BlogList({ posts, anchored = false }: { posts: Post[]; anchored?
               {monthYear(post.date)}
             </time>
             <PostTitle slug={post.slug}>
-              <h3 className="t-serif w-fit text-lg font-semibold sm:text-xl">
+              <Heading className="t-serif w-fit text-lg font-semibold sm:text-xl">
                 <Link href={routes.post(post.slug)} className="transition-colors duration-300 hover:text-(--link)">
                   {post.title}
                 </Link>
-              </h3>
+              </Heading>
             </PostTitle>
             <p className="mt-2 text-base leading-relaxed text-foreground/80 sm:text-lg">{post.summary}</p>
             <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-muted">

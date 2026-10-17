@@ -7,7 +7,7 @@ How the code is organised, the rules it follows, and how to add pages. The [READ
 | Path                  | Contents                                                                                                                                                                                                                                                                                                                               |
 | --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `src/app/`            | Routes: `/`, `/blog`, `/blog/[slug]`, `/resume`, `/journey/university-of-bath/dissertation`, the root layout, `globals.css`.                                                                                                                                                                                                           |
-| `src/components/`     | Page pieces. `NavigationTransitions`, `RevealOnScroll` and `DevThemeSwitcher` run in the browser; the rest render at build time.                                                                                                                                                                                                       |
+| `src/components/`     | Page pieces. The nav (`src/components/nav/`), `NavigationTransitions`, `RevealOnScroll`, `DocumentPrefetch`, `Quote`, `RedirectHome` and `DevThemeSwitcher` run in the browser; the rest render at build time.                                                                                                                         |
 | `src/components/nav/` | The side nav: `SiteNav` (the component), `view.ts` (the rules for what each row shows), `NavRow`, `useScrollSpy` (the section in view), and `MobileNav`, the bar that replaces it on narrow screens.                                                                                                                                   |
 | `src/data/`           | `journey.ts` (the timeline) and `blog.ts` (the post list).                                                                                                                                                                                                                                                                             |
 | `src/content/posts/`  | One HTML body per post, named after its slug.                                                                                                                                                                                                                                                                                          |
@@ -39,7 +39,7 @@ Dates are ISO strings, `YYYY-MM` or `YYYY-MM-DD`, and only the month and year ar
 
 A timeline photo in `src/data/journey.ts` can take an optional `caption`, shown beneath it. Any image on the site that fails to load, including those in post bodies, is replaced by `public/photos/fallback.svg` (`FALLBACK_IMAGE` in `src/lib/site.ts`); the script in the root layout does this before the page hydrates.
 
-The resume is `public/resume.pdf`. Replace the file to update it. Each document page's PDF is listed in `documentFiles` in `src/lib/routes.ts`. `DocumentPrefetch` downloads it when the reader points at, focuses or touches a link to that page, unless they have asked to save data, so the preview opens from the cache.
+The resume is `public/resume.pdf`. Replace the file to update it. Each document page's PDF is listed in `documentFiles` in `src/lib/routes.ts`. `DocumentPrefetch` downloads it when the reader points at a link to that page with a mouse or focuses it, but not on a touch, which also starts a scroll, unless they have asked to save data, so the preview opens from the cache.
 
 ## Themes
 
@@ -69,14 +69,14 @@ The typographic theme also restyles elements marked `t-serif` (headings and name
 - Above a 1512px viewport, the width of a 14-inch MacBook Pro at default scaling, the root font size in `globals.css` grows with the viewport, up to twice the default, so large screens show the same proportions. Write sizes in rem rather than px so they scale with it; media queries are unaffected.
 - The content column is `max-w-3xl` (48rem). `IslandBackdrop` places the outlines in the margins either side of it using half that width, `24rem`, so change both together.
 - Below `sm` (40rem), text in the home page, timeline, blog list and post bodies is a step smaller, and the home page header puts the photo beside the name.
-- The side nav and the margin dates appear from the `nav` breakpoint (1360px, declared in `globals.css`), below which they would collide. Use the `nav:` variant rather than a pixel value.
+- The side nav appears from the `nav` breakpoint (1360px, declared in `globals.css`), below which it would collide with the content; use the `nav:` variant rather than a pixel value. The timeline and blog list dates move into the left margin from `lg`.
 - The timeline's line, dot and indent offsets are calculated together in the `line` constants at the top of `JourneyTimeline.tsx`. A change to the dot size or indent needs those offsets recalculated.
 
 ## Motion
 
 Every animation follows three rules.
 
-1. Animate only `transform`, `opacity`, `filter` and colours, so the browser does not recalculate layout on each frame. The one exception is the side nav folds, which animate `grid-template-rows` because they have to push the items beneath them down.
+1. Animate only `transform`, `opacity`, `filter` and colours, so the browser does not recalculate layout on each frame. The exceptions are the folds (the side nav, the mobile nav bar and the quotes), which animate `grid-template-rows` or `grid-template-columns` because they have to push the items beside them along.
 2. Respect reduced motion. Motion is wrapped in `motion-safe:`, a `prefers-reduced-motion: no-preference` block, or has `motion-reduce:` overrides; page transitions drop to zero duration.
 3. Use the shared easing, `var(--ease-settle)`, for anything that settles into place.
 
@@ -96,7 +96,8 @@ Every name on a page must be unique, because a duplicate aborts the whole transi
 `NavigationTransitions` in the root layout coordinates every navigation between pages:
 
 - It records where a link click or a back or forward is heading in `src/lib/nav/intent.ts`, before the router renders the next page. The side nav reads it while rendering that page, which happens before the address changes, so it highlights the section the reader is heading for straight away.
-- Next.js applies back and forward as an immediate render, so it intercepts `popstate` before the router, starts the transition, and replays the event to the router once the old page has been captured.
+- Next.js applies back and forward as an immediate render, so it intercepts `popstate` before the router, starts the transition, and replays the event to the router once the old page has been captured. It skips its own transition when the browser has already animated the navigation, as Safari does for a swipe.
+- It keeps the scroll position of each history entry, keyed by the Navigation API's entry key, and restores it once the page has rendered and before the new page is captured. The browser's own restoration would apply the position while the old page is still showing, which caps it at that page's height. Browsers without the Navigation API keep their own restoration.
 
 ### Side nav structure
 

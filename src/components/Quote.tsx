@@ -33,11 +33,11 @@ export function Quote({ reminder }: { reminder: Reminder }) {
   const [open, setOpen] = useState(false);
   const reasonId = useId();
   return (
-    <div className="relative pl-10 sm:pl-0">
-      {/* Below sm the page padding is too narrow to hang the mark outside, so it sits in an indent. */}
+    <div className="relative pl-10 min-[54rem]:pl-0">
+      {/* Until the margin beside the 48rem column can hold the mark, it sits in an indent instead. */}
       <span
         aria-hidden
-        className="t-serif absolute -top-2 left-0 text-6xl leading-none text-(--mark) select-none sm:-left-12 sm:text-7xl"
+        className="t-serif absolute -top-2 left-0 text-6xl leading-none text-(--mark) select-none min-[54rem]:-left-12 min-[54rem]:text-7xl"
       >
         &ldquo;
       </span>
@@ -60,7 +60,10 @@ export function Quote({ reminder }: { reminder: Reminder }) {
             style={{ transitionDuration: `${FOLD_MS}ms` }}
             className={`mr-1.5 inline-block transition-transform ease-(--ease-settle) motion-reduce:transition-none ${open ? "rotate-90" : ""}`}
           >
-            ▸
+            {/* Drawn rather than typed, because the Inter subset has no ▸ and a fallback font delays the first paint. */}
+            <svg viewBox="0 0 6 10" className="h-[0.6em] w-[0.36em]">
+              <path d="M0 1 6 5 0 9Z" fill="currentColor" />
+            </svg>
           </span>
           Why this stays with me
         </button>

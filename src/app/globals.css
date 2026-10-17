@@ -5,7 +5,7 @@
   --color-foreground: #ece6dc;
   --color-muted: #a39a8c;
   --font-sans: var(--font-inter);
-  /* The side nav and the margin dates appear from here; below it the margins are too narrow. */
+  /* The side nav appears from here; below it the margins are too narrow for it. */
   --breakpoint-nav: 1360px;
 }
 
@@ -257,8 +257,11 @@ body {
   text-underline-offset: 4px;
 }
 
-.post-body a:hover {
-  text-decoration: underline;
+/* Touch screens keep :hover after a tap, which would leave the underline behind. */
+@media (hover: hover) {
+  .post-body a:hover {
+    text-decoration: underline;
+  }
 }
 
 .post-body strong {
