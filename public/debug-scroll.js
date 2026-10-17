@@ -89,8 +89,28 @@
   if (noAnchor) document.documentElement.style.overflowAnchor = "none";
   addEventListener("popstate", () => log("popstate"), true);
   addEventListener("click", (event) => log(`tap ${event.target.closest?.("a")?.getAttribute("href") ?? ""}`), true);
+  // Logs every change in height of the page's images and title, which would push the text below them.
+  const heights = new WeakMap();
+  const sized = new ResizeObserver((entries) => {
+    for (const entry of entries) {
+      const height = Math.round(entry.contentRect.height);
+      const was = heights.get(entry.target);
+      heights.set(entry.target, height);
+      const name = entry.target.tagName === "IMG" ? entry.target.src.split("/").pop() : entry.target.tagName.toLowerCase();
+      log(`size ${name} ${was ?? "new"}->${height}`);
+    }
+  });
+  const watch = () => {
+    for (const element of document.querySelectorAll("main img, main h1")) {
+      if (!heights.has(element)) {
+        heights.set(element, undefined);
+        sized.observe(element);
+      }
+    }
+  };
   let path = location.pathname;
   setInterval(() => {
+    watch();
     if (location.pathname !== path) log(`page ${(path = location.pathname)}`);
   }, 50);
 
