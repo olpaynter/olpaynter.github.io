@@ -217,6 +217,12 @@ Wrap the address in `checkedLink`, as `JourneyTimeline` does for project links, 
 - `src/app/opengraph-image.png` is the preview shown when a link is shared, and `icon.svg` is the browser tab icon. Replace the image if the name, description or theme changes.
 - `src/app/not-found.tsx` becomes `404.html`, which GitHub Pages serves for any unknown path. It sends the visitor to the home page.
 
+## Screenshots
+
+`npm run screenshots` builds the site and compares a full-page screenshot of every page in the sitemap, at widths of 390, 1024, 1440 and 1920, with those saved in `.screenshots/`. `npm run screenshots -- --update-snapshots` saves new ones; the folder is not committed, so save a set before the first comparison on a new machine. Each difference is written to `test-results/` as the expected, actual and diff images, and `npx playwright show-report` shows them side by side. The settings are in `playwright.config.ts` and the test in `tests/screenshots.spec.ts`.
+
+The tests run in the installed Google Chrome with GPU rasterisation off, because the GPU scales large images slightly differently from run to run, and with reduced motion, so animations show their final state. Animated images and the PDF previews are masked, because they never settle into one frame.
+
 ## Deployment
 
 `.github/workflows/deploy.yml` deploys on every push to `main`, and can also be run by hand from the Actions tab. It installs with `npm ci` on the Node version in `.nvmrc`, runs `npm run check`, builds, and publishes `out/` to GitHub Pages. A failing check stops the deploy. GitHub Pages must be set to deploy from GitHub Actions (Settings, Pages, Source).

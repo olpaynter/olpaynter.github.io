@@ -4,12 +4,13 @@ The personal site of Oliver Paynter-Jones, live at [opaynter.com](https://opaynt
 
 ## Commands
 
-| Command          | What it does                                                                |
-| ---------------- | --------------------------------------------------------------------------- |
-| `npm run dev`    | Development server at http://localhost:3000, with a theme switcher.         |
-| `npm run build`  | Static export into `out/`.                                                  |
-| `npm run format` | Formats everything with Prettier.                                           |
-| `npm run check`  | Format check, ESLint and the TypeScript compiler. Run it before committing. |
+| Command               | What it does                                                                                                              |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `npm run dev`         | Development server at http://localhost:3000, with a theme switcher.                                                       |
+| `npm run build`       | Static export into `out/`.                                                                                                |
+| `npm run format`      | Formats everything with Prettier.                                                                                         |
+| `npm run check`       | Format check, ESLint and the TypeScript compiler. Run it before committing.                                               |
+| `npm run screenshots` | Builds, then compares every page at four widths with the saved screenshots. Add `-- --update-snapshots` to save new ones. |
 
 ## Content
 
@@ -24,4 +25,4 @@ The personal site of Oliver Paynter-Jones, live at [opaynter.com](https://opaynt
 
 ## Deployment
 
-Every push to `main` runs `.github/workflows/deploy.yml`, which checks, builds and publishes the site. A failing check stops the deploy. Pull requests, including Dependabot's, run the same check and build in `.github/workflows/check.yml`.
+Every push to `main` runs `.github/workflows/deploy.yml`, which checks, builds and publishes the site. A failing check stops the deploy. Pull requests, including Dependabot's, run the same check and build in `.github/workflows/check.yml`. `.github/workflows/screenshots.yml` also compares each pull request's pages with the base branch's and uploads the differences as the `screenshot-report` artifact; differences do not fail the check.

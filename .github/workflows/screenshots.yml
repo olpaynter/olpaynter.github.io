@@ -1,0 +1,52 @@
+name: Screenshots
+
+# Compares every page as the pull request builds it with the same page built from the base branch.
+# Visual changes are usually intended, so differences are reported rather than failing the check.
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  screenshots:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+      - run: npm run build
+
+      # Checked out after the pull request's build, so that build does not type-check the base branch's files.
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          path: base
+
+      - run: npm ci && npm run build
+        working-directory: base
+
+      - name: Screenshot the base branch
+        run: npx playwright test --update-snapshots
+        env:
+          SITE_DIR: base/out
+
+      - name: Compare the pull request with the base branch
+        run: |
+          if npx playwright test; then
+            echo "No page looks different from the base branch." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "Some pages look different from the base branch. Download the screenshot-report artifact, unzip it and run \`npx playwright show-report <folder>\` to see each change." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: screenshot-report
+          path: playwright-report
+          retention-days: 14
