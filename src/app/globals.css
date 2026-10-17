@@ -65,6 +65,10 @@ html {
   scroll-padding-top: 2rem;
   scrollbar-width: thin;
   scrollbar-color: rgb(255 255 255 / 0.15) transparent;
+  /* Every image and video has a fixed box, so nothing above the reader changes size. Firefox on Android
+     still anchored a post as it opened, scrolling it under the title animation, which then jumped when the
+     animation ended. */
+  overflow-anchor: none;
 }
 
 @media (prefers-reduced-motion: no-preference) {
