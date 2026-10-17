@@ -48,7 +48,11 @@
       log("transition start");
       const transition = start(...args);
       // Ready resolves once the new page has been captured, so its y is the position the animation shows.
-      transition.ready.then(() => log("transition ready"));
+      transition.ready.then(
+        () => log("transition ready"),
+        (error) => log(`transition not ready: ${error?.name}: ${error?.message}`),
+      );
+      transition.updateCallbackDone.catch((error) => log(`update failed: ${error?.name}: ${error?.message}`));
       transition.finished.then(() => log("transition end"));
       return transition;
     };
