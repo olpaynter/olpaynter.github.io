@@ -220,13 +220,7 @@ Wrap the address in `checkedLink`, as `JourneyTimeline` does for project links, 
 
 ## Tests
 
-`npm test` builds the site and runs every Playwright test in `tests/`. `errors.spec.ts` loads each page in the sitemap and fails on any console or page error. `navigation.spec.ts` checks that back and forward return a long post to its scroll position, at a phone and a desktop width, and that on a short phone screen the nav highlight moves through the journey chapters in order without stepping back. In CI these two fail the run, while differences in the screenshots below are only reported.
-
-### Screenshots
-
-`npm run screenshots` builds the site and compares a full-page screenshot of every page in the sitemap, at widths of 390, 1024, 1440 and 1920, with those saved in `.screenshots/`. `npm run screenshots -- --update-snapshots` saves new ones; the folder is not committed, so save a set before the first comparison on a new machine. Each difference is written to `test-results/` as the expected, actual and diff images, and `npx playwright show-report` shows them side by side. The settings are in `playwright.config.ts` and the test in `tests/screenshots.spec.ts`.
-
-The tests run in the installed Google Chrome with GPU rasterisation off, because the GPU scales large images slightly differently from run to run, and with reduced motion, so animations show their final state. Animated images, the looping videos and the PDF previews are masked, because they never settle into one frame.
+`npm test` builds the site and runs every Playwright test in `tests/`. `errors.spec.ts` loads each page in the sitemap and fails on any console or page error. `navigation.spec.ts` checks that back and forward return a long post to its scroll position, at a phone and a desktop width, and that on a short phone screen the nav highlight moves through the journey chapters in order without stepping back. The tests run in the installed Google Chrome against the built site in `out/`. In CI they run after the build, and a failure stops the deploy.
 
 ## Deployment
 

@@ -39,6 +39,9 @@ jobs:
 
       - run: npm run build
 
+      # Pages that log errors, or a broken back, forward or nav highlight, stop the deploy.
+      - run: npx playwright test
+
       - uses: actions/configure-pages@v6
 
       - uses: actions/upload-pages-artifact@v5
@@ -54,9 +57,3 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v5
-
-  screenshots:
-    needs: deploy
-    permissions:
-      contents: read
-    uses: ./.github/workflows/screenshots.yml

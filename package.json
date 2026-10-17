@@ -9,7 +9,6 @@
     "lint": "eslint",
     "format": "prettier --write .",
     "check": "prettier --check . && eslint && next typegen && tsc --noEmit",
-    "screenshots": "next build && playwright test tests/screenshots.spec.ts",
     "test": "next build && playwright test"
   },
   "dependencies": {

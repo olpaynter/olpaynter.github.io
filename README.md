@@ -4,14 +4,13 @@ The personal site of Oliver Paynter-Jones, live at [opaynter.com](https://opaynt
 
 ## Commands
 
-| Command               | What it does                                                                                                                                                                    |
-| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `npm run dev`         | Development server at http://localhost:3000, with a theme switcher.                                                                                                             |
-| `npm run build`       | Static export into `out/`.                                                                                                                                                      |
-| `npm run format`      | Formats everything with Prettier.                                                                                                                                               |
-| `npm run check`       | Format check, ESLint and the TypeScript compiler. Run it before committing.                                                                                                     |
-| `npm test`            | Builds, then runs the Playwright tests: no page logs an error, back and forward keep the scroll position, the nav highlight follows the journey, and the screenshot comparison. |
-| `npm run screenshots` | Builds, then compares every page at four widths with the saved screenshots. Add `-- --update-snapshots` to save new ones.                                                       |
+| Command          | What it does                                                                                                                                        |
+| ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run dev`    | Development server at http://localhost:3000, with a theme switcher.                                                                                 |
+| `npm run build`  | Static export into `out/`.                                                                                                                          |
+| `npm run format` | Formats everything with Prettier.                                                                                                                   |
+| `npm run check`  | Format check, ESLint and the TypeScript compiler. Run it before committing.                                                                         |
+| `npm test`       | Builds, then runs the Playwright tests: no page logs an error, back and forward keep the scroll position and the nav highlight follows the journey. |
 
 ## Content
 
@@ -26,4 +25,4 @@ The personal site of Oliver Paynter-Jones, live at [opaynter.com](https://opaynt
 
 ## Deployment
 
-Every push to `main` runs `.github/workflows/deploy.yml`, which checks, builds and publishes the site. A failing check stops the deploy. Pull requests, including Dependabot's, run the same check and build in `.github/workflows/check.yml`. Both workflows end by running `.github/workflows/screenshots.yml`, after the deploy or the check has finished. It compares every page with the same page built from the commit before, and uploads the differences as the `screenshot-report` artifact; differences do not fail the run.
+Every push to `main` runs `.github/workflows/deploy.yml`, which checks, builds, tests and publishes the site. A failing check stops the deploy. Pull requests, including Dependabot's, run the same check and build in `.github/workflows/check.yml`. Both also run the Playwright tests after the build.

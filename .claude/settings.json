@@ -9,7 +9,6 @@
       "Bash(npx prettier *)",
       "Bash(npx eslint *)",
       "Bash(npx tsc *)",
-      "Bash(npm run screenshots*)",
       "Bash(npx playwright *)"
     ]
   },

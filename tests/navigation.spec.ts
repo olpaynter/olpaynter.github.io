@@ -1,9 +1,6 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("back and forward", () => {
-  test.beforeEach(({}, info) =>
-    test.skip(!["390", "1440"].includes(info.project.name), "one phone and one desktop width"),
-  );
   // The bug only appears when the page transition runs, which reduced motion turns off.
   test.use({ contextOptions: { reducedMotion: "no-preference" } });
 
@@ -23,7 +20,7 @@ test.describe("back and forward", () => {
 });
 
 test.describe("on a short phone screen", () => {
-  test.beforeEach(({}, info) => test.skip(info.project.name !== "390", "a phone width"));
+  test.beforeEach(({}, info) => test.skip(info.project.name !== "phone", "a phone width"));
   test.use({ viewport: { width: 390, height: 600 } });
 
   test("the nav highlight moves forward through the chapters", async ({ page }) => {
