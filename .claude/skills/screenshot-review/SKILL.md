@@ -34,6 +34,6 @@ The user can open the same comparison in a browser with `npx playwright show-rep
 - The 404 page redirects home, so it is not screenshotted.
 - Google Chrome must be installed, because the tests use it instead of a downloaded browser.
 
-## Pull requests
+## CI
 
-`.github/workflows/screenshots.yml` runs the same comparison on every pull request, with screenshots of the base branch as the baseline. It uploads the report as the `screenshot-report` artifact and does not fail the check when pages differ.
+`.github/workflows/screenshots.yml` runs the same comparison on every push to `main` and every pull request, with screenshots of the commit before it as the baseline. It uploads the report as the `screenshot-report` artifact and does not fail the run when pages differ.

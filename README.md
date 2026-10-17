@@ -25,4 +25,4 @@ The personal site of Oliver Paynter-Jones, live at [opaynter.com](https://opaynt
 
 ## Deployment
 
-Every push to `main` runs `.github/workflows/deploy.yml`, which checks, builds and publishes the site. A failing check stops the deploy. Pull requests, including Dependabot's, run the same check and build in `.github/workflows/check.yml`. `.github/workflows/screenshots.yml` also compares each pull request's pages with the base branch's and uploads the differences as the `screenshot-report` artifact; differences do not fail the check.
+Every push to `main` runs `.github/workflows/deploy.yml`, which checks, builds and publishes the site. A failing check stops the deploy. Pull requests, including Dependabot's, run the same check and build in `.github/workflows/check.yml`. `.github/workflows/screenshots.yml` compares the pages of each push to `main`, and of each pull request, with those of the commit before it, and uploads the differences as the `screenshot-report` artifact; differences do not fail the run.

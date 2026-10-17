@@ -1,8 +1,11 @@
 name: Screenshots
 
-# Compares every page as the pull request builds it with the same page built from the base branch.
-# Visual changes are usually intended, so differences are reported rather than failing the check.
+# Compares every page as this commit builds it with the same page built from the commit before it: the
+# previous head of main for a push, or the base branch for a pull request. Visual changes are usually
+# intended, so differences are reported rather than failing the run.
 on:
+  push:
+    branches: [main]
   pull_request:
 
 permissions:
@@ -22,26 +25,26 @@ jobs:
       - run: npm ci
       - run: npm run build
 
-      # Checked out after the pull request's build, so that build does not type-check the base branch's files.
+      # Checked out after this commit's build, so that build does not type-check the earlier commit's files.
       - uses: actions/checkout@v7
         with:
-          ref: ${{ github.event.pull_request.base.sha }}
+          ref: ${{ github.event.pull_request.base.sha || github.event.before }}
           path: base
 
       - run: npm ci && npm run build
         working-directory: base
 
-      - name: Screenshot the base branch
+      - name: Screenshot the earlier commit
         run: npx playwright test --update-snapshots
         env:
           SITE_DIR: base/out
 
-      - name: Compare the pull request with the base branch
+      - name: Compare this commit with the earlier one
         run: |
           if npx playwright test; then
-            echo "No page looks different from the base branch." >> "$GITHUB_STEP_SUMMARY"
+            echo "No page looks different from the earlier commit." >> "$GITHUB_STEP_SUMMARY"
           else
-            echo "Some pages look different from the base branch. Download the screenshot-report artifact, unzip it and run \`npx playwright show-report <folder>\` to see each change." >> "$GITHUB_STEP_SUMMARY"
+            echo "Some pages look different from the earlier commit. Download the screenshot-report artifact, unzip it and run \`npx playwright show-report <folder>\` to see each change." >> "$GITHUB_STEP_SUMMARY"
           fi
 
       - uses: actions/upload-artifact@v7
