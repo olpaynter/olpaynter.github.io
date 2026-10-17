@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import { type MouseEvent, useMemo } from "react";
 import { NavRow } from "@/components/nav/NavRow";
 import { useScrollSpy } from "@/components/nav/useScrollSpy";
-import { MobileNav } from "@/components/nav/MobileNav";
+import { MobileBar } from "@/components/nav/MobileBar";
 import { navRows, sectionEntries } from "@/components/nav/view";
 import { isPlainClick } from "@/lib/clicks";
 import type { EntryAction, SiteNavigation } from "@/lib/nav/types";
@@ -43,7 +43,7 @@ export function SiteNav({ navigation }: { navigation: SiteNavigation }) {
 
   return (
     <>
-      <MobileNav rows={rows} onClick={onClick} />
+      <MobileBar rows={rows} onClick={onClick} />
       {/* A fixed height, to the bottom of the screen, so the nav's box never changes size: a page
           transition draws the nav in a box sized when it starts, and would squash an unrolling entry
           into it. Only the list takes clicks, so the empty part of the box does not cover the page.

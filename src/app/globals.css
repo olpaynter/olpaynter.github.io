@@ -76,7 +76,7 @@ html {
 /* Below the nav breakpoint the nav is a bar across the top, up to two rows tall, so sections stop beneath it. */
 @media (width < 1360px) {
   html {
-    scroll-padding-top: 6rem;
+    scroll-padding-top: 5rem;
   }
 }
 
@@ -412,5 +412,27 @@ html[data-history-nav="new"] main {
   ::view-transition-group(*) {
     animation-duration: 0s !important;
     animation-delay: 0s !important;
+  }
+}
+
+/* Fills along the foot of the mobile bar as a post is read. Browsers without scroll timelines leave it out. */
+.reading-progress {
+  display: none;
+}
+
+@supports (animation-timeline: scroll()) {
+  .reading-progress {
+    display: block;
+    animation: reading-progress linear both;
+    animation-timeline: scroll(root);
+  }
+}
+
+@keyframes reading-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
   }
 }
