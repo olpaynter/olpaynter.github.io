@@ -2,12 +2,12 @@ import { PageTransition } from "@/components/PageTransition";
 import Image from "next/image";
 import Link from "next/link";
 import { HiOutlineMapPin } from "react-icons/hi2";
-import { BlogIntro, BlogList } from "@/components/BlogList";
+import { StoriesIntro, StoryList } from "@/components/StoryList";
 import { JourneyTimeline } from "@/components/JourneyTimeline";
 import { Socials } from "@/components/Socials";
 import { AccentLink } from "@/components/AccentLink";
 import { Quote } from "@/components/Quote";
-import { publishedPosts } from "@/data/blog";
+import { publishedPosts } from "@/data/stories";
 import { journey } from "@/data/journey";
 import { reminders } from "@/data/reminders";
 import { homeSections, routes } from "@/lib/routes";
@@ -90,15 +90,15 @@ export default function Home() {
           <JourneyTimeline chapters={journey} />
         </section>
 
-        <section id={homeSections.blog} className="mt-20 sm:mt-24">
-          <h2 className="t-serif mb-6 text-2xl font-bold tracking-tight sm:text-3xl">Blog</h2>
-          <BlogIntro />
-          <BlogList posts={publishedPosts.slice(0, 3)} />
+        <section id={homeSections.stories} className="mt-20 sm:mt-24">
+          <h2 className="t-serif mb-6 text-2xl font-bold tracking-tight sm:text-3xl">Stories</h2>
+          <StoriesIntro />
+          <StoryList posts={publishedPosts.slice(0, 3)} />
           <Link
-            href={routes.blog}
+            href={routes.stories}
             className="group mt-10 inline-block text-sm font-medium text-muted transition-colors duration-300 hover:text-foreground"
           >
-            All posts
+            All stories
             <span
               aria-hidden
               className="ml-2 inline-block transition-transform duration-300 ease-out group-hover:translate-x-1 motion-reduce:transform-none"

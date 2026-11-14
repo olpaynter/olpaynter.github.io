@@ -1,4 +1,4 @@
-import { publishedPosts } from "@/data/blog";
+import { publishedPosts } from "@/data/stories";
 import { chapterAnchor, journey } from "@/data/journey";
 import { sectionFromHash } from "@/lib/nav/hash";
 import { walk } from "@/lib/nav/tree";
@@ -63,17 +63,17 @@ export const navTrees: NavTree[] = [
           section: chapterAnchor(chapter),
         })),
       },
-      { key: "blog", label: "Blog", section: homeSections.blog },
+      { key: "stories", label: "Stories", section: homeSections.stories },
     ],
   },
   {
-    root: routes.blog,
+    root: routes.stories,
     entries: [
       { key: "home", label: "Home", page: routes.home },
       {
-        key: "blog",
-        label: "Blog",
-        page: routes.blog,
+        key: "stories",
+        label: "Stories",
+        page: routes.stories,
         children: publishedPosts.map((post) => ({
           key: `post-${post.slug}`,
           label: post.navLabel,

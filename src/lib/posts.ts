@@ -1,6 +1,6 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
-import { publishedPosts } from "@/data/blog";
+import { publishedPosts } from "@/data/stories";
 import type { PageSection } from "@/lib/nav/types";
 import { routes } from "@/lib/routes";
 

@@ -14,12 +14,12 @@ The personal site of Oliver Paynter-Jones, live at [opaynter.com](https://opaynt
 
 ## Content
 
-| What                         | Where                                                                         |
-| ---------------------------- | ----------------------------------------------------------------------------- |
-| Timeline                     | `src/data/journey.ts`, most recent first.                                     |
-| Blog posts                   | An entry in `src/data/blog.ts` and a body in `src/content/posts/<slug>.html`. |
-| Quotes on the home page      | `src/data/reminders.ts`.                                                      |
-| Resume, dissertation, photos | `public/`. Convert images to WebP first.                                      |
+| What                         | Where                                                                            |
+| ---------------------------- | -------------------------------------------------------------------------------- |
+| Timeline                     | `src/data/journey.ts`, most recent first.                                        |
+| Stories                      | An entry in `src/data/stories.ts` and a body in `src/content/posts/<slug>.html`. |
+| Quotes on the home page      | `src/data/reminders.ts`.                                                         |
+| Resume, dissertation, photos | `public/`. Convert images to WebP first.                                         |
 
 [docs/development.md](docs/development.md) has the details: the code layout, themes, motion, the side nav, and how to add pages.
 

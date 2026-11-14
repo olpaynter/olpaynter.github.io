@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { HiOutlinePencil } from "react-icons/hi2";
-import type { Post } from "@/data/blog";
+import type { Post } from "@/data/stories";
 import { AccentLink } from "@/components/AccentLink";
 import { PostTitle } from "@/components/PageTransition";
 import { monthYear } from "@/lib/dates";
@@ -17,22 +17,21 @@ export function AiLabel({ madeWithAI }: { madeWithAI: boolean }) {
   );
 }
 
-/** Explains the "Made without AI" label. */
-export function BlogIntro() {
+export function StoriesIntro() {
   return (
     <p className="mb-10 max-w-2xl text-base leading-relaxed text-foreground/80 sm:mb-12 sm:text-lg">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-      magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.
+      Longer pieces about things I&apos;ve built, places I&apos;ve been, and what I took away from them. Some are
+      write-ups of projects and some are closer to stories.
     </p>
   );
 }
 
 /**
  * A plain list of posts, with each date hanging in the left margin from lg up, like the timeline.
- * `anchored` gives each post an id, its slug, so the side nav on the blog index can track and
+ * `anchored` gives each post an id, its slug, so the side nav on the stories index can track and
  * scroll to it.
  */
-export function BlogList({
+export function StoryList({
   posts,
   anchored = false,
   Heading = "h3",

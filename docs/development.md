@@ -6,10 +6,10 @@ How the code is organised, the rules it follows, and how to add pages. The [READ
 
 | Path                  | Contents                                                                                                                                                                                                                                                                                                                               |
 | --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `src/app/`            | Routes: `/`, `/blog`, `/blog/[slug]`, `/resume`, `/journey/university-of-bath/dissertation`, the root layout, `globals.css`.                                                                                                                                                                                                           |
-| `src/components/`     | Page pieces. The nav (`src/components/nav/`), `NavigationTransitions`, `RevealOnScroll`, `DocumentPrefetch`, `Quote`, `RedirectHome` and `DevThemeSwitcher` run in the browser; the rest render at build time.                                                                                                                         |
+| `src/app/`            | Routes: `/`, `/stories`, `/stories/[slug]`, `/resume`, `/journey/university-of-bath/dissertation`, the root layout, `globals.css`.                                                                                                                                                                                                     |
+| `src/components/`     | Page pieces. The nav (`src/components/nav/`), `NavigationTransitions`, `RevealOnScroll`, `DocumentPrefetch`, `Quote` and `DevThemeSwitcher` run in the browser; the rest render at build time.                                                                                                                                         |
 | `src/components/nav/` | The side nav: `SiteNav` (the component), `view.ts` (the rules for what each row shows), `NavRow`, `useScrollSpy` (the section in view), and `MobileBar`, the bar that replaces it on narrow screens.                                                                                                                                   |
-| `src/data/`           | `journey.ts` (the timeline) and `blog.ts` (the post list).                                                                                                                                                                                                                                                                             |
+| `src/data/`           | `journey.ts` (the timeline) and `stories.ts` (the post list).                                                                                                                                                                                                                                                                          |
 | `src/content/posts/`  | One HTML body per post, named after its slug.                                                                                                                                                                                                                                                                                          |
 | `src/lib/`            | `routes.ts` (page addresses), `posts.ts` (post bodies and their sections), dates and site details.                                                                                                                                                                                                                                     |
 | `src/lib/nav/`        | The side nav's data: `siteMap.ts` (the nav trees, declared), `build.ts` (turns them into the site-wide nav at build time), `checks.ts` (the build-time rules), `types.ts` (the shapes passed between them and to the browser), `hash.ts` (reading and writing section hashes), `tree.ts`, `intent.ts` (where a navigation is heading). |
@@ -23,9 +23,9 @@ Add a chapter to `journey` in `src/data/journey.ts`, most recent first. Each cha
 
 Dates are ISO strings, `YYYY-MM` or `YYYY-MM-DD`, and only the month and year are shown. Leave out `end` for the current role. A chapter with no dates at all, such as Home, shows no date markers and fades out at the bottom.
 
-### Blog posts
+### Stories
 
-1. Add an entry to `posts` in `src/data/blog.ts`, most recent first. `navLabel` is the short title for the side nav. Set `madeWithAI` honestly: only `false` shows a label. `draft: true` hides the post everywhere, including the nav and the sitemap.
+1. Add an entry to `posts` in `src/data/stories.ts`, most recent first. `navLabel` is the short title for the side nav. Set `madeWithAI` honestly: only `false` shows a label. `draft: true` hides the post everywhere, including the nav and the sitemap.
 2. Add the body as `src/content/posts/<slug>.html`. Each section is `<div class="section" id="...">` followed directly by its `<h2>`; the post page reads that pattern to build the section list in the side nav. The heading must be plain text, or the build fails. A section with no heading, such as an introduction, is left out of the nav. Section ids must be unique within the post.
 3. Give every `<img>` its real `width` and `height`, plus `loading="lazy" decoding="async"`. The dimensions reserve the space before the image arrives, so the text does not shift and section links arrive at the right place.
 
@@ -68,8 +68,8 @@ The typographic theme also restyles elements marked `t-serif` (headings and name
 
 - Above a 1512px viewport, the width of a 14-inch MacBook Pro at default scaling, the root font size in `globals.css` grows with the viewport, up to twice the default, so large screens show the same proportions. Write sizes in rem rather than px so they scale with it; media queries are unaffected.
 - The content column is `max-w-3xl` (48rem). `IslandBackdrop` places the outlines in the margins either side of it using half that width, `24rem`, so change both together.
-- Below `sm` (40rem), text in the home page, timeline, blog list and post bodies is a step smaller, and the home page header puts the photo beside the name.
-- The side nav appears from the `nav` breakpoint (1360px, declared in `globals.css`), below which it would collide with the content; use the `nav:` variant rather than a pixel value. The timeline and blog list dates move into the left margin from `lg`.
+- Below `sm` (40rem), text in the home page, timeline, story list and post bodies is a step smaller, and the home page header puts the photo beside the name.
+- The side nav appears from the `nav` breakpoint (1360px, declared in `globals.css`), below which it would collide with the content; use the `nav:` variant rather than a pixel value. The timeline and story list dates move into the left margin from `lg`.
 - The timeline's line, dot and indent offsets are calculated together in the `line` constants at the top of `JourneyTimeline.tsx`. A change to the dot size or indent needs those offsets recalculated.
 
 ## Motion
@@ -104,30 +104,30 @@ Every name on a page must be unique, because a duplicate aborts the whole transi
 The side nav follows three rules. Check a new page against them before adding it.
 
 1. **Home is always the first entry.** It is the way home from every page, so it stays at the top of the nav whatever page the reader is on.
-2. **A new page can replace the rest of the nav with its own.** On a page of its own, such as `/blog`, every entry except Home folds away and the page's own entries unroll beneath it. In the code this is a nav tree with that page as its root.
-3. **A page that does not need its own nav unrolls from an existing entry instead.** It unrolls as a child of the entry it belongs to, only while the reader is on it, and nothing else in the nav is hidden. Clicking the parent goes back one step. "My resume" unrolls under Home, and "My dissertation" under University. A post works the same way within the blog nav: it opens under Blog with its sections, and Blog leads back to `/blog`.
+2. **A new page can replace the rest of the nav with its own.** On a page of its own, such as `/stories`, every entry except Home folds away and the page's own entries unroll beneath it. In the code this is a nav tree with that page as its root.
+3. **A page that does not need its own nav unrolls from an existing entry instead.** It unrolls as a child of the entry it belongs to, only while the reader is on it, and nothing else in the nav is hidden. Clicking the parent goes back one step. "My resume" unrolls under Home, and "My dissertation" under University. A post works the same way within the Stories nav: it opens under Stories with its sections, and Stories leads back to `/stories`.
 
 The side nav is one component, mounted once in the root layout, and it is never replaced. At build time, `siteNavigation` in `src/lib/nav/build.ts` merges every page's nav into one tree holding every entry any page shows, and records, for each page, which entries it shows and what each does. Moving to another page changes only which entries are shown, where they lead and which is highlighted. Each entry is the same element on every page, so every change is a CSS transition on it: an entry that is not shown folds away, one that is shown unrolls, and a line that gains or loses the highlight grows or shrinks. Moving between pages therefore looks the same as moving within one. A branch unrolls and rolls up as one block, over 600ms: only the outermost fold that changes animates (`Fold` in `NavRow.tsx`). While a branch opens, the entries inside it take their new state at once; while it closes, they keep their look until it has rolled up. So the entries inside a branch never unroll on their own, a branch never empties before it rolls up, and nested folds never multiply their motion. During a page transition the nav is lifted out of the snapshots and shown live (the `steady` class in `globals.css`), so those transitions play while the page changes.
 
-These rules are all in `navRows` in `src/components/nav/view.ts`. Exactly one entry is highlighted: the section in view, or, on a page with no sections, the entry for the page itself. The entries above it are not highlighted, though their folds are open. So on `/blog` the post in view is highlighted and Blog is not, and on a post the section in view is highlighted and the post is not.
+These rules are all in `navRows` in `src/components/nav/view.ts`. Exactly one entry is highlighted: the section in view, or, on a page with no sections, the entry for the page itself. The entries above it are not highlighted, though their folds are open. So on `/stories` the post in view is highlighted and Stories is not, and on a post the section in view is highlighted and the post is not.
 
-Clicking the entry for the page you are already on, such as the current post, "My resume" or Blog on `/blog`, scrolls back to the top of that page rather than reloading it, and the highlight returns to its first section.
+Clicking the entry for the page you are already on, such as the current post, "My resume" or Stories on `/stories`, scrolls back to the top of that page rather than reloading it, and the highlight returns to its first section.
 
 Each page's nav is resolved in `build.ts` from the trees in `src/lib/nav/siteMap.ts`. Each tree has a root page and a list of entries. An entry has a `key` and a `label`, and one or both of:
 
 - a `section`, an id on the tree's root page. On the root page the entry scrolls to it; elsewhere it links to it, as in `/#journey/icrtouch`.
 - a `page`, an address from `routes.ts`. The entry links to it, and is the current entry while the reader is on it. On the root page, an entry with a section scrolls to the section instead.
 
-An entry with `unrolls: true` is shown only while the reader is on its page or a page beneath it (rule 3). A page that is not a root belongs to the one tree that lists it. Below the `nav` breakpoint, where the side nav is hidden, `MobileBar` shows a slim bar across the top of the screen with the three top-level entries, Home, Journey and Blog, on every page. A single underline slides to the entry that holds the side nav's highlight or has it beneath it: Journey while a chapter or the dissertation is current, Blog on the blog and its posts, Home on the resume. The bar lists no sections, because on a phone the reader scrolls to them. On a post, a line along the foot of the bar fills as the post is read (`.reading-progress` in `globals.css`, a scroll-driven animation, so browsers without scroll timelines leave it out). `scroll-padding-top` in `globals.css` keeps sections clear of the bar.
+An entry with `unrolls: true` is shown only while the reader is on its page or a page beneath it (rule 3). A page that is not a root belongs to the one tree that lists it. Below the `nav` breakpoint, where the side nav is hidden, `MobileBar` shows a slim bar across the top of the screen with the three top-level entries, Home, Journey and Stories, on every page. A single underline slides to the entry that holds the side nav's highlight or has it beneath it: Journey while a chapter or the dissertation is current, Stories on the stories page and its posts, Home on the resume. The bar lists no sections, because on a phone the reader scrolls to them. On a post, a line along the foot of the bar fills as the post is read (`.reading-progress` in `globals.css`, a scroll-driven animation, so browsers without scroll timelines leave it out). `scroll-padding-top` in `globals.css` keeps sections clear of the bar.
 
 Keys follow one scheme, so the same thing has the same key on every page and different things never share one:
 
 | Key                   | Entry                                      |
 | --------------------- | ------------------------------------------ |
 | `home`                | Home                                       |
-| `journey`, `blog`     | The home page sections, and Blog           |
+| `journey`, `stories`  | The home page sections, and Stories        |
 | `chapter-<id>`        | A journey chapter                          |
-| `post-<slug>`         | A blog post                                |
+| `post-<slug>`         | A story                                    |
 | `section-<slug>-<id>` | A section of a post                        |
 | `page-<name>`         | A page that unrolls from an entry (rule 3) |
 
@@ -182,7 +182,7 @@ Each procedure below lists every file to touch. Run `npm run check` and `npm run
 2. Render it in `src/app/page.tsx` as `<section id={homeSections.<name>}>`.
 3. Add an entry to the home tree in `src/lib/nav/siteMap.ts` with a new key, its label and `section: homeSections.<name>`, in the position it has on the page. The highlight follows the order of the entries, so it must match the order of the sections.
 
-### A journey chapter or a blog post
+### A journey chapter or a story
 
 Add it to the data file as described under "Adding content". The nav, its keys, the sitemap and the link checks pick it up from the data.
 

@@ -5,8 +5,8 @@
  */
 export const routes = {
   home: "/",
-  blog: "/blog",
-  post: (slug: string) => `/blog/${slug}`,
+  stories: "/stories",
+  post: (slug: string) => `/stories/${slug}`,
   resume: "/resume",
   dissertation: "/journey/university-of-bath/dissertation",
 } as const;
@@ -21,5 +21,5 @@ export const documentFiles: Record<string, string> = {
 export const homeSections = {
   about: "about",
   journey: "journey",
-  blog: "blog",
+  stories: "stories",
 } as const;

@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { AiLabel } from "@/components/BlogList";
+import { AiLabel } from "@/components/StoryList";
 import { PageTransition, PostTitle } from "@/components/PageTransition";
-import { publishedPosts } from "@/data/blog";
+import { publishedPosts } from "@/data/stories";
 import { readPostBody } from "@/lib/posts";
 import { routes } from "@/lib/routes";
 import { monthYear } from "@/lib/dates";
@@ -19,7 +19,7 @@ function findPost(slug: string) {
   return publishedPosts.find((post) => post.slug === slug);
 }
 
-export async function generateMetadata({ params }: PageProps<"/blog/[slug]">): Promise<Metadata> {
+export async function generateMetadata({ params }: PageProps<"/stories/[slug]">): Promise<Metadata> {
   const post = findPost((await params).slug);
   if (!post) return {};
   return {
@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: PageProps<"/blog/[slug]">): P
   };
 }
 
-export default async function PostPage({ params }: PageProps<"/blog/[slug]">) {
+export default async function PostPage({ params }: PageProps<"/stories/[slug]">) {
   const post = findPost((await params).slug);
   if (!post) notFound();
 
@@ -45,7 +45,7 @@ export default async function PostPage({ params }: PageProps<"/blog/[slug]">) {
           </time>
           <PostTitle slug={post.slug}>
             <h1 className="t-serif mt-2 w-fit text-3xl font-bold tracking-tight sm:text-4xl">
-              <Link href={routes.blog} className="transition-colors duration-300 hover:text-(--link)">
+              <Link href={routes.stories} className="transition-colors duration-300 hover:text-(--link)">
                 {post.title}
               </Link>
             </h1>

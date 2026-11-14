@@ -14,7 +14,7 @@ type Click = (event: MouseEvent, action: EntryAction | undefined) => void;
 const ENTRIES = [
   { key: "home", label: "Home", href: routes.home },
   { key: "journey", label: "Journey", href: `${routes.home}${hashFor(homeSections.journey)}` },
-  { key: "blog", label: "Blog", href: routes.blog },
+  { key: "stories", label: "Stories", href: routes.stories },
 ];
 
 const holdsHighlight = (row: NavRowView): boolean => row.highlighted || row.children.some(holdsHighlight);
@@ -22,7 +22,7 @@ const holdsHighlight = (row: NavRowView): boolean => row.highlighted || row.chil
 /**
  * The nav below the `nav` breakpoint: a slim bar with the three top-level entries and one underline
  * that slides to the entry holding the side nav's highlight, so Journey takes it while the journey
- * section is in view, Blog on a post, and Home on the resume. On a post, a line along the bar's foot
+ * section is in view, Stories on a post, and Home on the resume. On a post, a line along the bar's foot
  * fills as the post is read.
  */
 export function MobileBar({ rows, onClick }: { rows: NavRowView[]; onClick: Click }) {
@@ -82,7 +82,7 @@ export function MobileBar({ rows, onClick }: { rows: NavRowView[]; onClick: Clic
             />
           )}
         </div>
-        {pathname.startsWith(`${routes.blog}/`) && (
+        {pathname.startsWith(`${routes.stories}/`) && (
           <span aria-hidden className="reading-progress absolute inset-x-0 bottom-0 h-px origin-left bg-(--mark)/60" />
         )}
       </div>
