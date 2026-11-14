@@ -77,7 +77,7 @@ function RoleBlock({ role }: { role: Role }) {
               <li key={subject} className="flex items-baseline gap-3">
                 <span className="text-foreground/90">{subject}</span>
                 <span aria-hidden className="flex-1 border-b border-dotted border-white/20" />
-                <span className="w-[1.5em] font-semibold text-(--mark)">{grade}</span>
+                <span className="min-w-[1.5em] font-semibold text-(--mark)">{grade}</span>
               </li>
             ))}
           </ul>
@@ -107,7 +107,7 @@ function RoleBlock({ role }: { role: Role }) {
           </ul>
         )}
         {role.story && (
-          <div className="mt-7 space-y-4 text-base leading-relaxed text-foreground/90 sm:text-lg">
+          <div className="mt-7 space-y-4 text-base leading-relaxed text-foreground/80">
             {role.story.map((paragraph) => (
               <p key={paragraph}>{paragraph}</p>
             ))}

@@ -169,31 +169,41 @@ export const journey: Chapter[] = [
     roles: [
       {
         title: "BSc (Hons) Computer Science and Mathematics",
-        start: "2022-09",
-        end: "2025-05",
-        summary: "Incididunt ut labore et dolore magna aliqua ut enim ad minim.",
+        start: "2022-10",
+        end: "2025-07",
+        summary: "Graduated with First Class Honours. My highest module marks:",
+        grades: [
+          { subject: "Advanced Computer Graphics", grade: "92%" },
+          { subject: "Principles of Programming 2", grade: "91%" },
+          { subject: "Foundations of Computation", grade: "82%" },
+        ],
         projects: [
           {
-            name: "Dissertation: machine-learning anti-cheat",
+            name: "Dissertation: catching aimbots from the way a player moves their mouse",
             description:
-              "Veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.",
+              "Cheaters drive players away from games, and most anti-cheat hunts for the cheat program itself, which cheat developers keep getting around. Earlier attempts to catch aimbots from a player's aim needed labelled cheating data or large amounts of a player's history, and struggled with aimbots tuned to look human. I built a new anomaly-detection system in Python, an ensemble of one-class SVMs on angle-based mouse features from user-authentication research, which learns a player's honest aim in Counter-Strike 2 from a short sample of play and needs no examples of cheating. Over 14 kills it told cheating from honest aim with a ROC AUC of 0.99, including against an aimbot smoothed to look human. It was marked 75%, a First.",
             link: { label: "Read the dissertation", href: "/journey/university-of-bath/dissertation" },
+          },
+          {
+            name: "A graphics engine in C++",
+            description: "Rasterisation, projection, ray tracing and photon mapping, worked up from the matrix maths.",
+            link: { label: "Read how I built it", href: "/stories/advanced-computer-graphics" },
           },
         ],
         story: [
-          "Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut.",
-          "Labore et dolore magna aliqua ut enim ad minim veniam quis.",
+          "I had planned a master's at Bath to test the system on far more players, but the course was restructured in a way that no longer fitted that research, so I graduated and joined Amazon. Not continuing it formally is my one real disappointment from Bath, and I'd still like to take it further.",
+          "Alongside the course, Bath's sport drew me there. I'd always loved powerlifting, and the Isle of Wight had nowhere to take it further. I competed twice in the 83kg class, but the gym mattered more than the meets: it was where I made friends, switched off from work and kept fit. I think people underestimate their bodies. Many decide they are too old, too injured or not capable without ever giving their body the chance to adapt. I'd like to be an example of that, and to learn more about biomechanics so I can help people stay healthy.",
         ],
         images: [
           {
             src: "/photos/bath-placeholder.svg",
-            alt: "Eu fugiat nulla pariatur excepteur sint occaecat cupidatat.",
-            caption: "Non proident sunt in culpa qui officia deserunt.",
+            alt: "Placeholder for a photo from graduation day.",
+            caption: "Graduation day.",
           },
           {
             src: "/photos/bath-placeholder.svg",
-            alt: "Mollit anim id est laborum lorem ipsum dolor.",
-            caption: "Sit amet consectetur adipiscing.",
+            alt: "Placeholder for a photo of me lifting.",
+            caption: "Competing in the 83kg class.",
           },
         ],
       },
