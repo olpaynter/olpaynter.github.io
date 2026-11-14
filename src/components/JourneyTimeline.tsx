@@ -70,6 +70,18 @@ function RoleBlock({ role }: { role: Role }) {
       <div className="timeline-reveal">
         {role.title && <h4 className="t-title text-base font-medium text-(--title) sm:text-lg">{role.title}</h4>}
         {role.summary && <p className="mt-2 text-base leading-relaxed text-foreground/90 sm:text-lg">{role.summary}</p>}
+        {role.note && <p className="mt-1 text-sm leading-relaxed text-muted">{role.note}</p>}
+        {role.grades && (
+          <ul className="mt-3 max-w-sm space-y-1.5 text-base sm:text-lg">
+            {role.grades.map(({ subject, grade }) => (
+              <li key={subject} className="flex items-baseline gap-3">
+                <span className="text-foreground/90">{subject}</span>
+                <span aria-hidden className="flex-1 border-b border-dotted border-white/20" />
+                <span className="w-[1.5em] font-semibold text-(--mark)">{grade}</span>
+              </li>
+            ))}
+          </ul>
+        )}
         {role.highlights && (
           <Highlights items={role.highlights} className="mt-3 space-y-1.5 text-base text-foreground/80" />
         )}

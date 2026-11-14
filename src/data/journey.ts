@@ -13,6 +13,8 @@ export type Photo = {
   caption?: string;
 };
 
+export type Grade = { subject: string; grade: string };
+
 export type Role = {
   title?: string;
   /** ISO date, YYYY-MM or YYYY-MM-DD. Only the month and year are shown. Leave out for an undated chapter. */
@@ -20,6 +22,9 @@ export type Role = {
   /** ISO date, YYYY-MM or YYYY-MM-DD. Leave out for something still going on. */
   end?: string;
   summary?: string;
+  /** One line of small print, shown under the title in place of a summary. */
+  note?: string;
+  grades?: Grade[];
   highlights?: string[];
   projects?: Project[];
   /** Longer prose, one string per paragraph, shown after the projects. */
@@ -191,6 +196,49 @@ export const journey: Chapter[] = [
             caption: "Sit amet consectetur adipiscing.",
           },
         ],
+      },
+    ],
+  },
+  {
+    id: "christ-the-king-college",
+    navLabel: "School",
+    kind: "education",
+    name: "Christ the King College",
+    location: "Newport, Isle of Wight, UK",
+    roles: [
+      {
+        title: "A-Levels",
+        start: "2020-09",
+        end: "2022-06",
+        grades: [
+          { subject: "Further Mathematics", grade: "A*" },
+          { subject: "Mathematics", grade: "A*" },
+          { subject: "Computer Science", grade: "A*" },
+          { subject: "Extended Project", grade: "A*" },
+          { subject: "Economics", grade: "B" },
+        ],
+        projects: [
+          {
+            name: "Extended Project: what makes an education system work?",
+            description:
+              "An independent research essay, “Education in England: optimising the system from a student's perspective”, awarded an A*. It weighs the research on school governance, teacher pay and the curriculum against how England runs its schools, written by someone sitting in its classrooms.",
+            highlights: [
+              "Wrote to the maths teacher and YouTuber Eddie Woo, who replied with a video on what engaging teaching looks like.",
+              "Drew on interviews, Department for Education statistics, OECD research and National Education Union surveys.",
+            ],
+          },
+          {
+            name: "Computer Science coursework: a Rubik's Cube solver",
+            description:
+              "For my A-Level project I wrote a program that solves any scrambled Rubik's Cube in under a second. It uses Herbert Kociemba's two-phase algorithm, which searches the cube's 43 quintillion states for a solution of typically 20 moves or fewer. That is close to the shortest possible: in 2010 it took 35 CPU-years of Google's computers to prove that no position needs more than 20. I learned the group theory the algorithm is built on from maths books and Kociemba's own explanations.",
+          },
+        ],
+      },
+      {
+        title: "GCSEs",
+        start: "2015-09",
+        end: "2020-06",
+        note: "Eleven GCSEs, with eight 9s (Mathematics, Computer Science, Biology, Chemistry, Physics, English Language, English Literature, and Design and Technology) and two 8s.",
       },
     ],
   },
