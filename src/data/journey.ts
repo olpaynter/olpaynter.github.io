@@ -62,42 +62,10 @@ export const journey: Chapter[] = [
     location: "Edinburgh, UK",
     roles: [
       {
-        title: "SDE 5",
-        start: "2027-04-01",
-        summary: "Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt.",
-        projects: [
-          {
-            name: "Multi-region ingestion",
-            description:
-              "Ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi.",
-            highlights: [
-              "Reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-              "Excepteur sint occaecat cupidatat non proident sunt in.",
-            ],
-          },
-          {
-            name: "Ingestion observability",
-            description:
-              "Ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum.",
-          },
-        ],
-      },
-      {
-        title: "SDE 4",
+        title: "Software Development Engineer (L4)",
         start: "2026-08-03",
-        end: "2027-03-31",
-        summary: "Dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa qui.",
-        projects: [
-          {
-            name: "Feed validation service",
-            description:
-              "Officia deserunt mollit anim id est laborum lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod.",
-            highlights: [
-              "Culpa qui officia deserunt mollit anim id est laborum lorem.",
-              "Ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor.",
-            ],
-          },
-        ],
+        summary:
+          "When a role opened, the engineers I had interned with pushed for it to be on their team. I met the new manager to check the fit, and rejoined Amazon Ads.",
       },
     ],
   },
@@ -112,9 +80,6 @@ export const journey: Chapter[] = [
         title: "Software Developer",
         start: "2025-11",
         end: "2026-06-10",
-        summary:
-          "Tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi.",
-        highlights: ["Incididunt ut labore et dolore magna aliqua.", "Ut enim ad minim veniam quis."],
       },
     ],
   },
@@ -144,18 +109,20 @@ export const journey: Chapter[] = [
     navLabel: "Internship",
     kind: "work",
     name: "Amazon",
-    location: "Edinburgh Development Centre, UK",
+    location: "Edinburgh, UK",
     roles: [
       {
-        title: "Software Development Engineer Intern",
+        title: "Software Development Engineer Intern (L4)",
         start: "2025-06-02",
-        end: "2025-08-28",
-        summary:
-          "Mollit anim id est laborum lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor.",
+        end: "2025-08-29",
+        summary: "I owned one problem for the summer: an Amazon Ads team tracking product intake and delivery by hand.",
         highlights: [
-          "Nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure.",
-          "Dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla.",
-          "Pariatur excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit anim id est laborum.",
+          "Interviewed the people doing the work, then wrote and defended the design that proposed a fix, in reviews with senior engineers.",
+          "Built it as a TypeScript browser tool that copies issues from the internal issue tracker into an external documents platform, on demand or on a timer, replacing copying by hand.",
+          "Shipped it through a CI/CD pipeline with 99% line coverage, and presented a live demo to engineers and managers.",
+        ],
+        story: [
+          "My end-of-internship feedback picked out initiative on an open-ended problem and the trust I built with the people I was building for. I finished with a full-time return offer, but it had no start date, and with hiring slowing I could not count on one. After some time travelling, I went looking for more experience rather than wait, which took me to ICRTouch.",
         ],
       },
     ],
