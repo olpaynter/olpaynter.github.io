@@ -64,8 +64,7 @@ export const journey: Chapter[] = [
       {
         title: "Software Development Engineer (L4)",
         start: "2026-08-03",
-        summary:
-          "When a role opened, the engineers I had interned with pushed for it to be on their team. I met the new manager to check the fit, and rejoined Amazon Ads.",
+        summary: "I returned to the Amazon team I had interned with, this time as a full-time engineer.",
       },
     ],
   },
@@ -81,7 +80,7 @@ export const journey: Chapter[] = [
         start: "2025-11",
         end: "2026-06-10",
         summary:
-          "One of the UK's leading EPOS providers, with over 180,000 installs and partners around the world, a few minutes down the road from home. I worked on the reporting and on TouchOffice Web, the cloud back office for its tills, and the APIs behind it.",
+          "ICRTouch is one of the UK's leading EPOS providers, with over 180,000 installs and partners around the world, and its office was a few minutes down the road from home. I worked on the reporting and on TouchOffice Web, the cloud back office for its tills, and the APIs behind it.",
         projects: [
           {
             name: "Custom reporting",
@@ -91,11 +90,11 @@ export const journey: Chapter[] = [
           {
             name: "Automated testing for the TouchOffice Web API",
             description:
-              "With about 14 developers in one team, developer time was scarce, so I had to choose carefully what to push for: what would help the customer, what would help us help the customer, and whether it was really the priority right now. The gap that met that bar was automated testing. A payments integration and framework changes were about to touch a lot of the code, and tests would let the team make those changes with less risk. I made that case to the team and the leadership, and asked the people who knew the system best where changes were coming and where things tended to break, so the first coverage went there. I built the framework with Playwright and Docker so that other projects could take it on with little change, and wrote a guide so the team could start writing tests first. It is still in use.",
+              "With about 14 developers in one team, I had to choose carefully what to push for: what would help the customer, what would help us help the customer, and whether it was really the priority at the time. Automated testing met that bar. A payments integration and framework updates were about to touch a lot of the code, and tests would let the team make those changes with more confidence. I put that to the team and the leadership, and asked the people who knew the system best which areas the coming work would affect most, so the first coverage went there. I built the framework with Playwright and Docker so that other projects could adopt it easily, and wrote a guide so the team could start writing tests first. It is still in use.",
           },
         ],
         story: [
-          "Working in a team of that size also meant I could take an idea straight to the leadership and talk it through, and there was room to change direction, provided I picked the right things to pursue and then saw them through.",
+          "Working in a team of that size also meant I could take an idea straight to the leadership and discuss it, and there was room to change direction, provided I picked the right things to pursue and then saw them through.",
         ],
       },
     ],
@@ -133,16 +132,16 @@ export const journey: Chapter[] = [
         start: "2025-06-02",
         end: "2025-08-29",
         summary:
-          "I owned one problem for the summer: a group of senior program managers who were tracking product intake and delivery by hand.",
+          "I spent the summer on one problem: a group of senior program managers were keeping track of incoming product work and its delivery by hand.",
         projects: [
           {
             name: "Automating product intake and delivery tracking",
             description:
-              "I interviewed the program managers about how they worked, then wrote the design and defended it in reviews with senior engineers. I built it as a TypeScript browser tool that copies issues from the internal tracker into an external documents platform, on demand or on a timer, and shipped it through a CI/CD pipeline with 99% line coverage before demonstrating it to engineers and managers.",
+              "I interviewed the managers about how they worked, then wrote the design and defended it in reviews with senior engineers. I built it as a TypeScript browser tool that copies issues from the internal tracker into an external documents platform, on demand or on a timer, and it went out through an automated deployment pipeline, with tests covering 99% of its lines, before I demonstrated it to engineers and managers.",
           },
         ],
         story: [
-          "My end-of-internship feedback picked out initiative on an open-ended problem and the trust I built with the people I was building for. I finished with a full-time return offer without a fixed start date, so after some time travelling I looked for more experience in the meantime, which took me to ICRTouch.",
+          "My end-of-internship feedback picked out initiative on an open-ended problem and the trust I earned with the people I was building for. I finished with a full-time return offer without a fixed start date, so after some time travelling I looked for more experience in the meantime, which took me to ICRTouch.",
         ],
       },
     ],
@@ -158,7 +157,7 @@ export const journey: Chapter[] = [
         title: "BSc (Hons) Computer Science and Mathematics",
         start: "2022-10",
         end: "2025-07",
-        summary: "Graduated with First Class Honours. My highest module marks:",
+        summary: "I graduated with First Class Honours. These were my highest module marks:",
         grades: [
           { subject: "Advanced Computer Graphics", grade: "92%" },
           { subject: "Principles of Programming 2", grade: "91%" },
@@ -168,18 +167,19 @@ export const journey: Chapter[] = [
           {
             name: "Dissertation: catching aimbots from the way a player moves their mouse",
             description:
-              "Cheaters drive players away from games, and most anti-cheat hunts for the cheat program itself, which cheat developers keep getting around. Earlier attempts to catch aimbots from a player's aim needed labelled cheating data or large amounts of a player's history, and struggled with aimbots tuned to look human. I built a new anomaly-detection system in Python, an ensemble of one-class SVMs on angle-based mouse features from user-authentication research, which learns a player's honest aim in Counter-Strike 2 from a short sample of play and needs no examples of cheating. Over 14 kills it told cheating from honest aim with a ROC AUC of 0.99, including against an aimbot smoothed to look human. It was marked 75%, a First.",
+              "Cheaters drive players away from games, and most anti-cheat hunts for the cheat program itself, which cheat developers keep getting around. Earlier attempts to catch aimbots from a player's aim needed labelled cheating data or large amounts of a player's history, and struggled with aimbots tuned to look human. I built a new anomaly-detection system in Python, an ensemble of one-class SVMs on angle-based mouse features from user-authentication research, which learns a player's honest aim in Counter-Strike 2 from a short sample of play and never needs to see a cheater. Over 14 kills it told cheating from honest aim with a ROC AUC of 0.99, including against an aimbot smoothed to look human. It was marked 75%, a First.",
             link: { label: "Read the dissertation", href: "/journey/university-of-bath/dissertation" },
           },
           {
             name: "A graphics engine in C++",
-            description: "Rasterisation, projection, ray tracing and photon mapping, worked up from the matrix maths.",
+            description:
+              "It covers rasterisation, projection, ray tracing and photon mapping, worked up from the matrix maths.",
             link: { label: "Read how I built it", href: "/stories/advanced-computer-graphics" },
           },
         ],
         story: [
-          "I had planned a master's at Bath to test the system on far more players, but the course was restructured in a way that no longer fitted that research, so I graduated and joined Amazon. Not continuing it formally is my one real disappointment from Bath, and I'd still like to take it further.",
-          "Alongside the course, Bath's sport drew me there. I'd always loved powerlifting, and the Isle of Wight had nowhere to take it further. I competed twice in the 83kg class, but the gym mattered more than the meets: it was where I made friends, switched off from work and kept fit. I think people underestimate their bodies. Many decide they are too old, too injured or not capable without ever giving their body the chance to adapt. I'd like to be an example of that, and to learn more about biomechanics so I can help people stay healthy.",
+          "I had planned a master's at Bath to test the system on far more players, but the course was restructured in a way that no longer fitted that research, so I graduated and went into work instead. Not continuing it formally is my one real disappointment from Bath, and I would still like to take it further.",
+          "Alongside the course, Bath's sport drew me there. I had always loved powerlifting, and the Isle of Wight had nowhere to take it further. I competed twice in the 83kg class, but the gym mattered more than the meets: it was where I made friends, switched off from work and kept fit. I think people underestimate their bodies. Many decide they are too old, too injured or not capable without ever giving their bodies the chance to adapt. I would like to be an example of what a body can do when it is given that chance, and to learn more about biomechanics so I can help people stay healthy.",
         ],
         images: [
           {
@@ -235,7 +235,7 @@ export const journey: Chapter[] = [
         title: "GCSEs",
         start: "2015-09",
         end: "2020-06",
-        note: "Eleven GCSEs, with eight 9s (Mathematics, Computer Science, Biology, Chemistry, Physics, English Language, English Literature, and Design and Technology) and two 8s.",
+        note: "Ten GCSEs, with eight 9s (Mathematics, Computer Science, Biology, Chemistry, Physics, English Language, English Literature, and Design and Technology) and two 8s.",
       },
     ],
   },
