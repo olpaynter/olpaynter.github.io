@@ -80,6 +80,23 @@ export const journey: Chapter[] = [
         title: "Software Developer",
         start: "2025-11",
         end: "2026-06-10",
+        summary:
+          "One of the UK's leading EPOS providers, with over 180,000 installs and partners around the world, a few minutes down the road from home. I worked on the reporting and on TouchOffice Web, the cloud back office for its tills, and the APIs behind it.",
+        projects: [
+          {
+            name: "Custom reporting",
+            description:
+              "Customers and partners often needed reports that the standard product did not cover, and I built many of them as large SQL queries over a long-established data model. Making them run quickly was how I learned that data model.",
+          },
+          {
+            name: "Automated testing for the TouchOffice Web API",
+            description:
+              "With about 14 developers in one team, developer time was scarce, so I had to choose carefully what to push for: what would help the customer, what would help us help the customer, and whether it was really the priority right now. The gap that met that bar was automated testing. A payments integration and framework changes were about to touch a lot of the code, and tests would let the team make those changes with less risk. I made that case to the team and the leadership, and asked the people who knew the system best where changes were coming and where things tended to break, so the first coverage went there. I built the framework with Playwright and Docker so that other projects could take it on with little change, and wrote a guide so the team could start writing tests first. It is still in use.",
+          },
+        ],
+        story: [
+          "Working in a team of that size also meant I could take an idea straight to the leadership and talk it through, and there was room to change direction, provided I picked the right things to pursue and then saw them through.",
+        ],
       },
     ],
   },
@@ -115,14 +132,17 @@ export const journey: Chapter[] = [
         title: "Software Development Engineer Intern (L4)",
         start: "2025-06-02",
         end: "2025-08-29",
-        summary: "I owned one problem for the summer: an Amazon Ads team tracking product intake and delivery by hand.",
-        highlights: [
-          "Interviewed the people doing the work, then wrote and defended the design that proposed a fix, in reviews with senior engineers.",
-          "Built it as a TypeScript browser tool that copies issues from the internal issue tracker into an external documents platform, on demand or on a timer, replacing copying by hand.",
-          "Shipped it through a CI/CD pipeline with 99% line coverage, and presented a live demo to engineers and managers.",
+        summary:
+          "I owned one problem for the summer: a group of senior program managers who were tracking product intake and delivery by hand.",
+        projects: [
+          {
+            name: "Automating product intake and delivery tracking",
+            description:
+              "I interviewed the program managers about how they worked, then wrote the design and defended it in reviews with senior engineers. I built it as a TypeScript browser tool that copies issues from the internal tracker into an external documents platform, on demand or on a timer, and shipped it through a CI/CD pipeline with 99% line coverage before demonstrating it to engineers and managers.",
+          },
         ],
         story: [
-          "My end-of-internship feedback picked out initiative on an open-ended problem and the trust I built with the people I was building for. I finished with a full-time return offer, but it had no start date, and with hiring slowing I could not count on one. After some time travelling, I went looking for more experience rather than wait, which took me to ICRTouch.",
+          "My end-of-internship feedback picked out initiative on an open-ended problem and the trust I built with the people I was building for. I finished with a full-time return offer without a fixed start date, so after some time travelling I looked for more experience in the meantime, which took me to ICRTouch.",
         ],
       },
     ],
